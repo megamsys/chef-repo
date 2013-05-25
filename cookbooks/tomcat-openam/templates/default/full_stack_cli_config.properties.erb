@@ -1,0 +1,34 @@
+<!-- Server properties, AM_ENC_KEY="" means generate random key -->
+SERVER_URL=<%= node["tomcat-openam"]["cfg"]["server-url"] %>
+DEPLOYMENT_URI=<%= node["tomcat-openam"]["cfg"]["deployment-uri"] %>
+BASE_DIR= <%= node["tomcat-openam"]["cfg"]["base-dir"] %>
+locale=<%= node["tomcat-openam"]["cfg"]["locale"] %>
+PLATFORM_LOCALE=<%= node["tomcat-openam"]["cfg"]["platform-locale"] %>
+AM_ENC_KEY=
+ADMIN_PWD=<%= node["tomcat-openam"]["cfg"]["admin-pwd"] %>
+AMLDAPUSERPASSWD=<%= node["tomcat-openam"]["cfg"]["amldapuserpasswd"] %>
+COOKIE_DOMAIN=<%= node["tomcat-openam"]["cfg"]["cookie-domain"] %>
+<!-- Embedded configuration data store -->
+DATA_STORE=<%= node["tomcat-openam"]["cfg"]["data-store"] %>
+DIRECTORY_SSL=<%= node["tomcat-openam"]["cfg"]["directory"]["ssl"] %>
+DIRECTORY_SERVER=<%= node["tomcat-openam"]["cfg"]["directory"]["server"] %>
+DIRECTORY_PORT=<%= node["tomcat-openam"]["cfg"]["directory"]["port"] %>
+DIRECTORY_ADMIN_PORT=<%= node["tomcat-openam"]["cfg"]["directory"]["admin-port"] %>
+DIRECTORY_JMX_PORT=<%= node["tomcat-openam"]["cfg"]["directory"]["jmx-port"] %>
+ROOT_SUFFIX=<%= node["tomcat-openam"]["cfg"]["root-suffix"] %>
+DS_DIRMGRDN=<%= node["tomcat-openam"]["cfg"]["ds-dirmgrdn"] %>
+DS_DIRMGRPASSWD=<%= node["tomcat-openam"]["cfg"]["ds-dirmgrpasswd"] %>
+<!-- External OpenDJ based user data store -->
+USERSTORE_TYPE=<%= node["tomcat-openam"]["cfg"]["user-store"]["type"] %>
+USERSTORE_SSL=<%= node["tomcat-openam"]["cfg"]["user-store"]["ssl"] %>
+<!-- USERSTORE_DOMAINNAME=ad.example.com -->
+USERSTORE_HOST=<%= node["tomcat-openam"]["dns"] %> 
+USERSTORE_PORT=<%= node["tomcat-openam"]["cfg"]["user-store"]["port"] %>
+USERSTORE_SUFFIX=<%= node["tomcat-openam"]["cfg"]["user-store"]["suffix"] %>
+USERSTORE_MGRDN=<%= node["tomcat-openam"]["cfg"]["user-store"]["mgrdn"] %>
+USERSTORE_PASSWD=<%= node["tomcat-openam"]["cfg"]["user-store"]["passwd"] %>
+
+<!-- Uncomment to specify the site for the first server in a site configuration 
+#LB_SITE_NAME=lb
+#LB_PRIMARY_URL=http://lb.example.com:80/openam
+

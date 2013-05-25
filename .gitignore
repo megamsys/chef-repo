@@ -1,3 +1,14 @@
+.rake_test_cache
+
+# emacs
+*~
+
+# vim
+*.sw[a-z]
+
+# subversion
+*/.svn/*
+
 *.gem
 *.rbc
 .bundle

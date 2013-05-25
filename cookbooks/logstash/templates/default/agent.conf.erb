@@ -1,0 +1,44 @@
+# This file was created for <%= node.name %>
+# by Chef
+# Manual changes will be lost
+input {
+  <% if node['logstash']['agent']['inputs'].empty? -%>
+
+  file {
+    type => "access-log"
+    path => "<%= node['logstash']['agent']['file-path'] %>"
+  }
+  <% else %>
+    <%= LogstashConf.section_to_str(node['logstash']['agent']['inputs']) %>
+  <% end -%>
+}
+
+<% unless node['logstash']['agent']['filters'].empty? -%>
+filter {
+  <%= LogstashConf.section_to_str(node['logstash']['agent']['filters'], node['logstash']['agent']['version'], @patterns_dir) %>
+}
+<% end -%>
+
+output {
+  <% if node['logstash']['agent']['debug'] -%>
+  stdout { }
+  <% end -%>
+  <% if @logstash_server_ip.empty? -%>
+  # Provide a sane default
+  null { }
+  <% else -%>
+    <% unless  node['logstash']['agent']['outputs'].empty? -%>
+      <%= LogstashConf.section_to_str(node['logstash']['agent']['outputs']) %>
+    <% else -%>
+  stdout { debug => true debug_format => "json"}
+  redis {
+     key => "<%= node['logstash']['agent']['key'] %>"
+    type => "access-log"
+     data_type => "channel"
+     host => "<%= @logstash_server_ip %>"
+  }
+    <% end -%>
+  <% end -%>
+}
+
+

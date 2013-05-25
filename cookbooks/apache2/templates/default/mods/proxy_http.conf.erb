@@ -1,0 +1,17 @@
+
+<IfModule mod_proxy_http.c>
+  ProxyRequests Off
+ProxyPreserveHost On
+ 
+<Proxy *>
+    Order deny,allow
+    Allow from all
+</Proxy>
+ 
+ProxyPass /openam http://localhost:8081/openam
+ProxyPassReverse /openam http://localhost:8081/openam
+<Location /openam>
+    Order allow,deny
+    Allow from all
+</Location>
+</IfModule>
