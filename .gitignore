@@ -1,5 +1,7 @@
 .rake_test_cache
 
+.chef/*.pem
+
 # emacs
 *~
 

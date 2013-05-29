@@ -1,9 +1,16 @@
 Overview
 ========
 
-Every Chef installation needs a Chef Repository. This is the place where cookbooks, roles, config files and other artifacts for managing systems with Chef will live. We strongly recommend storing this repository in a version control system such as Git and treat it like source code.
+Megam platform - Chef installation uses this Chef Repository. This is the place where cookbooks, roles, config files and other artifacts for managing systems with Chef will live. 
 
-While we prefer Git, and make this repository available via GitHub, you are welcome to download a tar or zip archive and use your favorite version control system to manage the code.
+### Requirements
+
+> [Chef 10 +](http://opscode.com)
+
+### Tested on Ubuntu 12.04, 12.10, 13.04, AWS - EC2
+
+
+Once you clone the `https://github.com/indykish/chef-repo.git` You will notice a slew of directories.
 
 Repository Directories
 ======================
@@ -16,51 +23,85 @@ This repository contains several directories, and each directory contains a READ
 * `data_bags/` - Store data bags and items in .json in the repository.
 * `roles/` - Store roles in .rb or .json in the repository.
 
-Rake Tasks
+Cookbooks
 ==========
 
-The repository contains a `Rakefile` that includes tasks that are installed with the Chef libraries. To view the tasks available with in the repository with a brief description, run `rake -T`.
+The repository contains cookbooks as customized for `megam platform`.
+ 
+Cookbooks prefixed with `megam-` includes tasks that are customized for `megam platform`. 
 
-The default task (`default`) is run when executing `rake` with no arguments. It will call the task `test_cookbooks`.
+What is `[megam](http://www.megam.co)`, [code](https://github.com/indykish),[blog](http://blog.megam.co).
 
-The following tasks are not directly replaced by knife sub-commands.
+The following cookbooks-* have manual steps to be performed.
 
-* `bundle_cookbook[cookbook]` - Creates cookbook tarballs in the `pkgs/` dir.
-* `install` - Calls `update`, `roles` and `upload_cookbooks` Rake tasks.
-* `ssl_cert` - Create self-signed SSL certificates in `certificates/` dir.
-* `update` - Update the repository from source control server, understands git and svn.
+### megam_rabbitmq
 
-The following tasks duplicate functionality from knife and may be removed in a future version of Chef.
+	`run ROLE rabbitmq-master`
+	
+	change the attributes before trying to run slave
+	`default['rabbitmq']['cluster_disk_nodes'] = ["#{node['rabbitmq']['current_node']}", 'rabbit@ip-10-148-66-126']` 
 
-* `metadata` - replaced by `knife cookbook metadata -a`.
-* `new_cookbook` - replaced by `knife cookbook create`.
-* `role[role_name]` - replaced by `knife role from file`.
-* `roles` - iterates over the roles and uploads with `knife role from file`.
-* `test_cookbooks` - replaced by `knife cookbook test -a`.
-* `test_cookbook[cookbook]` - replaced by `knife cookbook test COOKBOOK`.
-* `upload_cookbooks` - replaced by `knife cookbook upload -a`.
-* `upload_cookbook[cookbook]` - replaced by `knife cookbook upload COOKBOOK`.
+	`knife cookbook upload megam_rabbitmq`
 
-Configuration
-=============
+	`run ROLE rabbitmq-slave`
 
-The repository uses two configuration files.
 
-* config/rake.rb
-* .chef/knife.rb
+### megam_rails_application
 
-The first, `config/rake.rb` configures the Rakefile in two sections.
+	Point to a valid respository
+	`default[:rails][:deploy][:repository] = "https://github.com/indykish/aryabhata.git"` 
 
-* Constants used in the `ssl_cert` task for creating the certificates.
-* Constants that set the directory locations used in various tasks.
+### megam_postgresql
 
-If you use the `ssl_cert` task, change the values in the `config/rake.rb` file appropriately. These values were also used in the `new_cookbook` task, but that task is replaced by the `knife cookbook create` command which can be configured below.
+	Refer postgres - README.md
 
-The second config file, `.chef/knife.rb` is a repository specific configuration file for knife. If you're using the Opscode Platform, you can download one for your organization from the management console. If you're using the Open Source Chef Server, you can generate a new one with `knife configure`. For more information about configuring Knife, see the Knife documentation.
 
-http://help.opscode.com/faqs/chefbasics/knife
+### megam_redis2
+
+	This cookbook uses runit version 0.15.0
+
+### riak
+
+	```
+	Enable the below ports in security group
+	6000
+	7999
+	8098
+	8087
+	```
+	`run ROLE riak for master`
+
+	Change attributes before trying to run slave
+
+	`default['riak']['cluster']['node_name'] = riak-master's dns`
+
+	`knife cookbook upload riak`
+
+	`run ROLE riak for slave`
+
 
 Next Steps
 ==========
 
 Read the README file in each of the subdirectories for more information about what goes in those directories.
+
+# License
+
+
+|                      |                                          |
+|:---------------------|:-----------------------------------------|
+| **Author:**          | Thomas Alrin (<alrin@megam.co.in>)
+| **Copyright:**       | Copyright (c) 2012-2013 Megam Systems.
+| **License:**         | Apache License, Version 2.0
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
