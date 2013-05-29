@@ -10,6 +10,10 @@ version          "0.1.0"
   supports os
 end
 
+%w{ apache2 apt }.each do |ckbk|
+  depends ckbk
+end
+
 recipe "tomcat-openam::full_stack", "Installs and configures Tomcat, OpenDJ and OpenAM In a single instance"
 recipe "tomcat-openam::vanilla", "Installs Tomcat and OpenAM. But Configures only tomcat"
 recipe "tomcat-openam::configure", "Configures OpenAM" #It needs a dns of an instance which is running opendj

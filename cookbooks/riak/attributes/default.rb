@@ -20,7 +20,7 @@
 #------------------------------------------------------------------------
 #----------------------------Values to be changed------------------------
 default['riak']['cluster']['node_name'] = nil
-#default['riak']['cluster']['node_name'] = "ec2-54-251-31-89.ap-southeast-1.compute.amazonaws.com" # nil or public-hostname
+#default['riak']['cluster']['node_name'] = "ec2-54-251-91-167.ap-southeast-1.compute.amazonaws.com" # nil or public-hostname
 
 #------------------------------------------------------------------------
 
