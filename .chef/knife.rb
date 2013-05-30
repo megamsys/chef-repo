@@ -1,10 +1,10 @@
 log_level                :debug
 log_location             STDOUT
-node_name                '#{ENV['CHEF_CLIENT_NAME']}'
-client_key               '~/chef-repo/.chef/#{ENV['CHEF_CLIENT_NAME']}.pem'
+node_name                "#{ENV['CHEF_CLIENT_NAME']}"
+client_key               "~/chef-repo/.chef/#{ENV['CHEF_CLIENT_NAME']}.pem"
 validation_client_name   'chef-validator'
-validation_key           '~/chef-repo/.chef/validation.pem'
-chef_server_url          '#{ENV['CHEF_SERVER']}'
+validation_key           '~/chef-repo/.chef/chef-validator.pem'
+chef_server_url          "#{ENV['CHEF_SERVER']}"
 syntax_check_cache_path  '~/chef-repo/.chef/syntax_check_cache'
 cache_type               'BasicFile'
 cache_options( :path => '~/chef-repo/.chef/checksums')
