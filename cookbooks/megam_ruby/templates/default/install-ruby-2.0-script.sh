@@ -7,13 +7,10 @@ sudo apt-get -y install build-essential openssl libreadline6 libreadline6-dev zl
 # Install ruby 2.0
 
 cd /tmp
-  wget -nv ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p0.tar.gz
-  tar zxvf ruby-2.0.0-p0.tar.gz
-  cd ruby-2.0.0-p0
-./Configure darwin64-x86_64-cc --prefix=/usr/local --openssldir=/usr/local/openssl; make; sudo make install
+  wget -nv ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p195.tar.gz
+  tar zxvf ruby-2.0.0-p195.tar.gz
+  cd ruby-2.0.0-p195
 ./configure --with-openssl-dir=/usr/local/openssl; make; sudo make install
 
-#./Configure darwin64-x86_64-cc --prefix=/usr/local --openssldir=/etc/ssl/openssl; make; sudo make install
-#./configure --with-openssl-dir=/etc/ssl/openssl; make; sudo make install
 sudo gem update -f -q
 sudo gem install bundler
