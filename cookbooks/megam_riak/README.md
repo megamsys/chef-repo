@@ -29,7 +29,7 @@ The package parameters available are version, type and, optionally for source in
 Source Installation
 ------------------
 
-The riak::source recipe can be used to install Riak from source. The source installation requires the build-essential and erlang cookbooks. 
+The megam_riak::source recipe can be used to install Riak from source. The source installation requires the build-essential and erlang cookbooks. 
 
 
 Basic Configuration

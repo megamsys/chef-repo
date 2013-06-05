@@ -73,9 +73,6 @@ execute "Switch to postgres user" do
   command "echo \"CREATE USER megam WITH PASSWORD 'team4megam'; CREATE DATABASE cocdb; GRANT ALL PRIVILEGES ON DATABASE cocdb to megam;\" | psql"
 end
 
-
-
-
 # Master processes
 
 if node[:postgresql][:master]

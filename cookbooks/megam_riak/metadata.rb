@@ -17,15 +17,15 @@
 # limitations under the License.
 #
 
-name              "riak"
-maintainer        "Basho Technologies, Inc."
-maintainer_email  "riak@basho.com"
+name              "megam_riak"
+maintainer        "Megam Systems"
+maintainer_email  "alrin@megam.co.in"
 license           "Apache 2.0"
 description       "Installs and configures Riak distributed data store"
 version           "2.0.0"
 
-recipe            "riak", "Installs Riak from a package"
-recipe            "riak::source", "Installs Erlang and Riak from source"
+recipe            "megam_riak", "Installs Riak from a package"
+recipe            "megam_riak::source", "Installs Erlang and Riak from source"
 
 %w{apt yum build-essential erlang git ulimit megam_route53}.each do |d|
   depends d

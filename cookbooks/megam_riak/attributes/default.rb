@@ -1,6 +1,6 @@
 #
 # Author:: Seth Thomas (<sthomas@basho.com>)
-# Cookbook Name:: riak
+# Cookbook Name:: megam_riak
 #
 # Copyright (c) 2013 Basho Technologies, Inc.
 #
