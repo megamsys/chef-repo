@@ -64,6 +64,15 @@ template "#{node[:postgresql][:dir]}/pg_hba.conf" do
   notifies :reload, resources(:service => "postgresql"), :immediately
 end
 
+#Creating New user and database
+
+execute "Switch to postgres user" do
+  cwd "/var/lib/postgresql/"  
+  user "postgres"
+  group "postgres"
+  command "echo \"CREATE USER megam WITH PASSWORD 'team4megam'; CREATE DATABASE cocdb; GRANT ALL PRIVILEGES ON DATABASE cocdb to megam;\" | psql"
+end
+
 # Master processes
 
 if node[:postgresql][:master]
@@ -144,4 +153,5 @@ execute "Execute the key files and place them where it should be" do
 end 
 
 end #if standby end
+
 
