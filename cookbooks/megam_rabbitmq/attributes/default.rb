@@ -34,7 +34,7 @@ default['rabbitmq']['cluster_node_type'] = 'ram'
 
 
 default['rabbitmq']['current_node'] = "rabbit@#{`hostname`}".strip
-default[:rabbitmq][:cluster_node] = nil
+default[:rabbitmq][:cluster_node] = nil #Try to Edit it in role and assign below
 default['rabbitmq']['cluster_disk_nodes'] = ["#{node['rabbitmq']['current_node']}", 'rabbit@ip-10-148-69-44']
 
 
