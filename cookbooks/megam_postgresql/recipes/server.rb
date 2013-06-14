@@ -66,7 +66,7 @@ end
 
 #Creating New user and database
 
-execute "Switch to postgres user" do
+execute "Create postgres user and database" do
   cwd "/var/lib/postgresql/"  
   user "postgres"
   group "postgres"
