@@ -7,7 +7,11 @@
 # All rights reserved - Do Not Redistribute
 #
 
-remote_file node['akka']['home'] do
+package "openjdk-7-jre" do
+        action :install
+end
+
+remote_file node['akka']['location']['deb'] do
   source node['akka']['deb']
   owner node['akka']['user']
   group node['akka']['user']

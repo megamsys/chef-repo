@@ -6,10 +6,14 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+
 if node[:rails][:app][:name].split(" ").count > 1
   Chef::Application.fatal!("Application name must be one word long !")
 end
 include_recipe "git" # install git, no support for svn for now
+
+#Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
+include_recipe "megam_deps"
 
 # create deploy user & group
 user node[:rails][:owner] do
@@ -46,7 +50,9 @@ application node[:rails][:app][:name] do
   if node[:rails][:deploy][:ssh_key]
     deploy_key node[:rails][:deploy][:ssh_key]
   end
-  repository        node[:rails][:deploy][:repository]
+  #repository        node[:rails][:deploy][:repository]
+#Repository value is getting from s3 json
+  repository        "#{node['megam_deps']['deps']['scm']}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]

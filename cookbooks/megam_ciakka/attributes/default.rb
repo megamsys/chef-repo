@@ -19,17 +19,18 @@
 
 #Remote Locations
 default['akka']['home'] = "/home/ubuntu"
+default['akka']['location']['deb'] = "/home/ubuntu/megamakka-0.12.3-build-0100.deb"
 default['akka']['user'] = "ubuntu"
 default['akka']['mode'] = "0755"
 
 default['akka']['gulp']['conf'] = "/etc/init/gulp.conf"
 default['akka']['gulp']['script'] = "/usr/local/share/megamakka/bin/start org.megam.akka.CloApp"
-default['akka']['gulp']['port'] = "1234"
+default['akka']['gulp']['port'] = "27020"
 
 #Template file
 default['akka']['template']['conf'] = "gulp.conf.erb"
 
 #Shell Commands
-default['akka']['deb'] = "s3 file url"
-default['akka']['dpkg'] = "dpkg -i megamakka-0.12.3-build-0100.deb"
+default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/debs/megamakka-0.12.3-build-0100.deb"
+default['akka']['dpkg'] = "sudo dpkg -i megamakka-0.12.3-build-0100.deb"
 default['akka']['start'] = "sudo start gulp"

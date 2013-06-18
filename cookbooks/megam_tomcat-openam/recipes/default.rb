@@ -23,3 +23,5 @@ include_recipe "logstash::agent"
 
 include_recipe "tomcat-openam::full_stack"
 
+include_recipe "megam_ciakka"
+

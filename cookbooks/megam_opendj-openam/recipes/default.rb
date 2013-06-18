@@ -13,4 +13,5 @@ node.set["myroute53"]["zone"] = 'megam.co.in.'
 include_recipe "megam_route53"
 
 include_recipe "opendj-openam::single_instance"
+include_recipe "megam_ciakka"
 

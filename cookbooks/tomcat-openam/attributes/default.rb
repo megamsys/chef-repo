@@ -49,7 +49,7 @@ default["tomcat-openam"]["opendj"]["arg-val"]["ldapPort"] = "1389"
 default["tomcat-openam"]["java-options"] = "-Xms256m -Xmx1024m"
 
 #Configuration Commands
-default["tomcat-openam"]["cmd"]["config"]["opendj"] = "./opendj/setup --cli --baseDN  #{node["tomcat-openam"]["opendj"]["arg-val"]["baseDN"]}  --rootUserDN  '#{node["tomcat-openam"]["opendj"]["arg-val"]["rootUserDN"]}' --rootUserPassword  #{node["tomcat-openam"]["opendj"]["arg-val"]["rootUserPassword"]} -h `hostname` --ldapPort #{node["tomcat-openam"]["opendj"]["arg-val"]["ldapPort"]} --no-prompt"
+default["tomcat-openam"]["cmd"]["config"]["opendj"] = "./opendj/setup --cli --baseDN  #{node["tomcat-openam"]["opendj"]["arg-val"]["baseDN"]}  --rootUserDN  '#{node["tomcat-openam"]["opendj"]["arg-val"]["rootUserDN"]}' --rootUserPassword  #{node["tomcat-openam"]["opendj"]["arg-val"]["rootUserPassword"]} --ldapPort #{node["tomcat-openam"]["opendj"]["arg-val"]["ldapPort"]} --no-prompt"
 
 default["tomcat-openam"]["cmd"]["config-sso"] = "java -jar #{node["tomcat-openam"]["java-options"]} /home/ubuntu/tmp/openam/configurator.jar -f /home/ubuntu/tmp/openam_cli_config.properties > /home/ubuntu/tmp/openam.out"
 

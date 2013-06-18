@@ -16,9 +16,11 @@ default["opendj"]["arg-val"]["baseDN"] = "dc=example,dc=com"
 default["opendj"]["arg-val"]["rootUserDN"] = "cn=Directory Manager"
 default["opendj"]["arg-val"]["rootUserPassword"] = "secret12"
 default["opendj"]["arg-val"]["ldapPort"] = "1389"
+default["opendj"]["arg-val"]["hostname"] = "#{`hostname`}"
+
 
 #shell commands
-default["opendj"]["cmd"]["config"] = "./opendj/setup --cli --baseDN  #{node["opendj"]["arg-val"]["baseDN"]}  --rootUserDN  '#{node["opendj"]["arg-val"]["rootUserDN"]}' --rootUserPassword  #{node["opendj"]["arg-val"]["rootUserPassword"]} -h `hostname` --ldapPort #{node["opendj"]["arg-val"]["ldapPort"]} --no-prompt"
+default["opendj"]["cmd"]["config"] = "./opendj/setup --cli --baseDN  #{node["opendj"]["arg-val"]["baseDN"]}  --rootUserDN  '#{node["opendj"]["arg-val"]["rootUserDN"]}' --rootUserPassword  #{node["opendj"]["arg-val"]["rootUserPassword"]} --ldapPort #{node["opendj"]["arg-val"]["ldapPort"]} --no-prompt"
 
 #Remote file location
 default["opendj"]["remote-location"]["opendj-zip"] = "/home/ubuntu/tmp/opendj.zip"
