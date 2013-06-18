@@ -20,7 +20,7 @@ package "openjdk-7-jre" do
 end
 
 remote_file "/home/ubuntu/megam_play_production.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megam/megam_play_production.zip"
+  source "https://s3-ap-southeast-1.amazonaws.com/megampub/debs/megam_play_production.zip"
   mode "0755"
    owner "ubuntu"
   group "ubuntu"
