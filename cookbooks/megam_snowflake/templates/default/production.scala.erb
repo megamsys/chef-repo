@@ -15,7 +15,7 @@ new SnowflakeConfig {
   thriftServerThreads = 2
 
   zookeeperClientConfig = new ZookeeperClientConfig {
-    hostList = "localhost"
+    hostList = "<%= node['snowflake']['zookeeper'] %>"
   }
 
   reporterConfig = new ReporterConfig {

@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-node.set["myroute53"]["name"] = 'postgres2'
+node.set["myroute53"]["name"] = 'postgres1'
 node.set["myroute53"]["zone"] = 'megam.co.in.'
 include_recipe "megam_route53"
 

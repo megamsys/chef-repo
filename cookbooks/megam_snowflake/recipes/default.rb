@@ -7,10 +7,15 @@
 # All rights reserved - Do Not Redistribute
 #
   
+node.set["myroute53"]["name"] = 'uid1'
+node.set["myroute53"]["zone"] = 'megam.co.in.'
+include_recipe "megam_route53"
 
-include_recipe "zookeeper"
+package "openjdk-7-jre" do
+        action :install
+end
 
-remote_file node['snowflake']['home'] do
+remote_file node['snowflake']['location']['deb'] do
   source node['snowflake']['deb']
   owner node['snowflake']['user']
   group node['snowflake']['user']
@@ -22,7 +27,13 @@ execute "dpkg snowflake" do
   user node['snowflake']['user']
   group node['snowflake']['user']
   command node['snowflake']['dpkg']
+end
 
+template node['snowflake']['id']['scala_conf'] do
+  source node['snowflake']['template']['conf']
+  owner "root"
+  group "root"
+  mode node['snowflake']['mode']
 end
 
 template node['snowflake']['id']['conf'] do

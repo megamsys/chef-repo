@@ -103,7 +103,8 @@ default['riak']['config']['riak_kv']['listkeys_backpressure'] = true
 default['riak']['config']['riak_kv']['vnode_mailbox_limit'] = [1, 5000].to_erl_tuple
 
 # riak_kv storage_backend
-default['riak']['config']['riak_kv']['storage_backend'] = "riak_kv_bitcask_backend"
+#default['riak']['config']['riak_kv']['storage_backend'] = "riak_kv_bitcask_backend"
+default['riak']['config']['riak_kv']['storage_backend'] = "riak_kv_eleveldb_backend"  #----> MY Change
 case node['riak']['config']['riak_kv']['storage_backend']
   when "riak_kv_bitcask_backend"
     default['riak']['config']['bitcask']['io_mode'] = "erlang"

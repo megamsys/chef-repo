@@ -52,18 +52,20 @@ if node['riak']['package']['local_package'] == true
 else
   case node['platform']
   when "ubuntu", "debian"
-    include_recipe "apt"
-    
-    apt_repository "basho" do
-      uri "http://apt.basho.com"
-      distribution node['lsb']['codename']
-      components ["main"]
-      key "http://apt.basho.com/gpg/basho.apt.key"
-    end
 
-    package "riak" do
-      action :install
-    end
+execute "WGET RIAK DEB PACKAGE " do
+  cwd "/home/ubuntu"  
+  user "ubuntu"
+  group "ubuntu"
+  command "wget http://s3.amazonaws.com/downloads.basho.com/riak/1.3/1.3.1/ubuntu/precise/riak_1.3.1-1_amd64.deb"
+end 
+
+execute "DEPACKAGE RIAK DEB " do
+  cwd "/home/ubuntu"  
+  user "ubuntu"
+  group "ubuntu"
+  command "sudo dpkg -i riak_1.3.1-1_amd64.deb"
+end
 
   when "centos", "rhel"
     include_recipe "yum"

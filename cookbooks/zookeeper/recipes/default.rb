@@ -1,3 +1,11 @@
+#
+# Cookbook Name:: zookeeper
+# Recipe:: default
+#
+# Copyright 2013, Megam Systems
+#
+# All rights reserved - Do Not Redistribute
+#
 
 node.set["myroute53"]["name"] = 'zoo1'
 node.set["myroute53"]["zone"] = 'megam.co.in.'

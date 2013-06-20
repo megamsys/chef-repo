@@ -9,7 +9,7 @@ script
     export HOME="/root"
 
     echo $$ > /var/run/snowflake.pid
-    exec sudo <%= node['snowflake']['id']['script'] %> <%= node['snowflake']['id']['conf'] %> >> /var/log/snowflake.sys.log 2>&1
+    exec sudo <%= node['snowflake']['id']['script'] %> <%= node['snowflake']['conf']['scala'] %> >> /var/log/snowflake.sys.log 2>&1
 end script
 
 pre-start script
