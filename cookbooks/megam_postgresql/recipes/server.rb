@@ -92,8 +92,8 @@ template "/var/lib/postgresql/master.sh" do
   mode "0755"
 end
 
-template "/var/lib/postgresql/s3.rb" do
-  source "s3.rb"
+template "/var/lib/postgresql/s3-put.rb" do
+  source "s3-put.rb"
   owner "postgres"
   group "postgres"
   mode "0755"
@@ -117,12 +117,18 @@ end #if master end
 
 if node[:postgresql][:standby]
 
-remote_file "/home/ubuntu/auth-keys.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megam/auth-keys.zip"
-  mode "0755"
+template "/home/ubuntu/s3-get.rb" do
+  source "s3-get.rb"
   owner "ubuntu"
   group "ubuntu"
-  checksum "08da002l" 
+  mode "0755"
+end
+
+execute "Get s3 Authkeys" do
+  cwd "/home/ubuntu"  
+  user "ubuntu"
+  group "ubuntu"
+  command "ruby s3-get.rb"
 end
 
 package 'zip'
