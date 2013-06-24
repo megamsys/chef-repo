@@ -4,8 +4,8 @@ bucket_name = 'megamchef'
 source_filename = '/var/lib/postgresql/.ssh/auth-keys.zip'
 
 AWS.config(
-  :access_key_id => 'ACCESS_KEY_ID',
-  :secret_access_key => 'SECRET_ACCESS_KEY'
+  :access_key_id => 'ACCESS KEY',
+  :secret_access_key => 'SECRET KEY'
 )
 
 # Create the basic S3 object

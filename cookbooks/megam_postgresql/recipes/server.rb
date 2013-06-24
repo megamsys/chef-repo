@@ -56,6 +56,7 @@ execute "chmod for main" do
   command "sudo chmod 755 main"
 end
 
+#Template for postgres ===> PEER <=== authentication
 template "#{node[:postgresql][:dir]}/pg_hba.conf" do
   source "pg_hba.conf.erb"
   owner "postgres"
@@ -70,12 +71,32 @@ execute "Create postgres user and database" do
   cwd "/var/lib/postgresql/"  
   user "postgres"
   group "postgres"
-  command "echo \"CREATE USER megam WITH PASSWORD 'team4megam'; CREATE DATABASE cocdb; GRANT ALL PRIVILEGES ON DATABASE cocdb to megam;\" | psql"
+  command "echo \"ALTER USER postgres with password '#{node[:postgresql][:password]}';\" | psql"
 end
 
-# Master processes
+#Template for postgres ===> MD5 <=== authentication
+template "#{node[:postgresql][:dir]}/pg_hba.conf" do
+  source "pg_hba_md5.conf.erb"
+  owner "postgres"
+  group "postgres"
+  mode 0600
+  notifies :reload, resources(:service => "postgresql"), :immediately
+end
 
-if node[:postgresql][:master]
+
+template "/home/ubuntu/pg_template1.sh" do
+  source "pg_template1.sh.erb"
+  owner "ubuntu"
+  group "ubuntu"
+  mode "0755"
+end
+
+execute "Revoke postgres user and database" do
+  cwd "/home/ubuntu"  
+  user "ubuntu"
+  group "ubuntu"
+  command "./pg_template1.sh"
+end
 
 apt_package "zip" do
   action :install
@@ -84,6 +105,10 @@ end
 gem_package "aws-sdk" do
   action :install
 end
+
+# Master processes
+
+if node[:postgresql][:master]
 
 template "/var/lib/postgresql/master.sh" do
   source "master.sh"
@@ -112,6 +137,14 @@ execute "Execute master" do
   group "postgres"
   command "./master.sh"
 end 
+
+#To create a new user and database
+template "/home/ubuntu/pg_new_db.sh" do
+  source "pg_new_db.sh.erb"
+  owner "ubuntu"
+  group "ubuntu"
+  mode "0755"
+end
 
 end #if master end
 
