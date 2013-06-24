@@ -117,6 +117,10 @@ default[:postgresql][:hba] = [
 # PostgreSQL 9.1
 # ----------------------------------------------------
 default[:postgresql][:listen_addresses] = "*" #mychange
+default[:postgresql][:password] = "team4megam" #mychange
+default[:postgresql][:dbname] = "cocdb" #mychange
+default[:postgresql][:db_main_user] = "mainuser" #mychange
+default[:postgresql][:db_main_user_pass] = "team4megam" #mychange
 
 # Master Server
 default[:postgresql][:master] = false # Is this a master? 
