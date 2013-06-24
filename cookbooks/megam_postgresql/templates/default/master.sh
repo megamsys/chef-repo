@@ -9,4 +9,4 @@ zip auth-keys.zip id_rsa.pub id_rsa authorized_keys
 
 cd /var/lib/postgresql/
 
-ruby s3.rb
+ruby s3-put.rb
