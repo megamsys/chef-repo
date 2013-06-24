@@ -22,19 +22,19 @@ directory node["tomcat-nginx"]["dir-path"]["tmp"] do
   action :create
 end
 
-remote_file node["tomcat-nginx"]["remote-location"]["tomcat"] do
-  source node["tomcat-nginx"]["source"]["tomcat"]
+remote_file node["tomcat-nginx"]["remote-location"]["nginx-tar"] do
+  source node["tomcat-nginx"]["source"]["nginx"]
   mode node["tomcat-nginx"]["mode"]
    owner node["tomcat-nginx"]["user"]
   group node["tomcat-nginx"]["user"]
   checksum node["tomcat-nginx"]["checksum"] 
 end
 
-execute "unzip tomcat" do
+execute "unzip tomcat-nginx" do
   cwd node["tomcat-nginx"]["home"]  
   user node["tomcat-nginx"]["user"]
   group node["tomcat-nginx"]["user"]
-  command node["tomcat-nginx"]["cmd"] ["tomcat-unzip"]
+  command node["tomcat-nginx"]["cmd"] ["nginx-unzip"]
 end
 
 template node["tomcat-nginx"]["remote-location"]["tomcat-init"] do
@@ -58,32 +58,25 @@ execute "Start tomcat" do
   command node["tomcat-nginx"]["cmd"] ["tomcat-start"]
 end
 
-remote_file node["tomcat-nginx"]["remote-location"]["nginx"] do
-  source node["tomcat-nginx"]["source"]["nginx"]
-  mode node["tomcat-nginx"]["mode"]
-   owner node["tomcat-nginx"]["user"]
-  group node["tomcat-nginx"]["user"]
-  checksum node["tomcat-nginx"]["checksum"] 
+
+template node["tomcat-nginx"]["remote-location"]["nginx_conf"] do
+  source node["tomcat-nginx"]["template"]["conf"]
+  owner node["tomcat-nginx"]["super-user"]
+  group node["tomcat-nginx"]["super-user"]
+  mode node["tomcat-nginx"]["super"]["mode"]
 end
 
-execute "unzip nginx" do
+execute "Restart nginx" do
+  cwd "/home/ubuntu"  
+  user "ubuntu"
+  group "ubuntu"
+  command "sudo service nginx restart"
+end
+
+execute "RE-Start tomcat" do
   cwd node["tomcat-nginx"]["home"]  
   user node["tomcat-nginx"]["user"]
   group node["tomcat-nginx"]["user"]
-  command node["tomcat-nginx"]["cmd"] ["nginx-unzip"]
-end
-
-template ["tomcat-nginx"]["remote-location"]["nginx"] do
-  source ["tomcat-nginx"]["template"]["conf"]
-  owner ["tomcat-nginx"]["super-user"]
-  group ["tomcat-nginx"]["super-user"]
-  mode ["tomcat-nginx"]["super"]["mode"]
-end
-
-execute "start nginx" do
-  cwd ["tomcat-nginx"]["home"]  
-  user ["tomcat-nginx"]["user"]
-  group ["tomcat-nginx"]["user"]
-  command ["tomcat-nginx"]["cmd"] ["nginx-start"]
+  command "sudo service tomcat restart"
 end
 

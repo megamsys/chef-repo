@@ -15,7 +15,7 @@ default["tomcat-openam"]["dir-path"]["tmp-openam"] = "/home/ubuntu/tmp/openam"
 default["tomcat-openam"]["dir-path"][".openssocfg"] = "/home/ubuntu/.openssocfg"
 
 #Source files
-default["tomcat-openam"]["source"]["tomcat"] = "https://s3-ap-southeast-1.amazonaws.com/megam/chef/tomcat/tomcat.tar.gz"
+default["tomcat-openam"]["source"]["tomcat"] = "https://s3-ap-southeast-1.amazonaws.com/megamchef/tomcat/tomcat.tar.gz"
 default["tomcat-openam"]["source"]["openam-war"] = "https://s3-ap-southeast-1.amazonaws.com/megam/chef/openam/openam.war"#version 10.0.1
 default["tomcat-openam"]["source"]["ssoconfig-zip"] = "https://s3-ap-southeast-1.amazonaws.com/megam/chef/openam/ssoConfiguratorTools.zip"
 default["tomcat-openam"]["source"]["opendj-zip"] = "https://s3-ap-southeast-1.amazonaws.com/megam/chef/opendj/opendj.zip"
