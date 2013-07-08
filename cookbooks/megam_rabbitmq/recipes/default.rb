@@ -19,11 +19,13 @@
 # limitations under the License.
 #
 
-node.set["myroute53"]["name"] = 'rabbitmq1'
-node.set["myroute53"]["zone"] = 'megam.co.in.'
-include_recipe "megam_route53"
+#node.set["myroute53"]["name"] = 'rabbitmq1'
+#node.set["myroute53"]["zone"] = 'megam.co.in.'
+#include_recipe "megam_route53"
 
 include_recipe "erlang"
+
+include_recipe "ganglia::rabbit"
 
 case node['platform_family']
 when "debian"

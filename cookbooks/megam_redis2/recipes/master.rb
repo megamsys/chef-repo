@@ -4,6 +4,8 @@ include_recipe "megam_route53"
 
 include_recipe "runit"
 
+include_recipe "ganglia::redis"
+
 redis_instance "master" do
   data_dir "/etc/redis/datastore"
 end

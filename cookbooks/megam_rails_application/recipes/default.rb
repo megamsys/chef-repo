@@ -14,6 +14,7 @@ include_recipe "git" # install git, no support for svn for now
 
 #Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
 include_recipe "megam_deps"
+include_recipe "ganglia"
 
 # create deploy user & group
 user node[:rails][:owner] do

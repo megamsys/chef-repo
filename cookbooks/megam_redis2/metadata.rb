@@ -8,7 +8,7 @@ supports         "ubuntu", ">= 9.04"
 supports         "debian", ">= 6.0"
 supports         "centos", ">= 5.5"
 supports         "redhat", ">= 5.5"
-%w{ runit megam_route53 }.each do |cookbooks|
+%w{ runit megam_route53 ganglia }.each do |cookbooks|
   depends cookbooks
 end
 

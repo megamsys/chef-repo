@@ -24,6 +24,9 @@ node.set["myroute53"]["name"] = 'riak1'
 node.set["myroute53"]["zone"] = 'megam.co.in.'
 include_recipe "megam_route53"
 
+include_recipe "ganglia::riak"
+
+
 #node.set ['riak']['args']['-name'] = "riak@#{node["myroute53"]["name"]}.#{node["myroute53"]["zone"]}"
 
 version_str = "#{node['riak']['package']['version']['major']}.#{node['riak']['package']['version']['minor']}"
