@@ -27,7 +27,7 @@ version           "2.0.0"
 recipe            "megam_riak", "Installs Riak from a package"
 recipe            "megam_riak::source", "Installs Erlang and Riak from source"
 
-%w{apt yum build-essential erlang git ulimit megam_route53 ganglia}.each do |d|
+%w{apt yum build-essential erlang git ulimit megam_route53 ganglia megam_ciakka megam_deps}.each do |d|
   depends d
 end
 

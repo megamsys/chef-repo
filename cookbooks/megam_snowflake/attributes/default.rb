@@ -12,7 +12,7 @@ default['snowflake']['id']['script'] = "./usr/local/share/megamsnowflake/bin/sta
 default['snowflake']['id']['scala_conf'] = "/usr/local/share/megamsnowflake/config/production.scala"
 
 
-default['snowflake']['location']['deb'] = "/home/ubuntu/megamsnowflake-0.1.0.deb"
+default['snowflake']['location']['deb'] = "/home/ubuntu/megamsnowflake.deb"
 
 #Template file
 default['snowflake']['template']['upstart'] = "snowflake.conf.erb"
@@ -23,8 +23,11 @@ default['snowflake']['zookeeper'] = "zoo1.megam.co.in"
 
 
 #Shell Commands
-
-default['snowflake']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/debs/megamsnowflake-0.1.0.deb"
-default['snowflake']['dpkg'] = "sudo dpkg -i megamsnowflake-0.1.0.deb"
+if node["megam_version"]
+	default['snowflake']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node['megam_version']}/debs/megamsnowflake.deb"
+else
+	default['snowflake']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/debs/megamsnowflake.deb"
+end
+default['snowflake']['dpkg'] = "sudo dpkg -i megamsnowflake.deb"
 default['snowflake']['start'] = "sudo start snowflake"
 

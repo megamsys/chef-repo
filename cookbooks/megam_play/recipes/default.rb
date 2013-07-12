@@ -7,8 +7,14 @@
 # All rights reserved - Do Not Redistribute
 #
 
-node.set["myroute53"]["name"] = 'api'
-node.set["myroute53"]["zone"] = 'megam.co.'
+node.set["myroute53"]["name"] = "#{node.name}"
+
+if node['megam_domain']
+node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
+else
+node.set["myroute53"]["zone"] = "megam.co."
+end
+
 include_recipe "megam_route53"
 
 include_recipe "apt"
@@ -19,8 +25,8 @@ package "openjdk-7-jre" do
         action :install
 end
 
-remote_file "/home/ubuntu/megam_play_production.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megampub/debs/megam_play_production.zip"
+remote_file "/home/ubuntu/megam_play.deb" do
+  source node["play"]["deb"]
   mode "0755"
    owner "ubuntu"
   group "ubuntu"

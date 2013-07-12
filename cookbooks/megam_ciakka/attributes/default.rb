@@ -19,9 +19,11 @@
 
 #Remote Locations
 default['akka']['home'] = "/home/ubuntu"
-default['akka']['location']['deb'] = "/home/ubuntu/megamakka-0.12.3-build-0100.deb"
+default['akka']['location']['deb'] = "/home/ubuntu/megam_akka.deb"
 default['akka']['user'] = "ubuntu"
 default['akka']['mode'] = "0755"
+
+default['akka']['gulp']['json'] = "/home/ubuntu/ec2_gulp.rb"
 
 default['akka']['gulp']['conf'] = "/etc/init/gulp.conf"
 default['akka']['gulp']['script'] = "/usr/local/share/megamakka/bin/start org.megam.akka.CloApp"
@@ -29,8 +31,15 @@ default['akka']['gulp']['port'] = "27020"
 
 #Template file
 default['akka']['template']['conf'] = "gulp.conf.erb"
+default['akka']['template']['json'] = "ec2_gulp.rb.erb"
 
-#Shell Commands
-default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/debs/megamakka-0.12.3-build-0100.deb"
-default['akka']['dpkg'] = "sudo dpkg -i megamakka-0.12.3-build-0100.deb"
+if node['megam_version']
+default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node['megam_version']}/debs/megam_akka.deb"
+else
+default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/debs/megam_akka.deb"
+end
+default['akka']['dpkg'] = "sudo dpkg -i megam_akka.deb"
 default['akka']['start'] = "sudo start gulp"
+default['akka']['json'] = "ruby ec2_gulp.rb"
+
+

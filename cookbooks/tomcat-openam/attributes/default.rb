@@ -15,10 +15,10 @@ default["tomcat-openam"]["dir-path"]["tmp-openam"] = "/home/ubuntu/tmp/openam"
 default["tomcat-openam"]["dir-path"][".openssocfg"] = "/home/ubuntu/.openssocfg"
 
 #Source files
-default["tomcat-openam"]["source"]["tomcat"] = "https://s3-ap-southeast-1.amazonaws.com/megamchef/tomcat/tomcat.tar.gz"
-default["tomcat-openam"]["source"]["openam-war"] = "https://s3-ap-southeast-1.amazonaws.com/megam/chef/openam/openam.war"#version 10.0.1
-default["tomcat-openam"]["source"]["ssoconfig-zip"] = "https://s3-ap-southeast-1.amazonaws.com/megam/chef/openam/ssoConfiguratorTools.zip"
-default["tomcat-openam"]["source"]["opendj-zip"] = "https://s3-ap-southeast-1.amazonaws.com/megam/chef/opendj/opendj.zip"
+default["tomcat-openam"]["source"]["tomcat"] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node["megam_version"]}/war/tomcat/tomcat.tar.gz"
+default["tomcat-openam"]["source"]["openam-war"] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node["megam_version"]}/war/openam/openam.war"#version 10.0.1
+default["tomcat-openam"]["source"]["ssoconfig-zip"] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node["megam_version"]}/war/openam/ssoConfiguratorTools.zip"
+default["tomcat-openam"]["source"]["opendj-zip"] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node["megam_version"]}/war/opendj/opendj.zip"
 
 #Remote files location
 default["tomcat-openam"]["remote-location"]["tomcat-tar"] = "/home/ubuntu/tmp/tomcat.tar.gz"
@@ -34,7 +34,7 @@ default["tomcat-openam"]["template"]["openam-full-config"] = 'full_stack_cli_con
 default["tomcat-openam"]["template"]["openam-config"] = 'openam_cli_config.properties.erb'
 
 #shell commands
-default["tomcat-openam"]["cmd"] ["tomcat-unzip"] = "gunzip -c ~/tmp/tomcat.tar.gz | tar xvf -"
+default["tomcat-openam"]["cmd"] ["tomcat-unzip"] = "gunzip -c /home/ubuntu/tmp/tomcat.tar.gz | tar xvf -"
 default["tomcat-openam"]["cmd"] ["tomcat-update"] = "sudo update-rc.d tomcat defaults"
 default["tomcat-openam"]["cmd"] ["tomcat-start"] = "service tomcat start"
 default["tomcat-openam"]["cmd"] ["tomcat-restart"] = "service tomcat restart"
@@ -46,7 +46,7 @@ default["tomcat-openam"]["opendj"]["arg-val"]["rootUserPassword"] = "secret12"
 default["tomcat-openam"]["opendj"]["arg-val"]["ldapPort"] = "1389"
 
 #Java Options
-default["tomcat-openam"]["java-options"] = "-Xms256m -Xmx1024m"
+default["tomcat-openam"]["java-options"] = "-Xms256m -Xmx512m"
 
 #Configuration Commands
 default["tomcat-openam"]["cmd"]["config"]["opendj"] = "./opendj/setup --cli --baseDN  #{node["tomcat-openam"]["opendj"]["arg-val"]["baseDN"]}  --rootUserDN  '#{node["tomcat-openam"]["opendj"]["arg-val"]["rootUserDN"]}' --rootUserPassword  #{node["tomcat-openam"]["opendj"]["arg-val"]["rootUserPassword"]} --ldapPort #{node["tomcat-openam"]["opendj"]["arg-val"]["ldapPort"]} --no-prompt"

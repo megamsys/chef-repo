@@ -19,10 +19,21 @@
 #
 include_recipe "ulimit"
 
-node.set["myroute53"]["name"] = 'riak1'
-#node.set["myroute53"]["name"] = 'riak2'
-node.set["myroute53"]["zone"] = 'megam.co.in.'
+node.set["myroute53"]["name"] = "#{node.name}"
+
+if node['megam_domain']
+node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
+else
+node.set["myroute53"]["zone"] = "megam.co."
+end
+
 include_recipe "megam_route53"
+
+
+#Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
+include_recipe "megam_deps"
+
+include_recipe "megam_ciakka"
 
 include_recipe "ganglia::riak"
 
@@ -60,14 +71,14 @@ execute "WGET RIAK DEB PACKAGE " do
   cwd "/home/ubuntu"  
   user "ubuntu"
   group "ubuntu"
-  command "wget http://s3.amazonaws.com/downloads.basho.com/riak/1.3/1.3.1/ubuntu/precise/riak_1.3.1-1_amd64.deb"
+  command "wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.0/ubuntu/precise/riak_1.4.0-1_amd64.deb"
 end 
 
 execute "DEPACKAGE RIAK DEB " do
   cwd "/home/ubuntu"  
   user "ubuntu"
   group "ubuntu"
-  command "sudo dpkg -i riak_1.3.1-1_amd64.deb"
+  command "sudo dpkg -i riak_1.4.0-1_amd64.deb"
 end
 
   when "centos", "rhel"

@@ -19,9 +19,16 @@
 # limitations under the License.
 #
 
-#node.set["myroute53"]["name"] = 'rabbitmq1'
-#node.set["myroute53"]["zone"] = 'megam.co.in.'
-#include_recipe "megam_route53"
+node.set["myroute53"]["name"] = "#{node.name}"
+
+if node['megam_domain']
+node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
+else
+node.set["myroute53"]["zone"] = "megam.co."
+end
+
+include_recipe "megam_route53"
+
 
 include_recipe "erlang"
 

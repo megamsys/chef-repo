@@ -9,8 +9,14 @@
 
 require 'date' #for Date
 dat = Date.today
-node.set["myroute53"]["name"] = 'openam-logstash'
-node.set["myroute53"]["zone"] = 'megam.co.in.'
+node.set["myroute53"]["name"] = "#{node.name}"
+
+if node['megam_domain']
+node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
+else
+node.set["myroute53"]["zone"] = "megam.co."
+end
+
 include_recipe "megam_route53"
 
 include_recipe "apt"

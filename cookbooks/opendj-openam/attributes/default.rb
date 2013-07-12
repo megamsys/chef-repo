@@ -9,7 +9,7 @@ default["opendj"]["home"] = "/home/ubuntu"
 default["opendj"]["dir-path"]["tmp"] = "/home/ubuntu/tmp"
 
 #Source files
-default["opendj"]["source"] = "https://s3-ap-southeast-1.amazonaws.com/megam/chef/opendj/opendj.zip"
+default["opendj"]["source"] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node["megam_version"]}/war/opendj/opendj.zip"
 
 #Arguement's values for the below command
 default["opendj"]["arg-val"]["baseDN"] = "dc=example,dc=com"

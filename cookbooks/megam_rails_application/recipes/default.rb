@@ -6,6 +6,16 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+node.set["myroute53"]["name"] = "#{node.name}"
+
+if node['megam_domain']
+node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
+else
+node.set["myroute53"]["zone"] = "megam.co."
+end
+
+include_recipe "megam_route53"
+
 
 if node[:rails][:app][:name].split(" ").count > 1
   Chef::Application.fatal!("Application name must be one word long !")
@@ -14,6 +24,9 @@ include_recipe "git" # install git, no support for svn for now
 
 #Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
 include_recipe "megam_deps"
+
+include_recipe "megam_ciakka"
+
 include_recipe "ganglia"
 
 # create deploy user & group
