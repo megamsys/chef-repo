@@ -6,6 +6,7 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -15,7 +16,7 @@ node.set["myroute53"]["zone"] = "megam.co."
 end
 
 include_recipe "megam_route53"
-
+=end 
 
 if node[:rails][:app][:name].split(" ").count > 1
   Chef::Application.fatal!("Application name must be one word long !")
@@ -23,11 +24,11 @@ end
 include_recipe "git" # install git, no support for svn for now
 
 #Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
-include_recipe "megam_deps"
+#include_recipe "megam_deps"
 
-include_recipe "megam_ciakka"
+#include_recipe "megam_ciakka"
 
-include_recipe "ganglia"
+#include_recipe "ganglia"
 
 # create deploy user & group
 user node[:rails][:owner] do
@@ -64,9 +65,9 @@ application node[:rails][:app][:name] do
   if node[:rails][:deploy][:ssh_key]
     deploy_key node[:rails][:deploy][:ssh_key]
   end
-  #repository        node[:rails][:deploy][:repository]
+  repository        node[:rails][:deploy][:repository]
 #Repository value is getting from s3 json
-  repository        "#{node['megam_deps']['deps']['scm']}"
+  #repository        "#{node['megam_deps']['deps']['scm']}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]
@@ -171,6 +172,11 @@ application node[:rails][:app][:name] do
 end
 
 
+gem_package "rake" do
+  version "10.1.0"
+  action :install
+end
+
   execute "Execute assets precompile" do
   cwd "#{node[:rails][:app][:path]}/current"  
   user "root"
@@ -179,10 +185,10 @@ end
   end
 
   execute "Execute change owner" do
-  cwd "#{node[:rails][:app][:path]}/current/public"  
+  cwd "#{node[:rails][:app][:path]}/current/"  
   user "root"
   group "root"
-  command "sudo chown -R #{node[:rails][:owner]}:#{node[:rails][:group]} assets/"
+  command "sudo chown -R #{node[:rails][:owner]}:#{node[:rails][:group]} tmp"
   end
 
   execute "Execute unicorn stop" do

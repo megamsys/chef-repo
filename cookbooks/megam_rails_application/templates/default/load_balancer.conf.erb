@@ -29,10 +29,10 @@ server {
 	<% end -%>
 
 	# serve static content directly
-	location ~* \.(ico|jpg|gif|png|css|js|swf)$ {
-		try_files $uri =404;
-		expires max;
-	}
+	#location ~* \.(ico|jpg|gif|png|css|js|swf)$ {
+	#	try_files $uri =404;
+	#	expires max;
+	#}
 
 	location / {
 		proxy_pass http://<%= @resource.application.name %>;

@@ -15,7 +15,7 @@ default["myroute53"]["template"]["route53-config"] = 'route53_config.erb'
 
 #route53 configuration details
 #default["route53"]["zone_id"] = "Z10L9CVBM441Z4"
-default['myroute53']['zone'] = 'megam.co.in.'
+default['myroute53']['zone'] = 'megam.co.'
 default['myroute53']['name'] = 'test'
 default["myroute53"]["aws_access_key_id"] = "ACCESS_KEY_ID"
 default["myroute53"]["aws_secret_access_key"] = "SECRET_ACCESS_KEY"
