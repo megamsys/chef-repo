@@ -21,7 +21,9 @@ include_recipe "megam_route53"
 
 include_recipe "apt"
 
-node.set['logstash']['agent']['key'] = 'testKey'
+#node.set['logstash']['agent']['key'] = 'testKey'
+node.set['logstash']['agent']['key'] = '#{node["myroute53"]["name"]#{node["myroute53"]["zone"]}}'
+
 node.set['logstash']['agent']['file-path'] = "/home/ubuntu/tomcat/logs/localhost_access_log.#{dat}.txt"
 node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
 

@@ -1,6 +1,6 @@
 require 'aws-sdk'
 
-bucket_name = 'megamchef'
+bucket_name = 'megam'
 source_filename = '/var/lib/postgresql/.ssh/auth-keys.zip'
 
 AWS.config(

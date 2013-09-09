@@ -7,6 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -16,6 +17,7 @@ node.set["myroute53"]["zone"] = "megam.co."
 end
 
 include_recipe "megam_route53"
+=end
 
 include_recipe "apt"
 
@@ -33,20 +35,23 @@ remote_file "/home/ubuntu/megam_play.deb" do
   checksum "08da002l" 
 end
 
-package 'zip'
-execute "unzip megam play" do
-  command <<CMD
-umask 022
-unzip -u -o "/home/ubuntu/megam_play_production.zip"
-CMD
-  cwd "/home/ubuntu/"
+execute "DEPACKAGE Megam_Play DEB " do
+  cwd "/home/ubuntu"  
   user "ubuntu"
   group "ubuntu"
-  action :run
+  command "sudo dpkg -i megam_play.deb"
 end
+
 
 template "/etc/nginx/sites-available/default" do
   source "play-nginx.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
+template "/etc/init/play.conf" do
+  source "play-init.conf.erb"
   owner "root"
   group "root"
   mode "0644"
@@ -59,11 +64,20 @@ execute "Restart nginx" do
   command "sudo service nginx restart"
 end
 
+=begin
 execute "Run megam-play" do
-  cwd "/home/ubuntu/megam_play_production/target"  
+  cwd "/usr/local/share/megamplay/bin/"  
   user "ubuntu"
   group "ubuntu"
-  command "./start"
+  command "sudo ./mp"
 end 
+=end
+
+execute "Start Play" do
+  cwd "/home/ubuntu"  
+  user "ubuntu"
+  group "ubuntu"
+  command "sudo start play"
+end
 
 

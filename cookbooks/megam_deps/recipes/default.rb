@@ -11,7 +11,7 @@
     require 'json'
 
 r = remote_file "/home/ubuntu/deps.json" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megam/deps.json"
+  source "http://riak1.megam.co.in:8098/riak/nodes/#{node["deps"]["node_key"]}"
   mode "0755"
   owner "ubuntu"
   group "ubuntu"

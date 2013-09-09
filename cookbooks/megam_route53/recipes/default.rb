@@ -25,5 +25,5 @@ execute "route53 create record " do
   cwd node["myroute53"]["home"]  
   user node["myroute53"]["user"]
   group node["myroute53"]["user"]
-  command "route53 --zone #{node["myroute53"]["zone"]} -c --name #{node["myroute53"]["name"]}.#{node["myroute53"]["zone"]} --type #{node["myroute53"]["type"]} --ttl #{node["myroute53"]["ttl"]} --values #{node["myroute53"]["value"]}"
+  command "route53 --zone #{node["myroute53"]["zone"]} -c --name #{node["myroute53"]["name"]}#{node["myroute53"]["zone"]} --type #{node["myroute53"]["type"]} --ttl #{node["myroute53"]["ttl"]} --values #{node["myroute53"]["value"]}"
 end

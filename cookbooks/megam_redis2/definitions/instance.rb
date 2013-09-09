@@ -78,9 +78,4 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
       :config_file => ::File.join(node["redis2"]["conf_dir"], "#{instance_name}.conf"),
       :timeouts => uplevel_params[:service_timeouts]
   end
-
-node.set["myroute53"]["name"] = 'redis-master'
-node.set["myroute53"]["zone"] = 'megam.co.in.'
-include_recipe "megam_route53"
-
 end
