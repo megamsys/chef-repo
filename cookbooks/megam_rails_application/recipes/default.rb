@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-#=begin
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -21,15 +21,15 @@ include_recipe "megam_route53"
 
 node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
 include_recipe "megam_deps"
-#=end
+=end
 include_recipe "apt"
 
-node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+#node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
 
-node.set['logstash']['agent']['file-path'] = "/var/log/nginx/#{node[:ec2][:public_hostname]}.log"
-node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
+#node.set['logstash']['agent']['file-path'] = "/var/log/nginx/#{node[:ec2][:public_hostname]}.log"
+#node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
 
-include_recipe "logstash::agent"
+#include_recipe "logstash::agent"
 
 
 if node[:rails][:app][:name].split(" ").count > 1
@@ -41,8 +41,8 @@ include_recipe "git" # install git, no support for svn for now
 #include_recipe "megam_deps"
 
 #include_recipe "megam_ciakka"
-
-#include_recipe "ganglia"
+#node.set[:ganglia][:hostname] = "#{node.name}.#{node["myroute53"]["zone"]}"
+#include_recipe "megam_ganglia::nginx"
 
 # create deploy user & group
 user node[:rails][:owner] do
@@ -79,9 +79,9 @@ application node[:rails][:app][:name] do
   if node[:rails][:deploy][:ssh_key]
     deploy_key node[:rails][:deploy][:ssh_key]
   end
-  #repository        node[:rails][:deploy][:repository]
+  repository        node[:rails][:deploy][:repository]
 #Repository value is getting from s3 json
-  repository        "#{node["megam_deps"]["predefs"]["scm"]}"
+  #repository        "#{node["megam_deps"]["predefs"]["scm"]}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]

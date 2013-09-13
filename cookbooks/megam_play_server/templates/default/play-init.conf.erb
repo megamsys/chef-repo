@@ -7,10 +7,10 @@ stop on shutdown
 
 script
     export HOME="/root"
+
     echo $$ > /var/run/play.pid
-	cd <%= node["play"]["dir"]["script"] %>
-	exec sudo ./<%= node["play"]["file"]["script"] %>
-    #exec sudo /usr/local/share/megamplay/bin/mp >> /var/log/play.sys.log 2>&1
+    cd /usr/local/share/megamplay/bin/
+    exec sudo ./mp >> /var/log/play.sys.log 2>&1
 end script
 
 pre-start script

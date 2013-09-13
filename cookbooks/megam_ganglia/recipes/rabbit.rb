@@ -1,6 +1,6 @@
 
 
-include_recipe "ganglia::default"
+include_recipe "megam_ganglia::default"
 
 
 template "/usr/lib/ganglia/python_modules/rabbitmq.py" do

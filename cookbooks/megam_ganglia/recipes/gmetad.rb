@@ -7,9 +7,9 @@
 case node[:platform]
 when "ubuntu", "debian"
   package "gmetad"
-  include_recipe "ganglia::graphite"
+  include_recipe "megam_ganglia::graphite"
 when "redhat", "centos", "fedora"
-  include_recipe "ganglia::source"
+  include_recipe "megam_ganglia::source"
   execute "copy gmetad init script" do
     command "cp " +
       "/usr/src/ganglia-#{node[:ganglia][:version]}/gmetad/gmetad.init " +
@@ -32,7 +32,7 @@ when true
     notifies :restart, "service[gmetad]"
   end
   if node[:recipes].include? "iptables"
-    include_recipe "ganglia::iptables"
+    include_recipe "megam_ganglia::iptables"
   end
 when false
   ips = search(:node, "*:*").map {|node| node.ipaddress}
@@ -48,5 +48,7 @@ service "gmetad" do
   supports :restart => true
   action [ :enable, :start ]
 end
+
+include_recipe "megam_ganglia::web"
 
 

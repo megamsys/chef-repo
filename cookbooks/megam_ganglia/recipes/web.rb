@@ -12,8 +12,8 @@ when "ubuntu", "debian"
 when "redhat", "centos", "fedora"
   package "httpd"
   package "php"
-  include_recipe "ganglia::source"
-  include_recipe "ganglia::gmetad"
+  include_recipe "megam_ganglia::source"
+  include_recipe "megam_ganglia::gmetad"
 
   execute "copy web directory" do
     command "cp -r web /var/www/html/ganglia"

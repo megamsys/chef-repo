@@ -1,5 +1,6 @@
-maintainer       "Heavy Water Software Inc."
-maintainer_email "darrin@heavywater.ca"
+name             'megam_ganglia'
+maintainer       "Megam Systems"
+maintainer_email "alrin@megam.co.in"
 license          "Apache 2.0"
 description      "Installs/Configures ganglia"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))

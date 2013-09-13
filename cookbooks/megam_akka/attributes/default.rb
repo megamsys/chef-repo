@@ -44,5 +44,14 @@ default['akka']['template']['conf'] = "akka.conf.erb"
 #script file location
 default['akka']['init']['script'] = "/usr/local/share/megamakka/bin/start org.megam.akka.CloApp"
 
+default["host"]["dns"] = "#{node[:ec2][:public_hostname]}"
+
+
+default["akka"]["dir"]["script"] = "/usr/local/share/megamakka/bin/"
+default["akka"]["file"]["script"] = "start"
+
+default["akka"]["sbt"]["jar"] = "http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar"
+
+
 
 

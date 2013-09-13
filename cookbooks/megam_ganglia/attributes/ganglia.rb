@@ -5,6 +5,9 @@ default[:ganglia][:cluster_name] = "EC2"
 default[:ganglia][:unicast] = true
 default[:ganglia][:server_role] = ""
 
+#default[:ganglia][:gmond] = "protesters.megam.co:8649"
+
+default[:ganglia][:hostname] = "#{node[:ec2][:public_hostname]}"
 
 default[:ganglia][:gmetad] = false
 default[:ganglia][:gmetad_dns] = "monitor"

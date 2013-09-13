@@ -11,7 +11,7 @@ depends           "apt", ">= 1.4.4"
 depends           "yum", ">= 0.5.0"
 depends           "erlang", ">= 0.9"
 depends           "megam_route53"
-depends           "ganglia"
+depends           "megam_ganglia"
 
 %w{ubuntu debian redhat centos scientific amazon fedora oracle smartos}.each do |os|
   supports os

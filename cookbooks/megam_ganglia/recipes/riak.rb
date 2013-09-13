@@ -1,4 +1,4 @@
-include_recipe "ganglia::default"
+include_recipe "megam_ganglia::default"
 
 execute "create riak conf file" do
   cwd "/etc/ganglia/conf.d"  

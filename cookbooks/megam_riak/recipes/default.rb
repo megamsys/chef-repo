@@ -36,8 +36,8 @@ include_recipe "megam_route53"
 
 #include_recipe "megam_ciakka"
 
-#include_recipe "ganglia::riak"
-#include_recipe "ganglia::gmetad" #####----> TEST
+#include_recipe "megam_ganglia::riak"
+#include_recipe "megam_ganglia::gmetad" #####----> TEST
 
 
 

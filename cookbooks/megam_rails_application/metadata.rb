@@ -15,7 +15,7 @@ depends "application_ruby"
 depends "application_nginx"
 depends "megam_deps"
 depends "megam_ciakka"
-depends "ganglia"
+depends "megam_ganglia"
 depends "megam_route53"
 depends "logstash"
 

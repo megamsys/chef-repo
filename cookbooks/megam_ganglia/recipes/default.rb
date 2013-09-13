@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: ganglia
+# Cookbook Name:: megam_ganglia
 # Recipe:: default
 #
 # Copyright 2011, Heavy Water Software Inc.
@@ -21,7 +21,7 @@ case node[:platform]
 when "ubuntu", "debian"
   package "ganglia-monitor-python"
 when "redhat", "centos", "fedora"
-  include_recipe "ganglia::source"
+  include_recipe "megam_ganglia::source"
 
   execute "copy ganglia-monitor init script" do
     command "cp " +

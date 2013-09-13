@@ -33,7 +33,7 @@ include_recipe "megam_route53"
 
 include_recipe "erlang"
 
-#include_recipe "ganglia::rabbit"
+#include_recipe "megam_ganglia::rabbit"
 
 case node['platform_family']
 when "debian"
