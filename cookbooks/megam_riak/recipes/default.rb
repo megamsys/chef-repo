@@ -17,8 +17,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_recipe "ulimit"
 
+include_recipe "ulimit"
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -28,14 +29,16 @@ node.set["myroute53"]["zone"] = "megam.co."
 end
 
 include_recipe "megam_route53"
-
+=end
 
 #Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
-include_recipe "megam_deps"
+#include_recipe "megam_deps"
 
-include_recipe "megam_ciakka"
+#include_recipe "megam_ciakka"
 
-include_recipe "ganglia::riak"
+#include_recipe "megam_ganglia::riak"
+#include_recipe "megam_ganglia::gmetad" #####----> TEST
+
 
 
 #node.set ['riak']['args']['-name'] = "riak@#{node["myroute53"]["name"]}.#{node["myroute53"]["zone"]}"
@@ -71,14 +74,14 @@ execute "WGET RIAK DEB PACKAGE " do
   cwd "/home/ubuntu"  
   user "ubuntu"
   group "ubuntu"
-  command "wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.0/ubuntu/precise/riak_1.4.0-1_amd64.deb"
+  command "wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.2/ubuntu/precise/riak_1.4.2-1_amd64.deb"
 end 
 
 execute "DEPACKAGE RIAK DEB " do
   cwd "/home/ubuntu"  
   user "ubuntu"
   group "ubuntu"
-  command "sudo dpkg -i riak_1.4.0-1_amd64.deb"
+  command "sudo dpkg -i riak_1.4.2-1_amd64.deb"
 end
 
   when "centos", "rhel"

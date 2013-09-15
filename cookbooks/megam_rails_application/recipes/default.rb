@@ -6,17 +6,31 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+
 =begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
 node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
 else
-node.set["myroute53"]["zone"] = "megam.co."
+node.set["myroute53"]["zone"] = "megam.co"
 end
 
 include_recipe "megam_route53"
-=end 
+
+
+node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
+include_recipe "megam_deps"
+=end
+include_recipe "apt"
+
+#node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+
+#node.set['logstash']['agent']['file-path'] = "/var/log/nginx/#{node[:ec2][:public_hostname]}.log"
+#node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
+
+#include_recipe "logstash::agent"
+
 
 if node[:rails][:app][:name].split(" ").count > 1
   Chef::Application.fatal!("Application name must be one word long !")
@@ -27,8 +41,8 @@ include_recipe "git" # install git, no support for svn for now
 #include_recipe "megam_deps"
 
 #include_recipe "megam_ciakka"
-
-#include_recipe "ganglia"
+#node.set[:ganglia][:hostname] = "#{node.name}.#{node["myroute53"]["zone"]}"
+#include_recipe "megam_ganglia::nginx"
 
 # create deploy user & group
 user node[:rails][:owner] do
@@ -67,7 +81,7 @@ application node[:rails][:app][:name] do
   end
   repository        node[:rails][:deploy][:repository]
 #Repository value is getting from s3 json
-  #repository        "#{node['megam_deps']['deps']['scm']}"
+  #repository        "#{node["megam_deps"]["predefs"]["scm"]}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]

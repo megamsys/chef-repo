@@ -19,6 +19,7 @@
 # limitations under the License.
 #
 
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -28,7 +29,7 @@ node.set["myroute53"]["zone"] = "megam.co."
 end
 
 include_recipe "megam_route53"
-
+=end
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
@@ -113,8 +114,25 @@ gem_package "aws-sdk" do
   action :install
 end
 
+#=begin
+template "/home/ubuntu/pg_new_db.sh" do
+  source "pg_new_db.sh.erb"
+  owner "ubuntu"
+  group "ubuntu"
+  mode "0755"
+end
+
+execute "Create new DB" do
+  cwd "/home/ubuntu/"  
+  user "ubuntu"
+  group "ubuntu"
+  command "./pg_new_db.sh"
+end
+#=end
+
 # Master processes
 
+=begin
 if node[:postgresql][:master]
 
 template "/var/lib/postgresql/master.sh" do
@@ -199,5 +217,5 @@ execute "Execute the key files and place them where it should be" do
 end 
 
 end #if standby end
-
+=end
 

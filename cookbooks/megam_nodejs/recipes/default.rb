@@ -17,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -26,6 +27,7 @@ node.set["myroute53"]["zone"] = "megam.co."
 end
 
 include_recipe "megam_route53"
+=end
 
 case node['platform_family']
   when "debian"

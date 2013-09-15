@@ -53,6 +53,13 @@ directory node["redis2"]["log_dir"] do
   mode "0750"
 end
 
+execute "Overcommit memory" do
+  cwd "/home/ubuntu"
+  user "root"
+  group "root"
+  command "sudo sysctl vm.overcommit_memory=1"
+end
+
 execute "Stop redis-server" do
   cwd "/home/ubuntu"
   user "root"

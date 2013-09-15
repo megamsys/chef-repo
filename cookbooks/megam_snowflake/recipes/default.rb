@@ -7,6 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
   
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -16,7 +17,7 @@ node.set["myroute53"]["zone"] = "megam.co."
 end
 
 include_recipe "megam_route53"
-
+=end
 
 package "openjdk-7-jre" do
         action :install

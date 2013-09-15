@@ -18,12 +18,9 @@ discovery. The same applies to integration with Graphite.
 This cookbook has been tested together with the following cookbooks,
 see the Berksfile for more details
 
-* [Heavywater Graphite Cookbook](https://github.com/heavywater/chef-graphite)   - This is the one I use
+* [Heavywater Graphite Cookbook](https://github.com/hw-cookbooks/graphite)   - This is the one I use
 * [Karmi's ElasticSearch Cookbook](https://github.com/karmi/cookbook-elasticsearch)
 * [RiotGames RBENV cookbook](https://github.com/RiotGames/rbenv-cookbook)
-* This cookbook also uses BryanWB's fork of Atomic-Penguin's
-  [Yumrepo cookbook](https://github.com/bryanwb/cookbook-yumrepo)
-  until such time as BryanWB's yumrepo::zeromq cookbook is accepted upstream
 
 
 
@@ -57,7 +54,13 @@ Attributes
   groups to join. Usefull to gain read privileges on some logfiles.
 * `node['logstash']['patterns']` - A hash with grok patterns to be
   used on grok and multiline filters.
-* `node['logstash']['create_account']` - create the account info from `user` and `group`; this is `true` by default. Disable it to use an existing account!
+* `node['logstash']['create_account']` - create the account info from
+  `user` and `group`; this is `true` by default. Disable it to use an
+  existing account!
+* `node['logstash']['install_zeromq']` - Should this
+  recipe install zeromq packages?
+* `node['logstash']['zeromq_packages']` - zeromq_packages to install
+  if you use zeromq
 
 ## Agent
 
@@ -139,19 +142,14 @@ Attributes
 
 ## Kibana
 
-* `node['logstash']['kibana']['repo']` - The git repo to install
-  Kibana from.
-* `node['logstash']['kibana']['sha']` - The sha/branch of the repo you
-  wish to clone.
-* `node['logstash']['kibana']['apache_template']` - The name of the
-  template file to use for the Apache site file
-* `node['logstash']['kibana']['config']` - The name of the template to
-  use for the Kibana `config.php` file
-* `node['logstash']['kibana']['server_name']` - The value to use for
-  the Apache `ServerName` variable to use for the Kibana Apache
-  virtual host.
-* `node['logstash']['kibana']['http_port']` - The port the virtualhost
-  kibana listens on
+Kibana has been removed from this cookbook. This is for several reasons:
+
+- Kibana is a fast moving target
+- It violates SRP
+- Kibana is being integrated into the logstash jar as the default UI
+- There are two solid cookbooks for using Kibana now
+  - Kibana2 (Ruby version): https://github.com/realityforge/chef-kibana
+  - Kibana3 (HTML/JS version): https://github.com/lusis/chef-kibana
 
 ## Beaver (alternative to Logstash Agent)
 
@@ -170,8 +168,9 @@ Attributes
 
 * `node['logstash']['source']['repo']` - The git repo to use for the
   source code of Logstash
-* `node['logstash']['source']['sha']` - The sha/branch of the repo you
-  wish to clone.
+* `node['logstash']['source']['sha']` - The sha/branch/tag of the repo
+  you wish to clone. Uses `node['logstash']['server']['version']` by
+  default.
 * `node['logstash']['source']['java_home']` - your `JAVA_HOME`
   location. Needed explicity for `ant` when building JRuby
 
@@ -179,6 +178,12 @@ Attributes
 
 * `node['logstash']['index_cleaner']['days_to_keep']` - Integer number
   of days from today of Logstash index to keep.
+* `node['logstash']['index_cleaner']['cron']['minute']` - Minute to run
+  the index_cleaner cron job
+* `node['logstash']['index_cleaner']['cron']['hour']` - Hour to run the
+  index_cleaner cron job
+* `node['logstash']['index_cleaner']['cron']['log_file']` - Path to direct
+  the index_cleaner cron job's stdout and stderr
 
 Usage
 =====

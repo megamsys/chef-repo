@@ -7,5 +7,8 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.1.0'
 
 depends "apt"
+depends "megam_deps"
+depends "megam_ganglia"
+depends "logstash"
 depends "nginx"
 depends "megam_route53"
