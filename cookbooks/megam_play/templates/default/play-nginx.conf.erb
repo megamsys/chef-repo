@@ -5,9 +5,9 @@ upstream play {
 
 server {
         listen 80;
-        server_name <%= node["host"]["dns"] %>;
+        server_name localhost;
 
-        access_log /var/log/nginx/<%= node["host"]["dns"] %>.log;
+        access_log /var/log/nginx/access.log;
 
         location / {
                 proxy_pass http://play;
@@ -15,6 +15,14 @@ server {
                 proxy_set_header   Host             $host;
                 proxy_set_header   X-Real-IP        $remote_addr;
                 proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+        }
+        location /nginx_status {
+        autoindex on;
+        autoindex_exact_size off;
+            stub_status on;
+            access_log   off;
+            #allow localhost;
+           # deny all;
         }
 
 }

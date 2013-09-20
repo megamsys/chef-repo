@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: megam_nodejs
+# Cookbook Name:: megam_nodejs_server
 # Attributes:: nodejs
 #
 # Copyright 2010-2012, Promet Solutions
@@ -44,6 +44,8 @@ default['nodejs']['init']['conf'] = "/etc/init/nodejs.conf"
 default['nodejs']['template']['conf'] = "nodejs.conf.erb"
 
 #Shell Commands
+default['nodejs']['cmd']['git']['install'] = "sudo apt-get -y install git"
+default['nodejs']['cmd']['git']['clone'] = "git clone https://github.com/thomasalrin/tap.git"
 default['nodejs']['cmd']['fem']['install'] = "sudo npm install forever-monitor"
 #default['nodejs']['runjs'] = "nohup node tap.js > output.log &"
 default['nodejs']['start'] = "sudo start nodejs"

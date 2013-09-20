@@ -7,6 +7,7 @@ version           "1.8.0"
 recipe            "megam_rabbitmq", "Install and configure RabbitMQ"
 recipe            "megam_rabbitmq::mgmt_console", "Install and configure RabbitMQ"
 recipe            "megam_rabbitmq::cluster", "Set up RabbitMQ clustering."
+
 depends           "apt", ">= 1.4.4"
 depends           "yum", ">= 0.5.0"
 depends           "erlang", ">= 0.9"

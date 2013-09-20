@@ -50,11 +50,11 @@ default[:rails][:database][:root_password] = nil # set by mysql/postgresql cookb
 default[:rails][:nginx][:application_port] = "8080"
 default[:rails][:nginx][:port] = 80
 default[:rails][:nginx][:template] = "load_balancer.conf.erb"
-default[:rails][:nginx][:server_name] = "#{node[:ec2][:public_hostname]}"
+default[:rails][:nginx][:server_name] = node['fqdn']
 default[:rails][:nginx][:static_files] = {}
 default[:rails][:nginx][:ssl] = false
-default[:rails][:nginx][:ssl_certificate] = "#{node[:ec2][:public_hostname]}.crt"
-default[:rails][:nginx][:ssl_certificate_key] = "#{node[:ec2][:public_hostname]}.key"
+default[:rails][:nginx][:ssl_certificate] = "#{node['fqdn']}.crt"
+default[:rails][:nginx][:ssl_certificate_key] = "#{node['fqdn']}.key"
 
 default[:rails][:unicorn][:worker_processes] = [node['cpu']['total'].to_i * 4, 8].min
 default[:rails][:unicorn][:worker_timeout] = 60

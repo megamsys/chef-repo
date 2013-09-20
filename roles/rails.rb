@@ -1,4 +1,4 @@
-name "rails_app"
+name "rails"
 description "deploy rails application"
 run_list "recipe[megam_rails_application]"
 

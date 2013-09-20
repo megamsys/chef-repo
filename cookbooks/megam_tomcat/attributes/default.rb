@@ -30,7 +30,8 @@ default["tomcat-nginx"]["cmd"] ["mvn"] = "sudo ./maven-install.sh"
 
 
 #AWS public DNS
-default["host"]["dns"] = "#{node[:ec2][:public_hostname]}"
+#default["host"]["dns"] = "#{node[:ec2][:public_hostname]}"
+#default["host"]["public-ip"] = "#{`wget http://169.254.169.254/latest/meta-data/public-ipv4`}"
 
 #Template files
 default["tomcat-nginx"]["template"]["tomcat_init"] = "tomcat_init.sh.erb"
