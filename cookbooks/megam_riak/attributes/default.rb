@@ -31,7 +31,7 @@ platform_lib_dir = "/usr/lib/riak"
 platform_log_dir = "/var/log/riak"
 
 # vm.args
-default['riak']['args']['-name'] = "riak@#{node[:ec2][:public_hostname]}"
+default['riak']['args']['-name'] = "riak@#{node['fqdn']}"
 default['riak']['args']['-setcookie'] = "riak"
 default['riak']['args']['+K'] = true
 default['riak']['args']['+A'] = 64

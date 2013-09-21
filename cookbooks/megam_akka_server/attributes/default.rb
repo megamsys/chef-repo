@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: megam_akka
+# Cookbook Name:: megam_akka_server
 # Attributes:: akka
 #
 # Copyright 2010-2012, Promet Solutions
@@ -43,11 +43,6 @@ default['akka']['template']['conf'] = "akka.conf.erb"
 
 #script file location
 default['akka']['init']['script'] = "/usr/local/share/megamakka/bin/start org.megam.akka.CloApp"
-
-default["akka"]["dir"]["script"] = "/usr/local/share/megamakka/bin/"
-default["akka"]["file"]["script"] = "start"
-
-default["akka"]["sbt"]["jar"] = "http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar"
 
 
 

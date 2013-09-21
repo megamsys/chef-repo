@@ -7,7 +7,9 @@ default[:ganglia][:server_role] = ""
 
 #default[:ganglia][:gmond] = "protesters.megam.co:8649"
 
-default[:ganglia][:hostname] = "#{node[:ec2][:public_hostname]}"
+#default[:ganglia][:hostname] = "#{node[:ec2][:public_hostname]}"
+
+default[:ganglia][:hostname] = "localhost"
 
 default[:ganglia][:gmetad] = false
 default[:ganglia][:gmetad_dns] = "monitor"

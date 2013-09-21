@@ -1,6 +1,6 @@
 #
 # Author:: Thomas Alrin(alrin@megam.co.in)
-# Cookbook Name:: megam_nodejs
+# Cookbook Name:: megam_nodejs_server
 # Recipe:: default
 #
 # Copyright 2010-2012, Promet Solutions
@@ -17,55 +17,47 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-#=begin
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
 node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
 else
-node.set["myroute53"]["zone"] = "megam.co"
+node.set["myroute53"]["zone"] = "megam.co."
 end
 
 include_recipe "megam_route53"
-#=end
+=end
 
 
-include_recipe "apt"
-
-include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
-
-node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
-
-node.set['logstash']['agent']['file-path'] = "/var/log/nodejs.sys.log"
+node.set['logstash']['agent']['key'] = "test"
+node.set['logstash']['agent']['file-path'] = "/var/log/syslog"
 node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
 
 include_recipe "logstash::agent"
 
 
-node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
-#node.set["deps"]["node_key"] = "aped.megam.co"
-include_recipe "megam_deps"
 
-scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
-file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
-dir = File.basename(file_name, '.*')
-
-
-case scm_ext
-when ".git"
-
-include_recipe "git"
-execute "Clone git " do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "git clone #{node["megam_deps"]["predefs"]["scm"]}"
+case node['platform_family']
+  when "debian"
+   include_recipe "apt"
 end
 
-else
-	puts "TEST CASE ELSE"
-end #CASE
+include_recipe "megam_nodejs_server::install_from_#{node['nodejs']['install_method']}"
+
+execute "Install git " do
+  cwd node['nodejs']['home'] 
+  user node['nodejs']['user']
+  group node['nodejs']['user']
+  command node['nodejs']['cmd']['git']['install']
+end
+
+execute "clone tap " do
+  cwd node['nodejs']['home'] 
+  user node['nodejs']['user']
+  group node['nodejs']['user']
+  command node['nodejs']['cmd']['git']['clone']
+end
 
 execute "change nodejs as executable " do
   cwd node['nodejs']['home'] 

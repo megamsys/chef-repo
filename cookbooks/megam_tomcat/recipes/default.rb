@@ -14,14 +14,16 @@ package "openjdk-7-jdk" do
         action :install
 end
 
+=begin
 execute "SET JAVA_HOME" do
   cwd "/home/ubuntu/"  
   user "ubuntu"
   group "ubuntu"
   command "echo \"export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\" >> /home/ubuntu/.bashrc"
 end
+=end
 
-#=begin
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -35,19 +37,25 @@ include_recipe "megam_route53"
 node.set[:ganglia][:hostname] = "#{node.name}.#{node["myroute53"]["zone"]}"
 include_recipe "megam_ganglia::nginx"
 
-#=end
-node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
+=end
+
+#node.set[:ganglia][:hostname] = "gmond"
+#include_recipe "megam_ganglia::nginx"
+
+#node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
 #node.set["deps"]["node_key"] = "test"
 include_recipe "megam_deps"
 
+#=begin
+#node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
 
-node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
-
-node.set['logstash']['agent']['file-path'] = "/var/log/nginx/#{node[:ec2][:public_hostname]}.log"
+node.set['logstash']['agent']['file-path'] = "/var/log/nginx/access.log"
 node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
 
 include_recipe "logstash::agent"
+#=end
 
+=begin
 #MAVEN INATALL
 template node["tomcat-nginx"]["dir-path"]["mvn-install"] do
   source node["tomcat-nginx"]["template"]["mvn"]
@@ -62,7 +70,7 @@ execute "INSTALL MAVEN" do
   group node["tomcat-nginx"]["user"]
   command node["tomcat-nginx"]["cmd"] ["mvn"]
 end
-
+=end
 
 #file_name = File.basename(node["megam_deps"]["predefs"]["war"])
 #file_name = File.basename("https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/war/orion.war")

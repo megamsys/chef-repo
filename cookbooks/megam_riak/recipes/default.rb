@@ -40,8 +40,9 @@ include_recipe "megam_route53"
 #include_recipe "megam_ganglia::gmetad" #####----> TEST
 
 
-
-#node.set ['riak']['args']['-name'] = "riak@#{node["myroute53"]["name"]}.#{node["myroute53"]["zone"]}"
+#riak_name = "#{node["myroute53"]["name"]}.#{node["myroute53"]["zone"]}"
+#riak_name = "riak1.megam.co.in"
+#node.set['riak']['args']['-name'] = "riak@#{riak_name}"
 
 version_str = "#{node['riak']['package']['version']['major']}.#{node['riak']['package']['version']['minor']}"
 base_uri = "#{node['riak']['package']['url']}/#{version_str}/#{version_str}.#{node['riak']['package']['version']['incremental']}/"

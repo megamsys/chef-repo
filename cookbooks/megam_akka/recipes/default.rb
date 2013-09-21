@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-#=begin
+=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -17,12 +17,12 @@ node.set["myroute53"]["zone"] = "megam.co"
 end
 
 include_recipe "megam_route53"
-#=end
+=end
 
 
 include_recipe "apt"
 
-node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+node.set['logstash']['agent']['key'] = "test"
 
 node.set['logstash']['agent']['file-path'] = "/var/log/akka.sys.log"
 node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
@@ -43,8 +43,8 @@ package "tar" do
         action :install
 end
 
-node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
-#node.set["deps"]["node_key"] = "aped.megam.co"
+#node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
+node.set["deps"]["node_key"] = "oriental.megam.co"
 include_recipe "megam_deps"
 
 =begin

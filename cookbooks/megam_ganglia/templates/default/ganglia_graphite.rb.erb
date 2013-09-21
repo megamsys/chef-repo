@@ -10,7 +10,8 @@ require "rexml/document"
 require 'socket'
 
 # Adjust to the appropriate values
-ganglia_hostname = '<%= node[:ec2][:public_hostname] %>'
+#ganglia_hostname = '<%= node[:ec2][:public_hostname] %>'
+ganglia_hostname = localhost
 ganglia_port = 8649
 graphite_host = '<%= @graphite_host %>'
 graphite_port = 2003

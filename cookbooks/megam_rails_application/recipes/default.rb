@@ -26,7 +26,7 @@ include_recipe "apt"
 
 #node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
 
-#node.set['logstash']['agent']['file-path'] = "/var/log/nginx/#{node[:ec2][:public_hostname]}.log"
+#node.set['logstash']['agent']['file-path'] = "/var/log/nginx/access.log"
 #node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
 
 #include_recipe "logstash::agent"

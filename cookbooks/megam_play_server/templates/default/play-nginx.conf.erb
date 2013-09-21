@@ -5,9 +5,9 @@ upstream play {
 
 server {
         listen 80;
-        server_name <%= node["host"]["dns"] %>;
+        server_name localhost;
 
-        access_log /var/log/nginx/<%= node["host"]["dns"] %>.log;
+        access_log /var/log/nginx/access.log;
 
         location / {
                 proxy_pass http://play;

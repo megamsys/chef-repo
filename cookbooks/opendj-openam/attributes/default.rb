@@ -25,5 +25,4 @@ default["opendj"]["cmd"]["config"] = "./opendj/setup --cli --baseDN  #{node["ope
 #Remote file location
 default["opendj"]["remote-location"]["opendj-zip"] = "/home/ubuntu/tmp/opendj.zip"
 
-#AWS public DNS
-default["opendj"]["dns"] = "#{node[:ec2][:public_hostname]}"
+
