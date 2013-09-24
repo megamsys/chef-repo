@@ -7,6 +7,11 @@
 # All rights reserved - Do Not Redistribute
 #
 
+
+package "openjdk-7-jre" do
+        action :install
+end
+
 =begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
@@ -22,11 +27,9 @@ include_recipe "megam_route53"
 
 include_recipe "apt"
 
-node.set['logstash']['agent']['key'] = "test"
-
-node.set['logstash']['agent']['file-path'] = "/usr/local/share/megamakka/"
-node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
-
+node.set['logstash']['agent']['file-path'] = "/var/log/akka.sys.log, /usr/local/share/megamakka/*/*"
+#node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
 include_recipe "logstash::agent"
 
 remote_file node['akka']['location']['deb'] do

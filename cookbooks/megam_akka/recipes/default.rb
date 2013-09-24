@@ -22,12 +22,12 @@ include_recipe "megam_route53"
 
 include_recipe "apt"
 
-node.set['logstash']['agent']['key'] = "test"
 
-node.set['logstash']['agent']['file-path'] = "/var/log/akka.sys.log"
-node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
 
-include_recipe "logstash::agent"
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/akka.sys.log" ]
+#node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+include_recipe "logstash::beaver"
 
 
 

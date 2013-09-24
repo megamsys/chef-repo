@@ -25,3 +25,8 @@ when "rhel"
 when "debian"
   default['logstash']['zeromq_packages'] = [ "zeromq",  "libzmq-dev"]
 end
+
+
+
+default['logstash']['key'] = "logstash_key"
+default['logstash']['redis_url'] = "redis1.megam.co.in"
