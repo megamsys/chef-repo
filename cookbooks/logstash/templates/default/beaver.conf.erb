@@ -1,18 +1,12 @@
 [beaver]
-<% @conf.each do |key, value| -%>
-<%= key %>: <%= value %>
-<% end -%>
 
-<% @files.each do |file| -%>
-<%   file['path'].each do |path| -%>
-[<%= path %>]
-type: <%= file['type'] || 'file' %>
-<% if file.has_key?('tags') -%>
-tags: <%= file['tags'].join(',') %>
-<% end -%>
-<% if file.has_key?('add_field') -%>
-add_field: <%= file['add_field'].join(',') %>
-<% end -%>
+redis_url: <%= node['logstash']['beaver']['redis_url'] %>
 
-<% end -%>
-<% end -%>
+redis_namespace: <%= node['logstash']['key'] %>
+
+<% node['logstash']['beaver']['inputs'].each do |inp| %>
+[<%= inp %>]
+<% end %>
+
+type: access_log
+

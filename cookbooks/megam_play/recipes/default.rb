@@ -25,13 +25,10 @@ include_recipe "megam_deps"
 
 include_recipe "apt"
 
-
-node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
-
-node.set['logstash']['agent']['file-path'] = "/var/log/nginx/access.log"
-node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
-
-include_recipe "logstash::agent"
+node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/play.sys.log" ]
+include_recipe "logstash::beaver"
 
 include_recipe "nginx"
 node.set[:ganglia][:hostname] = "#{node.name}.#{node["myroute53"]["zone"]}"

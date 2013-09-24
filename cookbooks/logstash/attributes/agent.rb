@@ -19,8 +19,8 @@ default['logstash']['agent']['upstart_respawn_timeout'] = 30
 default['logstash']['agent']['init_method'] = 'native' # native or runit
 
 #changes from other cookbooks for logs
-default['logstash']['agent']['key'] = "logstash_key"
-default['logstash']['agent']['file-path'] = '[ "/var/log/syslog", "/home/ubuntu/tomcat/logs/*.txt" ]'
+default['logstash']['agent']['key'] = "#{node['logstash']['key']}"
+default['logstash']['agent']['file-path'] = '[ "/usr/local/share/megamakk/*/*", "/home/ubuntu/tomcat/logs/*.txt" ]'
 
 
 # logrotate options for logstash agent
@@ -32,7 +32,7 @@ default['logstash']['agent']['logrotate']['stopstartprepost'] = false
 default['logstash']['agent']['server_role'] = 'logstash_server'
 
 # for use in case recipe used w/ chef-solo, default to self
-default['logstash']['agent']['server_ipaddress'] = ''
+default['logstash']['agent']['server_ipaddress'] = "#{node['logstash']['redis_url']}"
 
 default['logstash']['agent']['inputs'] = []
 default['logstash']['agent']['filters'] = []

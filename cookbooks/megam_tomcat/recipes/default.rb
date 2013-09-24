@@ -48,11 +48,12 @@ include_recipe "megam_deps"
 
 #=begin
 #node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+#node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+#node.set['logstash']['agent']['file-path'] = "/var/log/nginx/access.log"
 
-node.set['logstash']['agent']['file-path'] = "/var/log/nginx/access.log"
-node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
-
-include_recipe "logstash::agent"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log" ]
+include_recipe "logstash::beaver"
 #=end
 
 =begin

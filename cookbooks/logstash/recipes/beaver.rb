@@ -87,10 +87,20 @@ end
   end
 end
 
+=begin
 python_pip node['logstash']['beaver']['pip_package'] do
   action :install
 end
+=end
 
+execute "Install Beaver from our git" do
+  cwd "/home/ubuntu/"
+  user "ubuntu"
+  group "ubuntu"
+  command node['logstash']['beaver']['git_cmd']
+end
+
+=begin
 # inputs
 files = []
 node['logstash']['beaver']['inputs'].each do |ins|
@@ -107,7 +117,8 @@ node['logstash']['beaver']['inputs'].each do |ins|
     end
   end
 end
-
+=end
+=begin
 # outputs
 outputs = []
 conf = {}
@@ -147,22 +158,20 @@ node['logstash']['beaver']['outputs'].each do |outs|
   end
 end
 
+
 output = outputs[0]
 if outputs.length > 1
   log("multiple outpus detected, will consider only the first: #{output}") { level :warn }
 end
+=end
 
-cmd = "beaver  -t #{output} -c #{conf_file} -F #{format}"
+cmd = "beaver  -t #{node['logstash']['beaver']['output']} -c #{conf_file} -F #{format}"
 
 template conf_file do
   source 'beaver.conf.erb'
   mode 0640
   owner node['logstash']['user']
   group node['logstash']['group']
-  variables(
-            :conf => conf,
-            :files => files
-  )
   notifies :restart, "service[logstash_beaver]"
 end
 

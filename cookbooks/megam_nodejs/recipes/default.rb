@@ -35,12 +35,10 @@ include_recipe "apt"
 
 include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
 
-node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
-
-node.set['logstash']['agent']['file-path'] = "/var/log/nodejs.sys.log"
-node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
-
-include_recipe "logstash::agent"
+#node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/nodejs.sys.log" ]
+include_recipe "logstash::beaver"
 
 
 node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"

@@ -3,10 +3,6 @@
 # Recipe:: default
 #
 include_recipe "runit" unless node["platform_version"] >= "12.04"
-package "openjdk-7-jre" do
-        action :install
-end
-
 
 if node['logstash']['create_account']
 
