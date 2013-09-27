@@ -17,7 +17,7 @@ depends "megam_deps"
 depends "megam_ciakka"
 depends "megam_ganglia"
 depends "megam_route53"
-depends "logstash"
+depends "megam_logstash"
 
 
 

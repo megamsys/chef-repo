@@ -4,12 +4,12 @@
 # Copyright 2012, John E. Vincent
 # Copyright 2012, Bryan W. Berry
 # License: Apache 2.0
-# Cookbook Name:: logstash
+# Cookbook Name:: megam_logstash
 # Recipe:: server
 #
 #
 
-include_recipe "logstash::default"
+include_recipe "megam_logstash::default"
 include_recipe "logrotate"
 
 include_recipe "rabbitmq" if node['logstash']['server']['install_rabbitmq']
@@ -85,7 +85,7 @@ if node['logstash']['server']['install_method'] == "jar"
     notifies :restart, service_resource
   end
 else
-  include_recipe "logstash::source"
+  include_recipe "megam_logstash::source"
 
   logstash_version = node['logstash']['source']['sha'] || "v#{node['logstash']['server']['version']}"
   link "#{node['logstash']['basedir']}/server/lib/logstash.jar" do

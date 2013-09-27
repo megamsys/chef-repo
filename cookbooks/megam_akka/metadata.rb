@@ -10,6 +10,6 @@ depends "megam_deps"
 depends "git"
 depends "megam_route53"
 depends "apt"
-depends "logstash"
+depends "megam_logstash"
 
 

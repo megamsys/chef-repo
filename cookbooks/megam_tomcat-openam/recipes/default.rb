@@ -27,7 +27,7 @@ node.set['logstash']['agent']['key'] = '#{node["myroute53"]["name"]#{node["myrou
 node.set['logstash']['agent']['file-path'] = "/home/ubuntu/tomcat/logs/localhost_access_log.#{dat}.txt"
 node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
 
-include_recipe "logstash::agent"
+include_recipe "megam_logstash::agent"
 
 include_recipe "tomcat-openam::full_stack"
 

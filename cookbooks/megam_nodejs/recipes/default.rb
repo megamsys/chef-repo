@@ -38,7 +38,7 @@ include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
 #node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/nodejs.sys.log" ]
-include_recipe "logstash::beaver"
+include_recipe "megam_logstash::beaver"
 
 
 node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
