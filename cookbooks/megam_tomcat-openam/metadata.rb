@@ -6,7 +6,7 @@ description      "Installs/Configures tomcat7 and OpenAM"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.1.0"
 
-%w{ megam_route53 megam_ciakka tomcat-openam logstash apt}.each do |cb|
+%w{ megam_route53 megam_ciakka tomcat-openam megam_logstash apt}.each do |cb|
   depends cb
 end
 

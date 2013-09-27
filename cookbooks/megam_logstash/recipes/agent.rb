@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: logstash
+# Cookbook Name:: megam_logstash
 # Recipe:: agent
 #
 #
-include_recipe "logstash::default"
+include_recipe "megam_logstash::default"
 
 if node['logstash']['agent']['init_method'] == 'runit'
   include_recipe "runit"
@@ -90,7 +90,7 @@ if node['logstash']['agent']['install_method'] == "jar"
     notifies :restart, service_resource
   end
 else
-  include_recipe "logstash::source"
+  include_recipe "megam_logstash::source"
 
   logstash_version = node['logstash']['source']['sha'] || "v#{node['logstash']['server']['version']}"
   link "#{node['logstash']['basedir']}/agent/lib/logstash.jar" do

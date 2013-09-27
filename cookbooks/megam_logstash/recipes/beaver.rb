@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: logstash
+# Cookbook Name:: megam_logstash
 # Recipe:: beaver
 #
 #
-include_recipe "logstash::default"
+include_recipe "megam_logstash::default"
 include_recipe "python::default"
 include_recipe "logrotate"
 

@@ -13,7 +13,7 @@ recipe "megam_nodejs::install_from_binary", "Installs Node.JS from official bina
 recipe "megam_nodejs::install_from_package", "Installs Node.JS from packages"
 recipe "megam_nodejs::npm", "Installs npm from source - a package manager for node"
 
-%w{ megam_route53 build-essential apt git megam_deps logstash}.each do |cookbooks|
+%w{ megam_route53 build-essential apt git megam_deps megam_logstash}.each do |cookbooks|
   depends cookbooks
 end
 

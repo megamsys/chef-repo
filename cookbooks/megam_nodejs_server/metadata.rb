@@ -9,7 +9,7 @@ provides         "nodejs"
 
 
 
-%w{ megam_route53 build-essential apt megam_deps logstash}.each do |cookbooks|
+%w{ megam_route53 build-essential apt megam_deps megam_logstash}.each do |cookbooks|
   depends cookbooks
 end
 

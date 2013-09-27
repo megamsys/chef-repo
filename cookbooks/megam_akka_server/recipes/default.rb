@@ -30,7 +30,7 @@ include_recipe "apt"
 node.set['logstash']['agent']['file-path'] = "/var/log/akka.sys.log, /usr/local/share/megamakka/*/*"
 #node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
-include_recipe "logstash::agent"
+include_recipe "megam_logstash::agent"
 
 remote_file node['akka']['location']['deb'] do
   source node['akka']['deb']

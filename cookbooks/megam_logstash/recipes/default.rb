@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: logstash
+# Cookbook Name:: megam_logstash
 # Recipe:: default
 #
 include_recipe "runit" unless node["platform_version"] >= "12.04"

@@ -30,14 +30,6 @@ include_recipe "megam_route53"
 =end
 
 
-node.set['logstash']['agent']['key'] = "test"
-node.set['logstash']['agent']['file-path'] = "/var/log/syslog"
-node.set['logstash']['agent']['server_ipaddress'] = 'redis1.megam.co.in'
-
-include_recipe "logstash::agent"
-
-
-
 case node['platform_family']
   when "debian"
    include_recipe "apt"

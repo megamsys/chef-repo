@@ -2,12 +2,12 @@
 # Author:: John E. Vincent
 # Copyright 2012, John E. Vincent
 # License: Apache 2.0
-# Cookbook Name:: logstash
+# Cookbook Name:: megam_logstash
 # Recipe:: pyshipper
 #
 #
 include_recipe "build-essential"
-include_recipe "logstash::default"
+include_recipe "megam_logstash::default"
 include_recipe "python::pip"
 include_recipe "git"
 

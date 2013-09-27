@@ -53,7 +53,13 @@ include_recipe "megam_deps"
 
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log" ]
-include_recipe "logstash::beaver"
+include_recipe "megam_logstash::beaver"
+
+node.set['rsyslog']['index'] = "tom"
+node.set['rsyslog']['elastic_ip'] = "elastic_search.megam.co.in"
+node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log" ]
+include_recipe "megam_logstash::rsyslog"
+
 #=end
 
 =begin

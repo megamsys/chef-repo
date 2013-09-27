@@ -9,6 +9,6 @@ version          '0.1.0'
 depends "apt"
 depends "megam_deps"
 depends "megam_ganglia"
-depends "logstash"
+depends "megam_logstash"
 depends "nginx"
 depends "megam_route53"
