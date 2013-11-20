@@ -7,31 +7,35 @@
 # All rights reserved - Do Not Redistribute
 #
 
-
+#JAVA IMAGE
+=begin
 package "openjdk-7-jre" do
         action :install
 end
+=end
 
-=begin
-node.set["myroute53"]["name"] = "#{node.name}"
+node.set["myroute53"]["name"] = "akka"
 
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co"
-end
+node.set["myroute53"]["zone"] = "megam.co.in"
 
 include_recipe "megam_route53"
-=end
+
 
 
 include_recipe "apt"
 
-node.set['logstash']['agent']['file-path'] = "/var/log/akka.sys.log, /usr/local/share/megamakka/*/*"
+#=begin
+node.set['logstash']['agent']['file-path'] = "/var/log/akka.sys.log, /usr/local/share/megamherk/logs/*/*"
 #node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
 include_recipe "megam_logstash::agent"
+#=end
 
+=begin
+gem_package "knife-ec2" do
+  action :install
+end
+=end
 remote_file node['akka']['location']['deb'] do
   source node['akka']['deb']
   owner node['akka']['user']
@@ -59,4 +63,19 @@ execute "Start Akka" do
   group node['akka']['user']
   command node['akka']['start']
 end
+
+template "/opt/logstash/agent/etc/shipper.conf" do
+  source "shipper.conf.erb"
+  owner "root"
+  group "root"
+  mode node['akka']['mode']
+end
+
+execute "Start logstash" do
+  cwd node['akka']['home']  
+  user node['akka']['user']
+  group node['akka']['user']
+  command "sudo service logstash_agent restart"
+end
+
 

@@ -10,7 +10,7 @@ else
 end
 
 
-default["play"]["dir"]["script"] = "/usr/local/share/megamplay/bin/"
-default["play"]["file"]["script"] = "mp"
+default["play"]["dir"]["script"] = "/usr/share/megam_play/bin/"
+default["play"]["file"]["script"] = "megam_play"
 
 default["play"]["sbt"]["jar"] = "http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar"

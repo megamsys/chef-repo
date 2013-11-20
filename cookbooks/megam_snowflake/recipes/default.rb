@@ -7,21 +7,21 @@
 # All rights reserved - Do Not Redistribute
 #
   
-=begin
-node.set["myroute53"]["name"] = "#{node.name}"
 
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co."
-end
+node.set["myroute53"]["name"] = "uid1"
+
+
+node.set["myroute53"]["zone"] = "megam.co.in"
+
 
 include_recipe "megam_route53"
-=end
 
+#no java because we are using java IMAGE(AMI)
+=begin
 package "openjdk-7-jre" do
         action :install
 end
+=end
 
 remote_file node['snowflake']['location']['deb'] do
   source node['snowflake']['deb']

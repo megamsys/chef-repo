@@ -10,9 +10,12 @@
 include_recipe "apt"
 include_recipe "nginx"
 #ONLY FOR THIS COOKBOOK JDK
+#USES JAVA IMAGE
+#=begin
 package "openjdk-7-jdk" do
         action :install
 end
+#=end
 
 =begin
 execute "SET JAVA_HOME" do
@@ -23,8 +26,8 @@ execute "SET JAVA_HOME" do
 end
 =end
 
-=begin
-node.set["myroute53"]["name"] = "#{node.name}"
+#=begin
+node.set["myroute53"]["name"] = "#{node.name}1"
 
 if node['megam_domain']
 node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
@@ -34,15 +37,15 @@ end
 
 include_recipe "megam_route53"
 
-node.set[:ganglia][:hostname] = "#{node.name}.#{node["myroute53"]["zone"]}"
+node.set[:ganglia][:hostname] = "#{node.name}1.#{node["myroute53"]["zone"]}"
 include_recipe "megam_ganglia::nginx"
 
-=end
+#=end
 
 #node.set[:ganglia][:hostname] = "gmond"
 #include_recipe "megam_ganglia::nginx"
 
-#node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
+node.set["deps"]["node_key"] = "#{node.name}1.#{node["myroute53"]["zone"]}"
 #node.set["deps"]["node_key"] = "test"
 include_recipe "megam_deps"
 

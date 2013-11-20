@@ -19,7 +19,7 @@
 
 #Remote Locations
 default['akka']['home'] = "/home/ubuntu"
-default['akka']['location']['deb'] = "/home/ubuntu/megam_akka.deb"
+default['akka']['location']['deb'] = "/home/ubuntu/megam_herk.deb"
 default['akka']['user'] = "ubuntu"
 default['akka']['mode'] = "0755"
 
@@ -27,22 +27,22 @@ default['akka']['init']['conf'] = "/etc/init/akka.conf"
 
 #Command
 default['akka']['start'] = "sudo start akka"
-default['akka']['script']['cmd'] = "/usr/local/share/megamakka/bin/start org.megam.akka.CloApp"
+default['akka']['script']['cmd'] = "/usr/local/share/megamherk/bin/start org.megam.akka.CloApp"
 default['akka']['script']['port'] = "27020"
 
 
 if node['megam_version']
-default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node['megam_version']}/debs/megam_akka.deb"
+default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node['megam_version']}/debs/megam_herk.deb"
 else
-default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/debs/megam_akka.deb"
+default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/debs/megam_herk.deb"
 end
-default['akka']['dpkg'] = "sudo dpkg -i megam_akka.deb"
+default['akka']['dpkg'] = "sudo dpkg -i megam_herk.deb"
 
 #Template File
 default['akka']['template']['conf'] = "akka.conf.erb"
 
 #script file location
-default['akka']['init']['script'] = "/usr/local/share/megamakka/bin/start org.megam.akka.CloApp"
+default['akka']['init']['script'] = "/usr/local/share/megamherk/bin/start org.megam.akka.CloApp"
 
 
 

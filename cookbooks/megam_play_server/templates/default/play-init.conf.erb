@@ -9,8 +9,8 @@ script
     export HOME="/root"
 
     echo $$ > /var/run/play.pid
-    cd /usr/local/share/megamplay/bin/
-    exec sudo ./mp >> /var/log/play.sys.log 2>&1
+    cd /usr/share/megam_play/bin/
+    exec sudo ./megam_play -Dconfig.file=/usr/share/megam_play/conf/application-production.conf >> /var/log/play.sys.log 2>&1
 end script
 
 pre-start script
