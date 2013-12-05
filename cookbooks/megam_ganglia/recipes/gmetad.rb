@@ -1,6 +1,9 @@
-  #node.set["myroute53"]["name"] = "#{node[:ganglia][:gmetad_dns]}"
-  #node.set["myroute53"]["zone"] = 'megam.co.in.'
-  #include_recipe "megam_route53"
+
+node.set["myroute53"]["name"] = "monitor"
+
+node.set["myroute53"]["zone"] = "megam.co.in"
+
+include_recipe "megam_route53"
 
   node.set[:ganglia][:gmetad] = true
 

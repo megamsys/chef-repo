@@ -7,25 +7,24 @@
 # All rights reserved - Do Not Redistribute
 #
 
-=begin
-node.set["myroute53"]["name"] = "#{node.name}"
 
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co."
-end
+node.set["myroute53"]["name"] = "api"
+node.set["myroute53"]["zone"] = "megam.co"
 
 include_recipe "megam_route53"
-=end
+
 
 include_recipe "apt"
 
 include_recipe "nginx"
 
+
+#no java because we are using java IMAGE(AMI)
+=begin
 package "openjdk-7-jre" do
         action :install
 end
+=end
 
 remote_file "/home/ubuntu/megam_play.deb" do
   source node["play"]["deb"]
@@ -43,8 +42,29 @@ execute "DEPACKAGE Megam_Play DEB " do
 end
 
 
+directory "/etc/nginx/ssl/" do
+  owner "root"
+  group "root"
+  mode "755"
+  action :create
+end
+
 template "/etc/nginx/sites-available/default" do
   source "play-nginx.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
+template "/etc/nginx/ssl/api.megam.co.key" do
+  source "api.megam.co.key.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
+template "/etc/nginx/ssl/api.megam.co_pub.crt" do
+  source "api.megam.co_pub.crt.erb"
   owner "root"
   group "root"
   mode "0644"

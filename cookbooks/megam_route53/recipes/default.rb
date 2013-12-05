@@ -7,11 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
-execute "Gem install route53 " do
-  cwd node["myroute53"]["home"]  
-  user node["myroute53"]["super-user"]
-  group node["myroute53"]["super-user"]
-  command node["myroute53"]["cmd"]["gem-install"]["route53"]
+gem_package "route53" do
+  action :install
 end
 
 template node["myroute53"]["remote-location"][".route53"] do
@@ -25,5 +22,5 @@ execute "route53 create record " do
   cwd node["myroute53"]["home"]  
   user node["myroute53"]["user"]
   group node["myroute53"]["user"]
-  command "route53 --zone #{node["myroute53"]["zone"]} -c --name #{node["myroute53"]["name"]}#{node["myroute53"]["zone"]} --type #{node["myroute53"]["type"]} --ttl #{node["myroute53"]["ttl"]} --values #{node["myroute53"]["value"]}"
+  command "route53 --zone #{node["myroute53"]["zone"]} -c --name #{node["myroute53"]["name"]}.#{node["myroute53"]["zone"]} --type #{node["myroute53"]["type"]} --ttl #{node["myroute53"]["ttl"]} --values #{node["myroute53"]["value"]}"
 end

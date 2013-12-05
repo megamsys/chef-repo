@@ -9,7 +9,7 @@ script
     export HOME="/root"
     echo $$ > /var/run/play.pid
 	cd <%= node["play"]["dir"]["script"] %>
-	exec sudo ./<%= node["play"]["file"]["script"] %>
+	exec sudo ./<%= node["play"]["file"]["script"] %> -Dconfig.file=/usr/share/megam_play/conf/application-production.conf >> /var/log/play.sys.log 2>&1
     #exec sudo /usr/local/share/megamplay/bin/mp >> /var/log/play.sys.log 2>&1
 end script
 
