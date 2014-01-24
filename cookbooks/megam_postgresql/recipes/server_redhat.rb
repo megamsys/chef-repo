@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-include_recipe "megam_postgresql::client"
+include_recipe "megam_postgresql_server::client"
 
 # Create a group and user like the package will.
 # Otherwise the templates fail.

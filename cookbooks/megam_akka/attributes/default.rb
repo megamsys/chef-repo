@@ -18,16 +18,13 @@
 #
 
 #Remote Locations
-default['akka']['home'] = "/home/ubuntu"
-default['akka']['location']['deb'] = "/home/ubuntu/megam_akka.deb"
-default['akka']['user'] = "ubuntu"
 default['akka']['mode'] = "0755"
 
 default['akka']['init']['conf'] = "/etc/init/akka.conf"
 
 #Command
 default['akka']['start'] = "sudo start akka"
-default['akka']['script']['cmd'] = "/usr/local/share/megamakka/bin/start org.megam.akka.CloApp"
+default['akka']['script']['cmd'] = "/usr/share/megamakka/bin/start org.megam.akka.CloApp"
 default['akka']['script']['port'] = "27020"
 
 
@@ -42,9 +39,9 @@ default['akka']['dpkg'] = "sudo dpkg -i megam_akka.deb"
 default['akka']['template']['conf'] = "akka.conf.erb"
 
 #script file location
-default['akka']['init']['script'] = "/usr/local/share/megamakka/bin/start org.megam.akka.CloApp"
+default['akka']['init']['script'] = "/usr/share/megamakka/bin/start org.megam.akka.CloApp"
 
-default["akka"]["dir"]["script"] = "/usr/local/share/megamakka/bin/"
+default["akka"]["dir"]["script"] = "/usr/share/megamakka/bin/"
 default["akka"]["file"]["script"] = "start"
 
 default["akka"]["sbt"]["jar"] = "http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar"

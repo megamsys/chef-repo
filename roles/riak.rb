@@ -5,7 +5,7 @@ run_list "recipe[megam_riak]"
 override_attributes(
   :authorization => {
     :sudo => {
-      :users => ["ubuntu"],
+      :users => ["sandbox"],
       :passwordless => true
     }
   }

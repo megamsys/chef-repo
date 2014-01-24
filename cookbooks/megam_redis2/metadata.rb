@@ -8,9 +8,16 @@ supports         "ubuntu", ">= 9.04"
 supports         "debian", ">= 6.0"
 supports         "centos", ">= 5.5"
 supports         "redhat", ">= 5.5"
-%w{ runit megam_route53 megam_ganglia }.each do |cookbooks|
-  depends cookbooks
-end
+
+depends "runit"
+depends "megam_ganglia"
+depends "apt"
+depends "git"
+depends "megam_route53"
+depends "megam_deps"
+depends "megam_logstash"
+depends "megam_gulp"
+
 
 recipe           "megam_redis2", "Installs and configures redis"
 recipe           "megam_redis2::auto", "Configures and activates redis instances defined by attributes"

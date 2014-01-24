@@ -1,7 +1,7 @@
 
-node.set["myroute53"]["name"] = "monitor"
+node.set["myroute53"]["name"] = "monitor.megam.co"
 
-node.set["myroute53"]["zone"] = "megam.co.in"
+#node.set["myroute53"]["zone"] = "megam.co.in"
 
 include_recipe "megam_route53"
 

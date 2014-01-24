@@ -7,18 +7,24 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "megam_ruby" #installs ruby2.0-p353
 
-node.set["myroute53"]["name"] = "www"
-
-node.set["myroute53"]["zone"] = "megam.co.in"
-
-include_recipe "megam_route53"
+include_recipe "megam_sandbox"
 
 include_recipe "apt"
 
 package "libpq-dev" do
   action :install
 end
+
+package "wamerican" do
+  action :install
+end
+
+package "wbritish" do
+  action :install
+end
+
 
 if node[:rails][:app][:name].split(" ").count > 1
   Chef::Application.fatal!("Application name must be one word long !")
@@ -36,6 +42,7 @@ include_recipe "git" # install git, no support for svn for now
 user node[:rails][:owner] do
   action :create
   supports manage_home => true
+  shell "/bin/bash"
 end
 group node[:rails][:group] do
   action :create
@@ -59,6 +66,16 @@ db_username = node[:rails][:database][:username]
 db_password = node[:rails][:database][:password]
 db_adapter  = node[:rails][:database][:adapter]
 #=end
+
+old_home = ENV['HOME']
+ruby_block "clear_home for CHEF-3940" do
+  block do
+    ENV['HOME'] = Etc.getpwnam("#{node[:rails][:owner]}").dir
+  end
+  not_if {`git --version`.split[2].to_f <= 1.7}
+end
+
+
 
 application node[:rails][:app][:name] do
   action    node[:rails][:deploy][:action]
@@ -174,10 +191,49 @@ application node[:rails][:app][:name] do
 end
 
 
+ruby_block "reset_home" do
+  block do
+    ENV['HOME'] = old_home
+  end
+  not_if {`git --version`.split[2].to_f <= 1.7}
+end
+
 gem_package "rake" do
-  version "10.1.0"
   action :install
 end
+
+bash "---> ADD ENV variables " do
+  user node[:rails][:owner]
+  group node[:rails][:group]
+  code <<-EOH
+  echo 'export FACEBOOK_CLIENT_ID=656642044368521' >> /home/#{node[:rails][:owner]}/.bashrc
+  echo 'export FACEBOOK_SECRET_KEY=0fb6a80893cdb88fdc2b2c021b454977' >> /home/#{node[:rails][:owner]}/.bashrc  
+  echo 'export TWITTER_CLIENT_ID=RXzRHtYF4cYiVKhD0kmBg' >> /home/#{node[:rails][:owner]}/.bashrc
+  echo 'export TWITTER_SECRET_KEY=hLPGq2f7Z6BoXN8I5USYYvGQyZtMMbl8FIhG49VY8Os' >> /home/#{node[:rails][:owner]}/.bashrc
+  echo 'export GOOGLE_CLIENT_ID=1086028648606.apps.googleusercontent.com' >> /home/#{node[:rails][:owner]}/.bashrc
+  echo 'export GOOGLE_SECRET_KEY=2rUaVHUCbu9CZClosVMJsrEv' >> /home/#{node[:rails][:owner]}/.bashrc
+  echo 'export POSTGRES_DB=cocdb' >> /home/#{node[:rails][:owner]}/.bashrc
+  echo 'export POSTGRES_USER=megam' >> /home/#{node[:rails][:owner]}/.bashrc
+  echo 'export POSTGRES_PW=team4megam' >> /home/#{node[:rails][:owner]}/.bashrc
+  echo 'export SUPPORT_EMAIL=support@megam.co.in' >> /home/#{node[:rails][:owner]}/.bashrc  
+  echo 'export SUPPORT_PASSWORD=team4megam' >> /home/#{node[:rails][:owner]}/.bashrc 
+  source /home/#{node[:rails][:owner]}/.bashrc 
+  EOH
+end
+
+  execute "Execute DB migrate" do
+  cwd "#{node[:rails][:app][:path]}/current"  
+  user "root"
+  group "root"
+  command "sudo rake db:migrate RAILS_ENV=production"
+  end
+  
+  execute "Execute DB seed" do
+  cwd "#{node[:rails][:app][:path]}/current"  
+  user "root"
+  group "root"
+  command "sudo rake db:seed RAILS_ENV=production"
+  end
 
   execute "Execute assets precompile" do
   cwd "#{node[:rails][:app][:path]}/current"  

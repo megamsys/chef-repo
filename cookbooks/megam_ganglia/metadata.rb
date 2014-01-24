@@ -10,6 +10,8 @@ version          "0.1.1"
   supports os
 end
 
+depends "megam_sandbox"
+
 recommends "graphite"
 suggests "iptables"
 

@@ -19,17 +19,36 @@
 # limitations under the License.
 #
 
-=begin
+include_recipe "megam_sandbox"
+include_recipe "apt"
 node.set["myroute53"]["name"] = "#{node.name}"
-
 if node['megam_domain']
 node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
 else
-node.set["myroute53"]["zone"] = "megam.co."
+node.set["myroute53"]["zone"] = "megam.co"
 end
 
 include_recipe "megam_route53"
-=end
+
+
+node.set["gulp"]["remote_repo"] = "test"
+node.set["gulp"]["local_repo"] = "test"
+node.set["gulp"]["builder"] = "megam_ruby_builder"
+node.set["gulp"]["project_name"] = "test"
+include_recipe "megam_gulp"
+
+
+
+node.set['logstash']['key'] = "#{node.name}"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/postgresql/*.log", "/var/log/gulpd.sys.log" ]
+include_recipe "megam_logstash::beaver"
+
+
+node.set['rsyslog']['index'] = "#{node.name}"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log", "/var/log/gulpd.sys.log" ]
+include_recipe "megam_logstash::rsyslog"
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
@@ -57,13 +76,23 @@ when "debian", "ubuntu"
   include_recipe "megam_postgresql::server_debian"
 end
 
+=begin
 execute "chmod for main" do
   cwd "/etc/postgresql/#{node[:postgresql][:version]}"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo chmod 755 main"
+  user "root"
+  group "root"
+  command "chmod 755 main"
 end
 
+
+bash "chmod for main" do
+  cwd "/var/lib/postgresql/#{node[:postgresql][:version]}"  
+  user "root"
+  code <<-EOH
+  chmod 755 main
+  EOH
+end
+=end
 #Template for postgres ===> PEER <=== authentication
 template "#{node[:postgresql][:dir]}/pg_hba.conf" do
   source "pg_hba.conf.erb"
@@ -74,13 +103,23 @@ template "#{node[:postgresql][:dir]}/pg_hba.conf" do
 end
 
 #Creating New user and database
-
+=begin
 execute "Create postgres user and database" do
   cwd "/var/lib/postgresql/"  
   user "postgres"
   group "postgres"
   command "echo \"ALTER USER postgres with password '#{node[:postgresql][:password]}';\" | psql"
 end
+=end
+bash "Create postgres user and database" do
+  cwd "/var/lib/postgresql/"  
+  user "postgres"
+  group "postgres"
+  code <<-EOH
+  echo \"ALTER USER postgres with password '#{node[:postgresql][:password]}';\" | psql
+  EOH
+end
+
 
 #Template for postgres ===> MD5 <=== authentication
 template "#{node[:postgresql][:dir]}/pg_hba.conf" do
@@ -91,30 +130,57 @@ template "#{node[:postgresql][:dir]}/pg_hba.conf" do
   notifies :reload, resources(:service => "postgresql"), :immediately
 end
 
-
-template "/home/ubuntu/pg_template1.sh" do
+=begin
+template "#{node['sandbox']['home']}/pg_template1.sh" do
   source "pg_template1.sh.erb"
-  owner "ubuntu"
-  group "ubuntu"
+  owner node["sandbox"]["user"]
+  group "root"
   mode "0755"
 end
 
 execute "Revoke postgres user and database" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd node['sandbox']['home']  
+  user node["sandbox"]["user"]
+  group "root"
   command "./pg_template1.sh"
+end
+=end
+
+bash "PG TEMPLATE" do
+  user "postgres"
+  code <<-EOH
+export PGPASSWORD=#{node[:postgresql][:password]}
+
+psql -U postgres template1 -f - << EOT
+
+REVOKE ALL ON DATABASE template1 FROM public;
+REVOKE ALL ON SCHEMA public FROM public;
+GRANT ALL ON SCHEMA public TO postgres;
+CREATE LANGUAGE plpgsql;
+
+REVOKE ALL ON pg_user FROM public;
+REVOKE ALL ON pg_roles FROM public;
+REVOKE ALL ON pg_group FROM public;
+REVOKE ALL ON pg_authid FROM public;
+REVOKE ALL ON pg_auth_members FROM public;
+
+REVOKE ALL ON pg_database FROM public;
+REVOKE ALL ON pg_tablespace FROM public;
+REVOKE ALL ON pg_settings FROM public;
+
+EOT
+  EOH
 end
 
 apt_package "zip" do
   action :install
 end
-
+=begin
 gem_package "aws-sdk" do
   action :install
 end
 
-#=begin
+
 template "/home/ubuntu/pg_new_db.sh" do
   source "pg_new_db.sh.erb"
   owner "ubuntu"
@@ -128,7 +194,39 @@ execute "Create new DB" do
   group "ubuntu"
   command "./pg_new_db.sh"
 end
-#=end
+=end
+
+bash "PG NEW DB CREATION" do
+  user "postgres"
+  code <<-EOH
+export PGPASSWORD=#{node[:postgresql][:password]}
+
+psql -U postgres template1 -f - <<EOT
+
+CREATE ROLE #{node[:postgresql][:dbname]} NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN;
+CREATE ROLE #{node[:postgresql][:db_main_user]} NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN ENCRYPTED PASSWORD '#{node[:postgresql][:db_main_user_pass]}';
+GRANT #{node[:postgresql][:dbname]} TO #{node[:postgresql][:db_main_user]};
+CREATE DATABASE #{node[:postgresql][:dbname]} WITH OWNER=#{node[:postgresql][:db_main_user]};
+REVOKE ALL ON DATABASE #{node[:postgresql][:dbname]} FROM public;
+
+EOT
+
+psql -U postgres #{node[:postgresql][:dbname]} -f - <<EOT
+
+GRANT ALL ON SCHEMA public TO #{node[:postgresql][:db_main_user]} WITH GRANT OPTION;
+
+EOT
+  EOH
+end
+
+bash "---> Service postgresql restart" do
+  cwd "/var/lib/postgresql/"  
+  user "postgres"
+  group "postgres"
+  code <<-EOH
+  service postgresql restart
+  EOH
+end
 
 # Master processes
 

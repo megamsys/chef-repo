@@ -18,12 +18,10 @@
 #
 
 #Remote Locations
-default['akka']['home'] = "/home/ubuntu"
+
 default['akka']['location']['deb'] = "/home/ubuntu/megam_akka.deb"
-default['akka']['user'] = "ubuntu"
 default['akka']['mode'] = "0755"
 
-default['akka']['gulp']['json'] = "/home/ubuntu/ec2_gulp.rb"
 
 default['akka']['gulp']['conf'] = "/etc/init/gulp.conf"
 default['akka']['gulp']['script'] = "/usr/local/share/megamakka/bin/start org.megam.akka.CloApp"
@@ -36,7 +34,7 @@ default['akka']['template']['json'] = "ec2_gulp.rb.erb"
 if node['megam_version']
 default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node['megam_version']}/debs/megam_akka.deb"
 else
-default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/debs/megam_akka.deb"
+default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/debs/megam_herk.deb"
 end
 default['akka']['dpkg'] = "sudo dpkg -i megam_akka.deb"
 default['akka']['start'] = "sudo start gulp"

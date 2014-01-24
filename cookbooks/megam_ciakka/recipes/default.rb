@@ -6,7 +6,7 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-
+include_recipe "megam_sandbox"
 package "openjdk-7-jre" do
         action :install
 end
@@ -15,45 +15,45 @@ gem_package "aws-sdk" do
   action :install
 end
 
-remote_file node['akka']['location']['deb'] do
+remote_file "#{node['sandbox']['home']}/megam_herk.deb" do
   source node['akka']['deb']
-  owner node['akka']['user']
-  group node['akka']['user']
+  owner node['sandbox']['user']
+  group node['sandbox']['user']
   mode node['akka']['mode']
 end
 
 execute "Depackage megam akka" do
-  cwd node['akka']['home']  
-  user node['akka']['user']
-  group node['akka']['user']
+  cwd node['sandbox']['home']  
+  user node['sandbox']['user']
+  group node['sandbox']['user']
   command node['akka']['dpkg']
 end
 
 template node['akka']['gulp']['conf'] do
   source node['akka']['template']['conf']
-  owner node['akka']['user']
-  group node['akka']['user']
+  owner node['sandbox']['user']
+  group node['sandbox']['user']
   mode node['akka']['mode']
 end
 
-template node['akka']['gulp']['json'] do
+template "#{node['sandbox']["home"]}/ec2_gulp.rb" do
   source node['akka']['template']['json']
-  owner node['akka']['user']
-  group node['akka']['user']
+  owner node['sandbox']['user']
+  group node['sandbox']['user']
   mode node['akka']['mode']
 end
 
 execute "Put json file into s3" do
-  cwd node['akka']['home']  
-  user node['akka']['user']
-  group node['akka']['user']
+  cwd node['sandbox']['home']  
+  user node['sandbox']['user']
+  group node['sandbox']['user']
   command node['akka']['json']
 end
 
 execute "Start Gulp" do
-  cwd node['akka']['home']  
-  user node['akka']['user']
-  group node['akka']['user']
+  cwd node['sandbox']['home']  
+  user node['sandbox']['user']
+  group node['sandbox']['user']
   command node['akka']['start']
 end
 

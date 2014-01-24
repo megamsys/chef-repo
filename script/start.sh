@@ -8,7 +8,7 @@
 
 #knife ec2 server create --groups megam --image ami-a0074df2 --flavor t1.micro --ssh-key megam_ec2 --identity-file ~/.ssh/megam_ec2.pem --ssh-user ubuntu --run-list 'recipe[megam_zookeeper]' -N zookeeper
 
-#knife ec2 server create --groups megam --image ami-a0074df2 --flavor m1.small --ssh-key megam_ec2 --identity-file ~/.ssh/megam_ec2.pem --ssh-user ubuntu --run-list 'recipe[megam_snowflake]' --json-attributes '{ "megam_version": "0.1" }' -N snowflake
+#knife ec2 server create --groups megam --image ami-a0074df2 --flavor t1.micro --ssh-key megam_ec2 --identity-file ~/.ssh/megam_ec2.pem --ssh-user ubuntu --run-list 'recipe[megam_snowflake]' --json-attributes '{ "megam_version": "0.1" }' -N snowflake
 
 knife ec2 server create --groups megam --image ami-a0074df2 --flavor m1.small --ssh-key megam_ec2 --identity-file ~/.ssh/megam_ec2.pem --ssh-user ubuntu --run-list 'recipe[megam_play_server]' -N api-server
 

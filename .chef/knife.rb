@@ -10,16 +10,21 @@ cache_type               'BasicFile'
 cache_options( :path => '~/chef-repo/.chef/checksums')
 cookbook_path ['~/chef-repo/cookbooks']
 
+
+knife[:image_name] = "Ubuntu-12.04-LTS-server-amd64-06.21.13.img"
+
 #ec2
 knife[:availability_zone] = "#{ENV['AWS_AVAILABILITY_ZONE']}"
-knife[:aws_access_key_id] = "#{ENV['AWS_ACCESS_KEY']}"
-knife[:aws_secret_access_key] = "#{ENV['AWS_SECRET_KEY']}"
+knife[:aws_access_key_id] = "#{ENV['MEGAM_AWS_ACCESS_KEY']}"
+knife[:aws_secret_access_key] = "#{ENV['MEGAM_AWS_SECRET_ID']}"
 
 knife[:image] = "#{ENV['AWS_IMAGE']}"
 knife[:flavor] = "#{ENV['AWS_FLAVOR']}"
 
 knife[:aws_ssh_key_id] = "#{ENV['AWS_SSH_KEY_ID']}"
 knife[:region] = "#{ENV['AWS_REGION']}"
+
+knife[:podnix_api_key] = "#{ENV['PODNIX_API_KEY']}"
 
 #rackspace 
 knife[:rackspace_api_username] = "#{ENV['RACKSPACE_USERNAME']}"

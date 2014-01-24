@@ -8,7 +8,7 @@ version          '0.1.0'
 
 depends "megam_deps"
 depends "git"
-depends "megam_route53"
+#depends "megam_route53"
 depends "apt"
 depends "megam_logstash"
 

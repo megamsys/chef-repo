@@ -100,15 +100,25 @@ template "#{node[:postgresql][:dir]}/postgresql.conf" do
   owner "postgres"
   group "postgres"
   mode 0600
-  notifies :restart, resources(:service => "postgresql")
+  #notifies :restart, resources(:service => "postgresql")
 end
 
+=begin
 execute "chmod for main" do
   cwd "/var/lib/postgresql/#{node[:postgresql][:version]}"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo chmod 700 main"
+  user "root"
+  group "root"
+  command "chmod 700 main"
 end
+
+bash "chmod for main" do
+  cwd "/var/lib/postgresql/#{node[:postgresql][:version]}"  
+  user "root"
+  code <<-EOH
+  chmod 700 main
+  EOH
+end
+=end
 
 if node[:postgresql][:standby]
   # This goes in the data directory; where data is stored

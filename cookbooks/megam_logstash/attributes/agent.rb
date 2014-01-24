@@ -20,7 +20,7 @@ default['logstash']['agent']['init_method'] = 'native' # native or runit
 
 #changes from other cookbooks for logs
 default['logstash']['agent']['key'] = "#{node['logstash']['key']}"
-default['logstash']['agent']['file-path'] = '[ "/usr/local/share/megamakk/*/*", "/home/ubuntu/tomcat/logs/*.txt" ]'
+default['logstash']['agent']['file-path'] = '[ "/usr/local/share/megamherk/*/*", "/home/sandbox/tomcat/logs/*.txt" ]'
 
 
 # logrotate options for logstash agent

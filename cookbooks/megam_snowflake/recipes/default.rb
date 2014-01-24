@@ -7,34 +7,32 @@
 # All rights reserved - Do Not Redistribute
 #
   
-
-node.set["myroute53"]["name"] = "uid1"
-
-
-node.set["myroute53"]["zone"] = "megam.co.in"
-
-
-include_recipe "megam_route53"
-
-#no java because we are using java IMAGE(AMI)
 =begin
+node.set["myroute53"]["name"] = "uid1"
+node.set["myroute53"]["zone"] = "megam.co.in"
+include_recipe "megam_route53"
+=end
+#no java because we are using java IMAGE(AMI)
+#=begin
+include_recipe "apt"
 package "openjdk-7-jre" do
         action :install
 end
-=end
+#=end
 
-remote_file node['snowflake']['location']['deb'] do
-  source node['snowflake']['deb']
-  owner node['snowflake']['user']
-  group node['snowflake']['user']
-  mode node['snowflake']['mode']
+remote_file "/tmp/megamsnowflake.deb" do
+  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/debs/megamsnowflake.deb"
+  owner "root"
+  group "root"
+  mode "0755"
 end
 
-execute "dpkg snowflake" do
-  cwd node['snowflake']['home']  
-  user node['snowflake']['user']
-  group node['snowflake']['user']
-  command node['snowflake']['dpkg']
+bash "install snowflake" do
+  user "root"
+  cwd "/tmp"
+  code <<-EOH
+  dpkg -i megamsnowflake.deb
+  EOH
 end
 
 template node['snowflake']['id']['scala_conf'] do
@@ -46,15 +44,12 @@ end
 
 template node['snowflake']['id']['conf'] do
   source node['snowflake']['template']['upstart']
-  owner node['snowflake']['user']
-  group node['snowflake']['user']
+  owner "root"
+  group "root"
   mode node['snowflake']['mode']
 end
 
 execute "Start snowflake" do
-  cwd node['snowflake']['home']  
-  user node['snowflake']['user']
-  group node['snowflake']['user']
   command node['snowflake']['start']
 end
 

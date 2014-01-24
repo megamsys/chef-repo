@@ -1,3 +1,5 @@
+include_recipe "megam_sandbox"
+
 remote_file "/usr/src/ganglia-#{node[:ganglia][:version]}.tar.gz" do
   source node[:ganglia][:uri]
   checksum node[:ganglia][:checksum]
@@ -11,31 +13,31 @@ execute "untar ganglia" do
   cwd "/usr/src"
 end
 
-template "/home/ubuntu/install.sh" do
+template "#{node["sandbox"]["home"]}/install.sh" do
   source "install.sh"
-  owner "ubuntu"
-  group "ubuntu"
+  owner node["sandbox"]["user"]
+  group "root"
   mode "0755"
 end
 
 execute "Install Dependencies " do
-  cwd "/home/ubuntu"
-  user "ubuntu"
-  group "ubuntu"
-  command "/home/ubuntu/install.sh"
+  cwd node["sandbox"]["home"]
+  user node["sandbox"]["user"]
+  group "root"
+  command "#{node["sandbox"]["home"]}/install.sh"
 end
 
-template "/home/ubuntu/python3" do
+template "#{node["sandbox"]["home"]}/python3" do
   source "python3-change"
-  owner "ubuntu"
-  group "ubuntu"
+  owner node["sandbox"]["user"]
+  group "root"
   mode "0755"
 end
 
 execute "Change python default to python3 " do
-  cwd "/home/ubuntu"
-  user "ubuntu"
-  group "ubuntu"
+  cwd node["sandbox"]["home"]
+  user node["sandbox"]["user"]
+  group "root"
   command "./python3"
 end
 

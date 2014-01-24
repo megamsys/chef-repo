@@ -6,7 +6,7 @@
 
 # All rights reserved - Do Not Redistribute
 #
-
+include_recipe "megam_sandbox"
 include_recipe "apt"
 include_recipe "nginx"
 #ONLY FOR THIS COOKBOOK JDK
@@ -26,72 +26,42 @@ execute "SET JAVA_HOME" do
 end
 =end
 
-#=begin
-node.set["myroute53"]["name"] = "#{node.name}1"
 
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co"
-end
-
+node.set["myroute53"]["name"] = "#{node.name}"
 include_recipe "megam_route53"
 
-node.set[:ganglia][:hostname] = "#{node.name}1.#{node["myroute53"]["zone"]}"
+node.set[:ganglia][:hostname] = "#{node.name}"
 include_recipe "megam_ganglia::nginx"
 
-#=end
-
-#node.set[:ganglia][:hostname] = "gmond"
-#include_recipe "megam_ganglia::nginx"
-
-node.set["deps"]["node_key"] = "#{node.name}1.#{node["myroute53"]["zone"]}"
-#node.set["deps"]["node_key"] = "test"
+node.set["deps"]["node_key"] = "#{node.name}"
 include_recipe "megam_deps"
 
-#=begin
-#node.set['logstash']['agent']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
-#node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
-#node.set['logstash']['agent']['file-path'] = "/var/log/nginx/access.log"
+include_recipe "git"
 
+node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
+node.set["gulp"]["builder"] = "megam_java_builder"
+
+
+
+bash "Clone Java builder" do
+cwd "#{node['sandbox']['home']}/bin"
+  user node["sandbox"]["user"]
+  group node["sandbox"]["user"]
+   code <<-EOH
+  git clone https://github.com/indykish/megam_java_builder.git
+  EOH
+end
+
+node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log" ]
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/gulpd.sys.log" ]
 include_recipe "megam_logstash::beaver"
 
-node.set['rsyslog']['index'] = "tom"
-node.set['rsyslog']['elastic_ip'] = "elastic_search.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log" ]
+
+node.set['rsyslog']['index'] = "#{node.name}"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log", "/var/log/gulpd.sys.log" ]
 include_recipe "megam_logstash::rsyslog"
-
-#=end
-
-=begin
-#MAVEN INATALL
-template node["tomcat-nginx"]["dir-path"]["mvn-install"] do
-  source node["tomcat-nginx"]["template"]["mvn"]
-  owner node["tomcat-nginx"]["user"]
-  group node["tomcat-nginx"]["user"]
-  mode node["tomcat-nginx"]["mode"]
-end
-
-execute "INSTALL MAVEN" do
-  cwd node["tomcat-nginx"]["home"]  
-  user node["tomcat-nginx"]["user"]
-  group node["tomcat-nginx"]["user"]
-  command node["tomcat-nginx"]["cmd"] ["mvn"]
-end
-=end
-
-#file_name = File.basename(node["megam_deps"]["predefs"]["war"])
-#file_name = File.basename("https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/war/orion.war")
-
-
-directory node["tomcat-nginx"]["dir-path"]["tmp"] do
-  owner node["tomcat-nginx"]["user"]
-  group node["tomcat-nginx"]["user"]
-  mode node["tomcat-nginx"]["mode"]
-  action :create
-end
 
 remote_file node["tomcat-nginx"]["remote-location"]["nginx-tar"] do
   source node["tomcat-nginx"]["source"]["nginx"]
@@ -115,106 +85,108 @@ template node["tomcat-nginx"]["remote-location"]["tomcat-init"] do
   mode node["tomcat-nginx"]["mode"]
 end
 
-execute "update tomcat defaults" do
-  cwd node["tomcat-nginx"]["home"]  
-  user node["tomcat-nginx"]["user"]
-  group node["tomcat-nginx"]["user"]
-  command node["tomcat-nginx"]["cmd"] ["tomcat-update"]
+bash "update tomcat defaults" do
+  user "root"
+   code <<-EOH
+  update-rc.d tomcat defaults
+  start tomcat
+  EOH
 end
 
-execute "Start tomcat" do
-  cwd node["tomcat-nginx"]["home"]  
-  user node["tomcat-nginx"]["user"]
-  group node["tomcat-nginx"]["user"]
-  command node["tomcat-nginx"]["cmd"] ["tomcat-start"]
-end
-
-
-#DEPLOY
-if node["megam_deps"]["predefs"]["war"].empty? || !node["megam_deps"]["predefs"]["scm"].empty?
-	scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
+scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
 file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+dir = File.basename(file_name, '.*')
+
+node.set["gulp"]["project_name"] = "#{dir}"
+
 case scm_ext
 
 when ".git"
-include_recipe "git"
 execute "Clone git " do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd node["tomcat-nginx"]["home"]
+  user node["tomcat-nginx"]["user"]
+  group node["tomcat-nginx"]["user"]
   command "git clone #{node["megam_deps"]["predefs"]["scm"]}"
 end
 
+node.set["gulp"]["local_repo"] = "#{node["tomcat-nginx"]["home"]}/#{dir}"
+
 when ".zip"
 
-remote_file "/home/ubuntu/#{file_name}" do
+remote_file "#{node["tomcat-nginx"]["home"]}/#{file_name}" do
   source node["megam_deps"]["predefs"]["scm"]
   mode "0755"
-  owner "ubuntu"
-  group "ubuntu"
+  owner node["tomcat-nginx"]["user"]
+  group node["tomcat-nginx"]["user"]
 end
 
 execute "Unzip scm " do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd node["tomcat-nginx"]["home"]  
+  user node["tomcat-nginx"]["user"]
+  group node["tomcat-nginx"]["user"]
   command "unzip #{file_name}"
 end
 
 when ".gz" || ".tar"
 
-remote_file "/home/ubuntu/#{file_name}" do
+remote_file "#{node["tomcat-nginx"]["home"]}/#{file_name}" do
   source node["megam_deps"]["predefs"]["scm"]
   mode "0755"
-  owner "ubuntu"
-  group "ubuntu"
+  owner node["tomcat-nginx"]["user"]
+  group node["tomcat-nginx"]["user"]
 end
 
 execute "Untar tar file " do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd node["tomcat-nginx"]["home"] 
+  user node["tomcat-nginx"]["user"]
+  group node["tomcat-nginx"]["user"]
   command "tar -xvzf #{file_name}"
 end
-else
-	puts "ELSE"
-end #case
 
-dir = File.basename(file_name, '.*')
+when ".war"
 
-execute "Maven clean" do
-  cwd "/home/ubuntu/#{dir}"  
-  user "ubuntu"
-  group "ubuntu"
-  command "mvn clean"
-end
+node.set["gulp"]["local_repo"] = "#{node["tomcat-nginx"]["tomcat-home"]}/webapps"
 
-execute "Maven deploy" do
-  cwd "/home/ubuntu/#{dir}"  
-  user "ubuntu"
-  group "ubuntu"
-  command "mvn tomcat7:deploy"
-end
-
-execute "Copy WAR to home dir" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "cp /home/ubuntu/#{dir}/target/*.war /home/ubuntu/"
-end
-
-else
-	file_name = File.basename(node["megam_deps"]["predefs"]["war"])
-
-remote_file "/home/ubuntu/tomcat/webapps/#{file_name}" do
-  source node["megam_deps"]["predefs"]["war"]
+remote_file "#{node["tomcat-nginx"]["tomcat-home"]}/webapps/#{file_name}" do
+  source node["megam_deps"]["predefs"]["scm"]
   mode node["tomcat-nginx"]["mode"]
   owner node["tomcat-nginx"]["user"]
   group node["tomcat-nginx"]["user"]
   checksum node["tomcat-nginx"]["checksum"]
 end
 
+else
+	puts "ELSE"
+end #case
+
+unless scm_ext == ".war"
+dir = File.basename(file_name, '.*')
+
+bash "Install Maven" do
+  user "root"
+   code <<-EOH
+wget http://apache.mirrors.hoobly.com/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz
+tar -zxf apache-maven-3.1.1-bin.tar.gz
+cp -R apache-maven-3.1.1 /usr/local 
+ln -s /usr/local/apache-maven-3.1.1/bin/mvn /usr/bin/mvn
+  EOH
 end
+
+
+bash "Clean Maven" do
+cwd "#{node["tomcat-nginx"]["home"]}/#{dir}" 
+  user "root"
+   code <<-EOH
+mvn clean
+mvn package
+cp #{node["tomcat-nginx"]["home"]}/#{dir}/target/*.war #{node["tomcat-nginx"]["tomcat-home"]}/webapps/
+  EOH
+end
+
+end
+
+
+include_recipe "megam_gulp"
 
 template node["tomcat-nginx"]["remote-location"]["nginx_conf"] do
   source node["tomcat-nginx"]["template"]["conf"]
@@ -223,17 +195,18 @@ template node["tomcat-nginx"]["remote-location"]["nginx_conf"] do
   mode node["tomcat-nginx"]["super"]["mode"]
 end
 
-execute "Restart nginx" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo service nginx restart"
+bash "restart nginx" do
+  user "root"
+   code <<-EOH
+  service nginx restart
+  EOH
 end
 
-execute "RE-Start tomcat" do
-  cwd node["tomcat-nginx"]["home"]  
-  user node["tomcat-nginx"]["user"]
-  group node["tomcat-nginx"]["user"]
-  command "sudo service tomcat restart"
+bash "Restart tomcat" do
+  "root"
+   code <<-EOH
+  stop tomcat
+  start tomcat
+  EOH
 end
 

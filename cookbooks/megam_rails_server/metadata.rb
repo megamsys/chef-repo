@@ -16,8 +16,10 @@ depends "application_nginx"
 depends "megam_deps"
 depends "megam_ciakka"
 depends "megam_ganglia"
-depends "megam_route53"
+#depends "megam_route53"
 depends "megam_logstash"
+depends "megam_ruby"
+depends "megam_sandbox"
 
 
 

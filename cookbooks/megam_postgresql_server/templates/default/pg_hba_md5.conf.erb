@@ -1,5 +1,6 @@
 # Database administrative login by Unix domain socket
 local   all             postgres                                md5
+#host all all <%= node[:postgresql][:server_ip] %> 255.255.255.0 trust
 
 # TYPE      DATABASE    USER        CIDR-ADDRESS        METHOD
 local       all         all                             md5

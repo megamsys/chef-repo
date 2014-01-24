@@ -29,37 +29,7 @@ when "debian"
   package "erlang-dev"
 #=end
 
-#Erlang 16B
 
-=begin
-  execute "Execute Add line in sources.list" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "echo 'deb http://binaries.erlang-solutions.com/debian precise contrib' | sudo tee -a /etc/apt/sources.list"
-  end
-
-  execute "Execute Add Erlang solution public key" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "wget -O - http://binaries.erlang-solutions.com/debian/erlang_solutions.asc \ | sudo apt-key add -"
-  end
- 
-  execute "Execute sudo apt-get update" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo apt-get update"
-  end
-
-  execute "Execute install erlang 16B" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo apt-get -y install esl-erlang"
-  end
-=end
 when "rhel"
 
   include_recipe "yum::epel"
