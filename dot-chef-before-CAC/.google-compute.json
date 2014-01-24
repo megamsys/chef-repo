@@ -1,8 +1,0 @@
-{"authorization_uri":"https://accounts.google.com/o/oauth2/auth",
-              "token_credential_uri":"https://accounts.google.com/o/oauth2/token",
-              "scope":"https://www.googleapis.com/auth/userinfo.email","redirect_uri":"http://localhost:3000/auth/google_oauth2/callback", "client_id":"1086028648606.apps.googleusercontent.com",
-              "client_secret":"2rUaVHUCbu9CZClosVMJsrEv", "access_token":"ya29.AHES6ZQZTGT9rGluYxg-_N_x_1GRmio0Rt1HWUN-09si5E_AheJWtw",
-              "expires_in":"1384271713","refresh_token":"1/qQ4ej99wiVzXpyUCs9k8uf6xILC9jUGsrke60-TD4QE",
-             "project":"western-trees-369" }
-
-
