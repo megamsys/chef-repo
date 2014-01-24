@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+
+include_recipe "megam_sandbox"
 =begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
@@ -19,10 +21,7 @@ end
 include_recipe "megam_route53"
 =end
 
-
 include_recipe "apt"
-
-
 
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/akka.sys.log" ]
 #node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
@@ -68,63 +67,63 @@ case scm_ext
 when ".git"
 include_recipe "git"
 execute "Clone git " do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd node["sandbox"]["home"]  
+  user node["sandbox"]["user"]
+  group node["sandbox"]["user"]
   command "git clone #{node["megam_deps"]["predefs"]["scm"]}"
 end
 
 
-directory "/home/ubuntu/bin" do
-  owner "ubuntu"
-  group "ubuntu"
+directory "#{node["sandbox"]["home"]}/bin" do
+  owner node["sandbox"]["user"]
+  group node["sandbox"]["user"]
   mode "0755"
   action :create
 end
 
 execute "add PATH for bin sbt" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "echo \"PATH=$PATH:$HOME/bin\" >> /home/ubuntu/.bashrc"
+  cwd node["sandbox"]["home"]  
+  user node["sandbox"]["user"]
+  group node["sandbox"]["user"]
+  command "echo \"PATH=$PATH:$HOME/bin\" >> #{node["sandbox"]["home"]}/.bashrc"
 end
 
 execute "Refresh bashrc" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd node["sandbox"]["home"]  
+  user node["sandbox"]["user"]
+  group node["sandbox"]["user"]
   command "source .bashrc"
 end
 
-remote_file "/home/ubuntu/bin/sbt-launch.jar" do
+remote_file "#{node["sandbox"]["home"]}/bin/sbt-launch.jar" do
   source node["akka"]["sbt"]["jar"]
   mode "0755"
-   owner "ubuntu"
-  group "ubuntu"
+   owner node["sandbox"]["user"]
+  group node["sandbox"]["user"]
   checksum "08da002l" 
 end
 
-template "/home/ubuntu/bin/sbt" do
+template "#{node["sandbox"]["home"]}/bin/sbt" do
   source "sbt.erb"
-  owner "ubuntu"
-  group "ubuntu"
+  owner node["sandbox"]["user"]
+  group node["sandbox"]["user"]
   mode "0755"
 end
 
 
 execute "Stage play project" do
-  cwd "/home/ubuntu/#{dir}"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd "#{node["sandbox"]["home"]}/#{dir}"  
+  user node["sandbox"]["user"]
+  group node["sandbox"]["user"]
   command "sbt clean compile stage dist"
 end
 
 
 execute "Copy zip to /usr/local/share" do
-  cwd "/home/ubuntu/#{dir}"  
+  cwd "#{node["sandbox"]["home"]}/#{dir}"  
   user "root"
   group "root"
-  command "sudo cp /home/ubuntu/#{dir}/dist/*.zip /usr/local/share/#{dir} "
+  command "sudo cp #{node["sandbox"]["home"]}/#{dir}/dist/*.zip /usr/local/share/#{dir} "
 end
 
 execute "Unzip dist content " do
@@ -217,22 +216,22 @@ node.set['akka']['script']['cmd'] = "/usr/local/share/#{dir}/#{dir}/bin/start or
 
 when ".deb"
 
-remote_file "/home/ubuntu/#{file_name}" do
+remote_file "#{node["sandbox"]["home"]}/#{file_name}" do
   source node["megam_deps"]["predefs"]["scm"]
   mode "0755"
-  owner "ubuntu"
-  group "ubuntu"
+  owner node["sandbox"]["user"]
+  group node["sandbox"]["user"]
 end
 
 execute "Depackage deb file" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd node["sandbox"]["home"]  
+  user node["sandbox"]["user"]
+  group node["sandbox"]["user"]
   command "sudo dpkg -i #{file_name}"
 end
 
 else
-remote_file node['akka']['location']['deb'] do
+remote_file "#{node["sandbox"]["home"]}/megam_herk.deb" do
   source node['akka']['deb']
   owner node['akka']['user']
   group node['akka']['user']
@@ -240,7 +239,7 @@ remote_file node['akka']['location']['deb'] do
 end
 
 execute "Depackage megam akka" do
-  cwd node['akka']['home']  
+  cwd node["sandbox"]["home"]  
   user node['akka']['user']
   group node['akka']['user']
   command node['akka']['dpkg']
@@ -255,7 +254,7 @@ template node['akka']['init']['conf'] do
 end
 
 execute "Start Akka" do
-  cwd node['akka']['home']  
+  cwd node["sandbox"]["home"]  
   user node['akka']['user']
   group node['akka']['user']
   command node['akka']['start']

@@ -94,76 +94,11 @@ end
 =end
 
 execute "Install Beaver from our git" do
-  cwd "/home/ubuntu/"
-  user "ubuntu"
-  group "ubuntu"
+  user "root"
+  group "root"
   command node['logstash']['beaver']['git_cmd']
 end
 
-=begin
-# inputs
-files = []
-node['logstash']['beaver']['inputs'].each do |ins|
-  ins.each do |name, hash|
-    case name
-      when "file" then
-        if hash.has_key?('path')
-          files << hash
-        else
-          log("input file has no path.") { level :warn }
-        end
-      else
-        log("input type not supported: #{name}") { level :warn }
-    end
-  end
-end
-=end
-=begin
-# outputs
-outputs = []
-conf = {}
-node['logstash']['beaver']['outputs'].each do |outs|
-  outs.each do |name, hash|
-    case name
-      when "rabbitmq", "amqp" then
-        outputs << "rabbitmq"
-        host = hash['host'] || logstash_server_ip || 'localhost'
-        conf['rabbitmq_host'] = hash['host'] if hash.has_key?('host')
-        conf['rabbitmq_port'] = hash['port'] if hash.has_key?('port')
-        conf['rabbitmq_vhost'] = hash['vhost'] if hash.has_key?('vhost')
-        conf['rabbitmq_username'] = hash['user'] if hash.has_key?('user')
-        conf['rabbitmq_password'] = hash['password'] if hash.has_key?('password')
-        conf['rabbitmq_queue'] = hash['queue'] if hash.has_key?('queue')
-        conf['rabbitmq_exchange_type'] = hash['rabbitmq_exchange_type'] if hash.has_key?('rabbitmq_exchange_type')
-        conf['rabbitmq_exchange'] = hash['exchange'] if hash.has_key?('exchange')
-        conf['rabbitmq_exchange_durable'] = hash['durable'] if hash.has_key?('durable')
-        conf['rabbitmq_key'] = hash['key'] if hash.has_key?('key')
-      when "redis" then
-        outputs << "redis"
-        host = hash['host'] || logstash_server_ip || 'localhost'
-        port = hash['port'] || '6379'
-        db = hash['db'] || '0'
-        conf['redis_url'] = "redis://#{host}:#{port}/#{db}"
-        conf['redis_namespace'] = hash['key'] if hash.has_key?('key')
-      when "stdout" then
-        outputs << "stdout"
-      when "zmq", "zeromq" then
-        outputs << "zmq"
-        host = hash['host'] || logstash_server_ip || 'localhost'
-        port = hash['port'] || '2120'
-        conf['zeromq_address'] = "tcp://#{host}:#{port}"
-      else
-        log("output type not supported: #{name}") { level :warn }
-    end
-  end
-end
-
-
-output = outputs[0]
-if outputs.length > 1
-  log("multiple outpus detected, will consider only the first: #{output}") { level :warn }
-end
-=end
 
 cmd = "beaver  -t #{node['logstash']['beaver']['output']} -c #{conf_file} -F #{format}"
 

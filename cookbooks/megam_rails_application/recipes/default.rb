@@ -6,8 +6,10 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-
-=begin
+include_recipe "megam_sandbox"
+include_recipe "apt"
+#include_recipe "megam_ruby"
+#=begin
 node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
@@ -18,29 +20,54 @@ end
 
 include_recipe "megam_route53"
 
-
-node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
+#=end
+node.set["deps"]["node_key"] = "#{node.name}"
 include_recipe "megam_deps"
-=end
-include_recipe "apt"
 
-#node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+dir = File.basename(file_name, '.*')
+node.set[:rails][:app][:name] = "#{dir}"
+#=end
+
+include_recipe "git"
+
+node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
+node.set["gulp"]["local_repo"] = "#{node[:rails][:app][:path]}/current"
+node.set["gulp"]["builder"] = "megam_ruby_builder"
+node.set["gulp"]["project_name"] = node[:rails][:app][:name]
+include_recipe "megam_gulp"
+
+bash "Clone ruby builder" do
+cwd "#{node['sandbox']['home']}/bin"
+  user node["sandbox"]["user"]
+  group node["sandbox"]["user"]
+   code <<-EOH
+  git clone https://github.com/indykish/megam_ruby_builder.git
+  EOH
+end
+
+
+node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log" ]
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/gulpd.sys.log" ]
 include_recipe "megam_logstash::beaver"
 
 
 if node[:rails][:app][:name].split(" ").count > 1
   Chef::Application.fatal!("Application name must be one word long !")
 end
-include_recipe "git" # install git, no support for svn for now
+ # install git, no support for svn for now
 
 #Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
 #include_recipe "megam_deps"
 
-#include_recipe "megam_ciakka"
-#node.set[:ganglia][:hostname] = "#{node.name}.#{node["myroute53"]["zone"]}"
-#include_recipe "megam_ganglia::nginx"
+node.set[:ganglia][:hostname] = "#{node.name}"
+include_recipe "megam_ganglia::default"
+
+node.set['rsyslog']['index'] = "#{node.name}"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log", "/var/log/gulpd.sys.log" ]
+include_recipe "megam_logstash::rsyslog"
 
 # create deploy user & group
 user node[:rails][:owner] do
@@ -77,9 +104,9 @@ application node[:rails][:app][:name] do
   if node[:rails][:deploy][:ssh_key]
     deploy_key node[:rails][:deploy][:ssh_key]
   end
-  repository        node[:rails][:deploy][:repository]
+  #repository        node[:rails][:deploy][:repository]
 #Repository value is getting from s3 json
-  #repository        "#{node["megam_deps"]["predefs"]["scm"]}"
+  repository        "#{node["megam_deps"]["predefs"]["scm"]}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]
@@ -185,9 +212,16 @@ end
 
 
 gem_package "rake" do
-  version "10.1.0"
   action :install
 end
+
+  execute "Gem install Rake" do
+  cwd "#{node[:rails][:app][:path]}/current"  
+  user "root"
+  group "root"
+  command "gem install rake"
+  end
+  
 
   execute "Execute assets precompile" do
   cwd "#{node[:rails][:app][:path]}/current"  

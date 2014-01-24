@@ -24,12 +24,17 @@ license           "Apache 2.0"
 description       "Installs and configures Riak distributed data store"
 version           "2.0.0"
 
-recipe            "megam_riak", "Installs Riak from a package"
-recipe            "megam_riak::source", "Installs Erlang and Riak from source"
-
-%w{apt yum build-essential erlang git ulimit megam_route53 megam_ganglia megam_ciakka megam_deps}.each do |d|
+%w{apt yum build-essential erlang git ulimit }.each do |d|
   depends d
 end
+
+depends "megam_ganglia"
+depends "megam_route53"
+depends "megam_logstash"
+depends "megam_gulp"
+
+#depends megam_route53 megam_ganglia megam_ciakka megam_deps
+
 
 %w{ubuntu debian centos redhat fedora}.each do |os|
   supports os

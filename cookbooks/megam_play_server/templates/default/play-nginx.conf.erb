@@ -3,9 +3,8 @@
 # HTTPS server
 server {
    listen 80;
-   #api.megam.co *.api.megam.co;
-   #rewrite ^ https://api.megam.co$request_uri? permanent;
-   rewrite ^ https://localhost$request_uri? permanent;
+   server_name api.megam.co;
+   rewrite ^ https://api.megam.co$request_uri? permanent;
 }
 
 server {
@@ -19,7 +18,6 @@ server {
    ssl on;
 	ssl_certificate /etc/nginx/ssl/api.megam.co_pub.crt;
 	ssl_certificate_key /etc/nginx/ssl/api.megam.co.key;
- 
    ssl_session_timeout 5m;
  
    ssl_protocols SSLv3 TLSv1;

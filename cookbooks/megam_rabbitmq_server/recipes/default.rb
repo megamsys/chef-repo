@@ -19,13 +19,13 @@
 # limitations under the License.
 #
 
-
+=begin
 node.set["myroute53"]["name"] = "rabbitmq1"
 
 node.set["myroute53"]["zone"] = "megam.co.in"
 
 include_recipe "megam_route53"
-
+=end
 
 include_recipe "erlang"
 
@@ -123,9 +123,6 @@ end
 #RABBITMQ Admin tools
 
 execute "Enable rabbitmq-plugin for rabbitmq_management " do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "sudo rabbitmq-plugins enable rabbitmq_management"
 end
 
@@ -137,9 +134,6 @@ end
   end
 
 execute "rabbitmq-server stop " do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "sudo service rabbitmq-server stop"
 end
 
@@ -154,21 +148,12 @@ end
 if node['rabbitmq']['cluster']
 
 execute "rabbitmqctl stop_app" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "sudo rabbitmqctl stop_app"
 end
 execute "rabbitmqctl reset" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "sudo rabbitmqctl reset"
 end
 execute "rabbitmqctl stop" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "sudo rabbitmqctl stop"
 end
 
@@ -194,16 +179,10 @@ end
 unless node['rabbitmq']['cluster'] 		#####		IF Master			
 
 execute "create policy" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "rabbitmqadmin declare policy name=all pattern=\'\' definition='{\"ha-mode\":\"all\"}'"
 end
 
 execute "create mirror queue" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command 'rabbitmqadmin declare queue name=megam-queue durable=true arguments=\'{"x-ha-policy":"all"}\''
 end
 

@@ -137,7 +137,7 @@ default[:postgresql][:replication_timeout] = "60s"
 default[:postgresql][:synchronous_standby_names] = nil 
 # list of IP addresses for standby nodes
 default[:postgresql][:standby_ips] = [] 
-
+default[:postgresql][:server_ip] = "#{`curl ipecho.net/plain`}" #IP of the server
 # Standby Servers
 default[:postgresql][:standby] = false # Is this a standby? 				MY CHANGE
 default[:postgresql][:master_ip] = nil # MUST Be specified in the role 		#MY CHENGE

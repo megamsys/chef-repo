@@ -1,18 +1,23 @@
-=begin
+include_recipe "megam_sandbox"
+include_recipe "apt"
+include_recipe "megam_gulp"
 node.set["myroute53"]["name"] = "#{node.name}"
-
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co"
-end
-
 include_recipe "megam_route53"
-=end
 
-#include_recipe "runit"
+node.set[:ganglia][:hostname] = "#{node.name}"
+include_recipe "megam_ganglia::redis"
 
-#include_recipe "megam_ganglia::redis"
+node.set['logstash']['key'] = "#{node.name}"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/redis2/*.log", "/var/log/gulpd.sys.log" ]
+include_recipe "megam_logstash::beaver"
+
+
+node.set['rsyslog']['index'] = "#{node.name}"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['input']['files'] = [ "/var/log/redis2/*.log", "/var/log/gulpd.sys.log" ]
+include_recipe "megam_logstash::rsyslog"
+
 
 redis_instance "master" do
   data_dir "/etc/redis/datastore"

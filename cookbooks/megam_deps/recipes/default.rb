@@ -10,11 +10,12 @@
 
     require 'json'
 #=begin
-r = remote_file "/home/ubuntu/deps.json" do
-  source "http://riak1.megam.co.in:8098/riak/nodes/#{node["deps"]["node_key"]}"
+r = remote_file "/tmp/deps.json" do
+  #source "http://riak1.megam.co.in:8098/riak/nodes/#{node["deps"]["node_key"]}"
+  source "http://api.megam.co:8098/riak/nodes/#{node["deps"]["node_key"]}"
   mode "0755"
-  owner "ubuntu"
-  group "ubuntu"
+  owner "root"
+  group "root"
 end
 
 r.run_action(:create)
@@ -23,7 +24,7 @@ r.run_action(:create)
 
 #s3_deps = JSON.parse(str)
 
-    s3_deps = JSON.parse(File.read('/home/ubuntu/deps.json'))
+    s3_deps = JSON.parse(File.read('/tmp/deps.json'))
     node.set["megam_deps"] = s3_deps
 
 

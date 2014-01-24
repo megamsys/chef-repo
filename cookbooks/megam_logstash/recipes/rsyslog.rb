@@ -15,8 +15,5 @@ end
 
 
 execute "Restart Rsyslog" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
   command "sudo service rsyslog restart"
 end

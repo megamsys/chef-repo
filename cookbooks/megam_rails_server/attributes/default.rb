@@ -39,7 +39,7 @@ default[:rails][:deploy][:migration_command] = "/usr/local/bin/bundle exec rake 
 default[:rails][:deploy][:restart_command] = nil # unicorn provider sets this
 
 default[:rails][:database][:type] = "postgresql" # or mysql
-default[:rails][:database][:host] = "postgres1.megam.co.in"#"127.0.0.1"
+default[:rails][:database][:host] = "localhost" #"postgres1.megam.co.in"#"127.0.0.1"
 default[:rails][:database][:port] = nil     # use default port for mysql/postgresql
 default[:rails][:database][:adapter] = "postgresql" # node[:rails][:database][:type]
 default[:rails][:database][:name] = "cocdb" #node[:rails][:app][:name]
@@ -50,7 +50,7 @@ default[:rails][:database][:root_password] = nil # set by mysql/postgresql cookb
 default[:rails][:nginx][:application_port] = "8080"
 default[:rails][:nginx][:port] = 80
 default[:rails][:nginx][:template] = "load_balancer.conf.erb"
-default[:rails][:nginx][:server_name] = "#{node[:ec2][:public_hostname]}"
+default[:rails][:nginx][:server_name] = "#{`curl ipecho.net/plain`}" #IP of the server
 default[:rails][:nginx][:static_files] = {}
 default[:rails][:nginx][:ssl] = false
 default[:rails][:nginx][:ssl_certificate] = "#{node['fqdn']}.crt"

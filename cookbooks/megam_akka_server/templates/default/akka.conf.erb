@@ -9,7 +9,7 @@ script
     export HOME="/root"
 
     echo $$ > /var/run/akka.pid
-    cd /usr/local/share/megamherk/
+    cd /usr/share/megamherk/
     exec sudo <%= node['akka']['script']['cmd'] %>  <%= node['akka']['script']['port'] %> >> /var/log/akka.sys.log 2>&1
 end script
 

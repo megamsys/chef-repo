@@ -2,7 +2,7 @@ input {
 
   file {
     type => "access-log"
-    path => [ "/usr/local/share/megamherk/logs/*/*" ]
+    path => [ "/usr/share/megamherk/logs/*/*" ]
   }
 }
 
@@ -10,7 +10,7 @@ input {
 filter {
   grok {
     type => "access-log"
-    match => [ "@source_path", "(//usr/local/share/megamherk/logs/)(?<source_key>.+)(//*)" ]
+    match => [ "@source_path", "(//usr/share/megamherk/logs/)(?<source_key>.+)(//*)" ]
   }
 }
 

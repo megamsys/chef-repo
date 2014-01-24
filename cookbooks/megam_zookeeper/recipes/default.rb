@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-
+=begin
 node.set["myroute53"]["name"] = "zoo1"
 
 node.set["myroute53"]["zone"] = "megam.co.in"
@@ -15,15 +15,15 @@ node.set["myroute53"]["zone"] = "megam.co.in"
 
 include_recipe "megam_route53"
 
-
+=end
 include_recipe "apt"
 
 #no java because we are using java IMAGE(AMI)
-=begin
+#=begin
 package "openjdk-7-jre" do
         action :install
 end
-=end
+#=end
 
 %w(zookeeper zookeeper-bin zookeeperd).each do |pkg|
   package pkg do

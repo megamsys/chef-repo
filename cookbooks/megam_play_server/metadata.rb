@@ -8,4 +8,4 @@ version          '0.1.0'
 
 depends "apt"
 depends "nginx"
-depends "megam_route53"
+#depends "megam_route53"

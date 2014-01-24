@@ -1,6 +1,6 @@
 #
 # Author:: Seth Thomas (<sthomas@basho.com>)
-# Cookbook Name:: megam_riak
+# Cookbook Name:: megam_riak_server
 # Recipe:: default
 #
 # Copyright (c) 2013 Basho Technologies, Inc.
@@ -18,31 +18,39 @@
 # limitations under the License.
 #
 
-include_recipe "ulimit"
-=begin
+include_recipe "apt"
 node.set["myroute53"]["name"] = "#{node.name}"
-
 if node['megam_domain']
 node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
 else
-node.set["myroute53"]["zone"] = "megam.co."
+node.set["myroute53"]["zone"] = "megam.co"
 end
 
 include_recipe "megam_route53"
-=end
-
-#Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
-#include_recipe "megam_deps"
-
-#include_recipe "megam_ciakka"
-
-#include_recipe "megam_ganglia::riak"
-#include_recipe "megam_ganglia::gmetad" #####----> TEST
 
 
-#riak_name = "#{node["myroute53"]["name"]}.#{node["myroute53"]["zone"]}"
-#riak_name = "riak1.megam.co.in"
-#node.set['riak']['args']['-name'] = "riak@#{riak_name}"
+node.set["gulp"]["remote_repo"] = "test_riak"
+node.set["gulp"]["local_repo"] = "test_riak"
+node.set["gulp"]["builder"] = "megam_ruby_builder"
+node.set["gulp"]["project_name"] = "test"
+include_recipe "megam_gulp"
+
+
+
+node.set['logstash']['key'] = "#{node.name}"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/riak/*.log", "/var/log/gulpd.sys.log" ]
+include_recipe "megam_logstash::beaver"
+
+
+node.set['rsyslog']['index'] = "#{node.name}"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['input']['files'] = [ "/var/log/riak/*.log", "/var/log/gulpd.sys.log" ]
+include_recipe "megam_logstash::rsyslog"
+
+
+
+include_recipe "ulimit"
 
 version_str = "#{node['riak']['package']['version']['major']}.#{node['riak']['package']['version']['minor']}"
 base_uri = "#{node['riak']['package']['url']}/#{version_str}/#{version_str}.#{node['riak']['package']['version']['incremental']}/"
@@ -71,20 +79,25 @@ else
   case node['platform']
   when "ubuntu", "debian"
 
+
+bash "install riak" do
+  user "root"
+  cwd "/tmp"
+  code <<-EOH
+  wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.2/ubuntu/precise/riak_1.4.2-1_amd64.deb
+  dpkg -i riak_1.4.2-1_amd64.deb
+  EOH
+end
+
+=begin
 execute "WGET RIAK DEB PACKAGE " do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.2/ubuntu/precise/riak_1.4.2-1_amd64.deb"
 end 
 
 execute "DEPACKAGE RIAK DEB " do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "sudo dpkg -i riak_1.4.2-1_amd64.deb"
 end
-
+=end
   when "centos", "rhel"
     include_recipe "yum"
 
@@ -158,30 +171,18 @@ end
 if node['riak']['cluster']['node_name']
 
 execute "Start riak" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "riak start"
 end
 
 execute "Execute Cluster node" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "riak-admin cluster join riak@#{node['riak']['cluster']['node_name']}"
 end 
 
 execute "Execute Cluster plan" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "riak-admin cluster plan"
 end 
 
 execute "Execute Cluster commit" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "riak-admin cluster commit"
 end 
 

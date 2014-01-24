@@ -19,7 +19,7 @@
 #
 
 include_recipe "ulimit"
-
+=begin
 node.set["myroute53"]["name"] = "riak1"
 node.set["myroute53"]["zone"] = "megam.co.in"
 include_recipe "megam_route53"
@@ -30,7 +30,7 @@ include_recipe "megam_route53"
 #include_recipe "megam_ciakka"
 
 include_recipe "megam_ganglia::riak"
-
+=end
 
 
 #riak_name = "#{node["myroute53"]["name"]}.#{node["myroute53"]["zone"]}"
@@ -64,20 +64,25 @@ else
   case node['platform']
   when "ubuntu", "debian"
 
+
+bash "install riak" do
+  user "root"
+  cwd "/tmp"
+  code <<-EOH
+  wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.2/ubuntu/precise/riak_1.4.2-1_amd64.deb
+  dpkg -i riak_1.4.2-1_amd64.deb
+  EOH
+end
+
+=begin
 execute "WGET RIAK DEB PACKAGE " do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.2/ubuntu/precise/riak_1.4.2-1_amd64.deb"
 end 
 
 execute "DEPACKAGE RIAK DEB " do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "sudo dpkg -i riak_1.4.2-1_amd64.deb"
 end
-
+=end
   when "centos", "rhel"
     include_recipe "yum"
 
@@ -151,30 +156,18 @@ end
 if node['riak']['cluster']['node_name']
 
 execute "Start riak" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "riak start"
 end
 
 execute "Execute Cluster node" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "riak-admin cluster join riak@#{node['riak']['cluster']['node_name']}"
 end 
 
 execute "Execute Cluster plan" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "riak-admin cluster plan"
 end 
 
 execute "Execute Cluster commit" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
   command "riak-admin cluster commit"
 end 
 

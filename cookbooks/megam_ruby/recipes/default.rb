@@ -7,25 +7,37 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "apt"
 
-directory "/home/ubuntu/ruby-tmp" do
-  owner "ubuntu"
-  group "ubuntu"
-  mode "0755"
-  action :create
+bash "update Dependencies" do
+  user "root"
+  group "root"
+   code <<-EOH
+  apt-get -y install build-essential openssl libreadline6 libreadline6-dev zlib1g zlib1g-dev libssl1.0.0 libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion nodejs
+  EOH
 end
 
-template "/home/ubuntu/ruby-tmp/install-ruby.sh" do
-  source "install-ruby-2.0-script.sh"
-  owner "ubuntu"
-  group "ubuntu"
-  mode "0755"
+bash "install_Ruby" do
+  user "root"
+  cwd "/tmp"
+  code <<-EOH
+  wget -nv ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.gz
+  tar zxvf ruby-2.0.0-p353.tar.gz
+  cd ruby-2.0.0-p353
+  ./configure --with-openssl-dir=/usr/local/openssl
+  make
+  make install
+  EOH
 end
 
-execute "Install ruby 2.0 using script " do
-  cwd "/home/ubuntu/ruby-tmp"  
-  user "ubuntu"
-  group "ubuntu"
-  command "./install-ruby.sh"
+execute "UPDATE " do
+  user "root"
+  group "root"
+  command "gem update -f -q"
+  action :run
+end
+
+gem_package "bundler" do
+  action :install
 end
 

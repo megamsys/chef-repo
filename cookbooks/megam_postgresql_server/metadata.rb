@@ -25,4 +25,7 @@ end
 depends "apt"
 depends "openssl"
 
-depends "megam_route53"
+#depends "megam_route53"
+
+depends "megam_sandbox"
+depends "apt"

@@ -1,0 +1,28 @@
+description "Tomcat Server"
+ 
+start on runlevel [2345]
+stop on runlevel [!2345]
+respawn
+respawn limit 10 5
+ 
+# run as non privileged user
+# add user with this command:
+## adduser --system --ingroup www-data --home /opt/apache-tomcat apache-tomcat
+# Ubuntu 12.04: (use 'exec sudo -u apache-tomcat' when using 10.04)
+setuid <%= node["tomcat-nginx"]["user"] %>
+setgid root
+
+
+# adapt paths:
+env JAVA_HOME=/usr/bin/java
+env CATALINA_HOME=<%= node["tomcat-nginx"]["tomcat-home"] %>
+ 
+# adapt java options to suit your needs:
+env JAVA_OPTS="-Djava.awt.headless=true -Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+ 
+exec $CATALINA_HOME/bin/catalina.sh run
+ 
+# cleanup temp directory after stop
+post-stop script
+rm -rf $CATALINA_HOME/temp/*
+end script

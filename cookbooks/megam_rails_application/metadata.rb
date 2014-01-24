@@ -18,6 +18,9 @@ depends "megam_ciakka"
 depends "megam_ganglia"
 depends "megam_route53"
 depends "megam_logstash"
+depends "megam_sandbox"
+depends "megam_ruby"
+depends "megam_gulp"
 
 
 

@@ -17,4 +17,4 @@ knife ec2 server delete `knife search node name:postgres-server -a ec2.instance_
 #knife ec2 server delete `knife search node name:api-server -a ec2.instance_id | grep ec2.instance_id | awk '{print $2}'` -N zookeeper -P -y
 
 
-
+knife ec2 server delete `knife search node name:disembowel1.megam.co -a ec2.instance_id | grep ec2.instance_id | awk '{print $2}'` -N disembowel1.megam.co -P -y
