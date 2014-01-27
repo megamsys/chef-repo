@@ -71,7 +71,8 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
   uplevel_params = params
 
   runit_service instance_name do
-    template_name "redis"
+    run_template_name "redis"
+    log_template_name "redis"
     cookbook "megam_redis2"
     options \
 	  :user => node["redis2"]["user"],

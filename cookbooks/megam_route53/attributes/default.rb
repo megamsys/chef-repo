@@ -1,6 +1,6 @@
 default["myroute53"]["mode"] = "0755"
 
-
+#keys = data_bag_item('ec2', 'keys')
 #Template files
 default["myroute53"]["template"]["route53-config"] = 'route53_config.erb'
 
@@ -13,7 +13,7 @@ default["myroute53"]["type"] = "A"
 default["myroute53"]["value"] = "#{`wget http://ipecho.net/plain -O - -q ; echo`}" #IP ADDRESS #"#{node[:ec2][:public_hostname]}"
 
 #AWS KEYS
-default["myroute53"]["aws_access_key_id"] = "AKIAIX6YNFLZJDUMS3JA" #"AWS_ACCESS_KEY"
-default["myroute53"]["aws_secret_access_key"] = "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" #"AWS_SECRET_KEY"
+#default["myroute53"]["aws_access_key_id"] = "#{keys['access_key']}" #"AWS_ACCESS_KEY"
+#default["myroute53"]["aws_secret_access_key"] = "#{keys['secret_key']}" #"AWS_SECRET_KEY"
 
 

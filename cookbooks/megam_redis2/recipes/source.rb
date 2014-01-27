@@ -1,7 +1,9 @@
 # This recipe is for compiling redis from source.
 #
 #
-node["redis2"]["daemon"] = "/usr/local/bin/redis-server"
+include_recipe "build-essential"
+
+node.set["redis2"]["daemon"] = "/usr/local/bin/redis-server"
 directory node["redis2"]["build_dir"] do
   owner node["redis2"]["build_user"]
   mode "0755"
@@ -20,7 +22,7 @@ script "unpack and make redis" do
   code <<EOS
   wget -O #{tarball} #{url}
   tar -xzf #{tarball}
-  cd redis-2.6.11
+  cd #{tarball.sub('.tar.gz','')}
   make
   make install
 EOS
