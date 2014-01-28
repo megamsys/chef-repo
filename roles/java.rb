@@ -5,7 +5,7 @@ run_list "recipe[megam_tomcat]"
 override_attributes(
   :authorization => {
     :sudo => {
-      :users => ["ubuntu"],
+      :users => ["ubuntu", "sandbox"],
       :passwordless => true
     }
   }

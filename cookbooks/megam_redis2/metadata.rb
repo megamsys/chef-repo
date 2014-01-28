@@ -9,7 +9,7 @@ supports         "ubuntu", ">= 9.04"
 supports         "debian", ">= 6.0"
 supports         "centos", ">= 5.5"
 supports         "redhat", ">= 5.5"
-depends          "runit", ">= 1.0.0"
+#depends          "runit", ">= 1.0.0"
 depends          "build-essential"
 
 depends "megam_ganglia"

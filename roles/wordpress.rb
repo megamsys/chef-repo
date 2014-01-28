@@ -5,7 +5,7 @@ run_list "recipe[wordpress]"
 override_attributes(
   :authorization => {
     :sudo => {
-      :users => ["ubuntu"],
+      :users => ["ubuntu", "sandbox"],
       :passwordless => true
     }
   }

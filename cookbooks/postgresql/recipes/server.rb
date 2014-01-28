@@ -43,7 +43,7 @@ else
   # it should actually install a password (as opposed to disable password
   # login for user 'postgres'). However, a random password wouldn't be
   # useful if it weren't saved as clear text in Chef Server for later
-  # retrieval. 
+  # retrieval.
   node.set_unless['postgresql']['password']['postgres'] = secure_password
   node.save
 end
@@ -57,12 +57,14 @@ when "debian"
   include_recipe "postgresql::server_debian"
 end
 
+change_notify = node['postgresql']['server']['config_change_notify']
+
 template "#{node['postgresql']['dir']}/postgresql.conf" do
   source "postgresql.conf.erb"
   owner "postgres"
   group "postgres"
   mode 0600
-  notifies :restart, 'service[postgresql]', :immediately
+  notifies change_notify, 'service[postgresql]', :immediately
 end
 
 template "#{node['postgresql']['dir']}/pg_hba.conf" do
@@ -70,7 +72,7 @@ template "#{node['postgresql']['dir']}/pg_hba.conf" do
   owner "postgres"
   group "postgres"
   mode 00600
-  notifies :reload, 'service[postgresql]', :immediately
+  notifies change_notify, 'service[postgresql]', :immediately
 end
 
 # NOTE: Consider two facts before modifying "assign-postgres-password":

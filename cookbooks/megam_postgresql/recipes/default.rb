@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: megam_postgresql
+# Cookbook Name:: postgresql
 # Recipe:: default
 #
 # Copyright 2009, Opscode, Inc.
@@ -17,4 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe "megam_postgresql::client"
+include_recipe "postgresql::client"

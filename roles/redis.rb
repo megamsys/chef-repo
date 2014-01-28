@@ -5,9 +5,10 @@ run_list "recipe[runit]", "recipe[megam_redis2::master]"
 override_attributes(
   :authorization => {
     :sudo => {
-      :users => ["ubuntu"],
+      :users => ["ubuntu", "sandbox"],
       :passwordless => true
     }
   }
 )
+
 
