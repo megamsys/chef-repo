@@ -46,16 +46,25 @@ The following attributes are set based on the platform, see the
   that should be installed on "client" systems.
 * `node['postgresql']['server']['packages']` - An array of package names
   that should be installed on "server" systems.
+* `node['postgresql']['server']['config_change_notify']` - Type of
+  notification triggered when a config file changes.
 * `node['postgresql']['contrib']['packages']` - An array of package names
   that could be installed on "server" systems for useful sysadmin tools.
 
-* `node['postgresql']['enable_pitti_ppa']` - Whether to enable the PPA
-  by Martin Pitti, which contains newer versions of PostgreSQL. See
-  __Recipes__ "`ppa_pitti_postgresql`" below for more information.
+* `node['postgresql']['enable_pgdg_apt']` - Whether to enable the apt repo
+  by the PostgreSQL Global Development Group, which contains newer versions
+  of PostgreSQL.
 
 * `node['postgresql']['enable_pgdg_yum']` - Whether to enable the yum repo
   by the PostgreSQL Global Development Group, which contains newer versions
   of PostgreSQL.
+
+* `node['postgresql']['initdb_locale']` - Sets the default locale for the
+  database cluster. If this attribute is not specified, the locale is
+  inherited from the environment that initdb runs in. Sometimes you must
+  have a system locale that is not what you want for your database cluster,
+  and this attribute addresses that scenario. Valid only for EL-family
+  distros (RedHat/Centos/etc.).
 
 The following attributes are generated in
 `recipe[postgresql::server]`.
@@ -72,11 +81,11 @@ generated from attributes. Each key in `node['postgresql']['config']`
 is a postgresql configuration directive, and will be rendered in the
 config file. For example, the attribute:
 
-    node['postgresql']['config']['listen_address'] = 'localhost'
+    node['postgresql']['config']['listen_addresses'] = 'localhost'
 
 Will result in the following line in the `postgresql.conf` file:
 
-    listen_address = 'localhost'
+    listen_addresses = 'localhost'
 
 The attributes file contains default values for Debian and RHEL
 platform families (per the `node['platform_family']`). These defaults
@@ -109,6 +118,11 @@ Will result in the following config lines:
     port = 5432
 
 (no line printed for `ident_file` as it is `nil`)
+
+Note that the `unix_socket_directory` configuration was renamed to
+`unix_socket_directories` in Postgres 9.3 so make sure to use the
+`node['postgresql']['unix_socket_directories']` attribute instead of
+`node['postgresql']['unix_socket_directory']`.
 
 The `pg_hba.conf` file is dynamically generated from the
 `node['postgresql']['pg_hba']` attribute. This attribute must be an
@@ -300,7 +314,7 @@ analysis utilities, and plug-in features that database engineers often
 require. Some (like `pgbench`) are executable. Others (like
 `pg_buffercache`) would need to be installed into the database.
 
-Also installs any contrib module extensions defined in the 
+Also installs any contrib module extensions defined in the
 `node['postgresql']['contrib']['extensions']` attribute. These will be
 available in any subsequently created databases in the cluster, because
 they will be installed into the `template1` database using the
@@ -323,11 +337,13 @@ loads its shared library, which can be done with this node attribute:
 
     node['postgresql']['config']['shared_preload_libraries'] = 'pg_stat_statements'
 
-ppa\_pitti\_postgresql
+apt\_pgdg\_postgresql
 ----------------------
 
-Enables Martin Pitti's PPA for updated PostgreSQL packages.
-Automatically included if the `node['postgresql']['enable_pitti_ppa']`
+Enables the PostgreSQL Global Development Group yum repository
+maintained by Devrim G&#252;nd&#252;z for updated PostgreSQL packages.
+(The PGDG is the groups that develops PostgreSQL.)
+Automatically included if the `node['postgresql']['enable_pgdg_apt']`
 attribute is true. Also set the
 `node['postgresql']['client']['packages']` and
 `node['postgresql']['server]['packages']` to the list of packages to
@@ -347,7 +363,7 @@ values that will need to have embedded version numbers. For example:
     node['postgresql']['enable_pgdg_yum'] = true
     node['postgresql']['version'] = "9.2"
     node['postgresql']['dir'] = "/var/lib/pgsql/9.2/data"
-    node['postgresql']['client']['packages'] = ["postgresql92"]
+    node['postgresql']['client']['packages'] = ["postgresql92", "postgresql92-devel"]
     node['postgresql']['server']['packages'] = ["postgresql92-server"]
     node['postgresql']['server']['service_name'] = "postgresql-9.2"
     node['postgresql']['contrib']['packages'] = ["postgresql92-contrib"]
@@ -385,6 +401,12 @@ platform and wish to use SSL in postgresql, then generate your SSL
 certificates and distribute them in your own cookbook, and set the
 `node['postgresql']['config']['ssl']` attribute to true in your
 role/cookboook/node.
+
+On server systems, the postgres server is restarted when a configuration
+file changes.  This can be changed to reload only by setting the
+following attribute:
+
+    node['postgresql']['server']['config_change_notify'] = :reload
 
 Chef Solo Note
 ==============

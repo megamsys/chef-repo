@@ -53,7 +53,7 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
     owner node["redis2"]["user"]
     mode "0750"
   end
-
+=begin
   conf_vars = {
     :conf => conf,
     :instance_name => params[:name],
@@ -77,6 +77,7 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
     options \
 	  :user => node["redis2"]["user"],
       :config_file => ::File.join(node["redis2"]["conf_dir"], "#{instance_name}.conf"),
-      :timeouts => uplevel_params[:service_timeouts]
+      :timeouts => node["redis2"]["instances"]["default"]["timeout"]
   end
+=end
 end

@@ -1,23 +1,7 @@
 Description
 ===========
-This is a fork of the Opscode PostgreSQL cookbook, which has been modified 
-extensively.
 
-* Adds support for PostgresQL 9.1 on Ubuntu 10.04 (Lucid) using a PPA. 
-* Adds a recipe to create PostgreSQL user accounts and databases (this 
-  particular addition couples this to the `database` cookbook)
-* Adds support for configuring Hot Standby with Streaming replication
-  (optionally synchronous) in PostgreSQL 9.1
-
-*TODO*: while hot-standby is configured, there's nothing in postgresql that'll 
-do automated failover if the master dies.  Typically, that's accomplished by:
-
-* touching a trigger file on the standby (it'll then act as a master)
-* using some form of IP failover so the Master's IP address is automatically
-  transferred to the standby
-* some STONITH mechanism for the old master, so it doesn't come back online
-
-None of the above are handled automatically in this cookbook.
+Installs and configures PostgreSQL as a client or a server.
 
 Requirements
 ============
@@ -29,21 +13,24 @@ Requirements
 * Fedora
 * SUSE
 
-**Note**: Hot Standby and Streaming replication are only supported on Debian
-and Ubuntu.
+Tested on:
 
-## Cookboooks
+* Ubuntu 10.04, 11.10, 12.04
+* Red Hat 6.1, Scientific 6.1, CentOS 6.3
 
-Requires Opscode's `openssl` cookbook for secure password generation, and a C
-compiler and development headers in order to build the `pg` RubyGem to provide
-Ruby bindings so they're available in other cookbooks.
+## Cookbooks
+
+Requires Opscode's `openssl` cookbook for secure password generation.
+
+Requires a C compiler and development headers in order to build the
+`pg` RubyGem to provide Ruby bindings in the `ruby` recipe.
 
 Opscode's `build-essential` cookbook provides this functionality on
 Debian, Ubuntu, and EL6-family.
 
-While not required, Opscode's `database` cookbook contains resources and
-providers that can interact with a PostgreSQL database. The Opscode 
-`megam_postgresql`cookbook is a dependency of database.
+While not required, Opscode's `database` cookbook contains resources
+and providers that can interact with a PostgreSQL database. This
+cookbook is a dependency of database.
 
 Attributes
 ==========
@@ -54,71 +41,119 @@ The following attributes are set based on the platform, see the
 * `node['postgresql']['version']` - version of postgresql to manage
 * `node['postgresql']['dir']` - home directory of where postgresql
   data and configuration lives.
+
 * `node['postgresql']['client']['packages']` - An array of package names
   that should be installed on "client" systems.
 * `node['postgresql']['server']['packages']` - An array of package names
   that should be installed on "server" systems.
+* `node['postgresql']['server']['config_change_notify']` - Type of
+  notification triggered when a config file changes.
+* `node['postgresql']['contrib']['packages']` - An array of package names
+  that could be installed on "server" systems for useful sysadmin tools.
+
+* `node['postgresql']['enable_pgdg_apt']` - Whether to enable the apt repo
+  by the PostgreSQL Global Development Group, which contains newer versions
+  of PostgreSQL.
+
+* `node['postgresql']['enable_pgdg_yum']` - Whether to enable the yum repo
+  by the PostgreSQL Global Development Group, which contains newer versions
+  of PostgreSQL.
+
+* `node['postgresql']['initdb_locale']` - Sets the default locale for the
+  database cluster. If this attribute is not specified, the locale is
+  inherited from the environment that initdb runs in. Sometimes you must
+  have a system locale that is not what you want for your database cluster,
+  and this attribute addresses that scenario. Valid only for EL-family
+  distros (RedHat/Centos/etc.).
 
 The following attributes are generated in
 `recipe[postgresql::server]`.
 
 * `node['postgresql']['password']['postgres']` - randomly generated
   password by the `openssl` cookbook's library.
-* `node['postgresql']['ssl']` - whether to enable SSL (off for version
-  8.3, true for 8.4 and later).
-* For SSL keys to be automatically generated for you, you need to override `node[:postgresql][:ssl_password]` (only tested on Ubuntu). This password is the passphrase used for signing the certificates.
+  (TODO: This is broken, as it disables the password.)
 
-The following attributes are used by the `setup` recipe:
-* `node['postgresql']['databag']` - the data bag in which the `setup` recipe
-  searches for items. Default is `postgresql`
-* `node['postgresql']['setup_items']` - a list of data bag items 
-  containing user/database information. See the notes for the `setup` recipe
-  for the expected format.
+Configuration
+-------------
 
-There are also a number of other attributes defined that control  things such
-as host based access (`pg_hba.conf`) and hot standby. A few are listed below,
-but see `attributes/default.rb` for more information.
-* `node['postgresql']['hba']` - a list of `address`/`method` hashes
-  defining the ip address that will be able to connect to PostreSQL
+The `postgresql.conf` and `pg_hba.conf` files are dynamically
+generated from attributes. Each key in `node['postgresql']['config']`
+is a postgresql configuration directive, and will be rendered in the
+config file. For example, the attribute:
 
-Streaming Replication
----------------------
+    node['postgresql']['config']['listen_addresses'] = 'localhost'
 
-The following attributes can be modified to enable and configure streaming 
-replication and for a Master or Standby.
+Will result in the following line in the `postgresql.conf` file:
 
-* `default[:postgresql][:listen_addresses]`
-* `default[:postgresql][:master]` - Whether a node is a master. Defaults to 
-  false. In this case, replication will not be configured, and the rest of the 
-  master settings will be ignored.
-* `default[:postgresql][:standby]` - Whether a node is a standby. Defaults to 
-  false. In this case, replication will not be configured, and the rest of the 
-  standby settings will be ignored.
+    listen_addresses = 'localhost'
 
-### Master Server
+The attributes file contains default values for Debian and RHEL
+platform families (per the `node['platform_family']`). These defaults
+have disparity between the platforms because they were originally
+extracted from the postgresql.conf files in the previous version of
+this cookbook, which differed in their default config. The resulting
+configuration files will be the same as before, but the content will
+be dynamically rendered from the attributes. The helpful commentary
+will no longer be present. You should consult the PostgreSQL
+documentation for specific configuration details.
 
-* `default[:postgresql][:wal_level]` - set to `hot_standby` to enable Hot standby.
-* `default[:postgresql][:max_wal_senders]`
-* `default[:postgresql][:wal_sender_delay]`
-* `default[:postgresql][:wal_keep_segments]`
-* `default[:postgresql][:vacuum_defer_cleanup_age]`
-* `default[:postgresql][:replication_timeout]`
-* `default[:postgresql][:synchronous_standby_names]` - If you want synchronous 
-  replication, this must be a string containing a comma-separated list of node 
-  names of the standby servers.
-* `default[:postgresql][:standby_ips]` - A list of IP addresses for standbys. 
-  These MUST be specified in a role.
+See __Recipes__ `config_initdb` and `config_pgtune` below to
+auto-generate many postgresql.conf settings.
 
+For values that are "on" or "off", they should be specified as literal
+`true` or `false`. String values will be used with single quotes. Any
+configuration option set to the literal `nil` will be skipped
+entirely. All other values (e.g., numeric literals) will be used as
+is. So for example:
 
-### Standby Servers
+    node.default['postgresql']['config']['logging_collector'] = true
+    node.default['postgresql']['config']['datestyle'] = 'iso, mdy'
+    node.default['postgresql']['config']['ident_file'] = nil
+    node.default['postgresql']['config']['port] = 5432
 
-* `default[:postgresql][:master_ip]` - This MUST Be specified in the role. It 
-  lets the standby know how to connect to the master.
-* `default[:postgresql][:hot_standby]` - set to `on` to enable hot standby.
-* `default[:postgresql][:max_standby_archive_delay]`
-* `default[:postgresql][:max_standby_streaming_delay]`
-* `default[:postgresql][:wal_receiver_status_interval]`
-* `default[:postgresql][:hot_standby_feedback]`
+Will result in the following config lines:
+
+    logging_collector = 'on'
+    datestyle = 'iso,mdy'
+    port = 5432
+
+(no line printed for `ident_file` as it is `nil`)
+
+Note that the `unix_socket_directory` configuration was renamed to
+`unix_socket_directories` in Postgres 9.3 so make sure to use the
+`node['postgresql']['unix_socket_directories']` attribute instead of
+`node['postgresql']['unix_socket_directory']`.
+
+The `pg_hba.conf` file is dynamically generated from the
+`node['postgresql']['pg_hba']` attribute. This attribute must be an
+array of hashes, each hash containing the authorization data. As it is
+an array, you can append to it in your own recipes. The hash keys in
+the array must be symbols. Each hash will be written as a line in
+`pg_hba.conf`. For example, this entry from
+`node['postgresql']['pg_hba']`:
+
+    {:comment => '# Optional comment',
+    :type => 'local', :db => 'all', :user => 'postgres', :addr => nil, :method => 'md5'}
+
+Will result in the following line in `pg_hba.conf`:
+
+    # Optional comment
+    local   all             postgres                                md5
+
+Use `nil` if the CIDR-ADDRESS should be empty (as above).
+Don't provide a comment if none is desired in the `pg_hba.conf` file.
+
+Note that the following authorization rule is supplied automatically by
+the cookbook template. The cookbook needs this to execute SQL in the
+PostgreSQL server without supplying the clear-text password (which isn't
+known by the cookbook). Therefore, your `node['postgresql']['pg_hba']`
+attributes don't need to specify this authorization rule:
+
+    # "local" is for Unix domain socket connections only
+    local   all             all                                     ident
+
+(By the way, the template uses `peer` instead of `ident` for PostgreSQL-9.1
+and above, which has the same effect.)
 
 Recipes
 =======
@@ -126,30 +161,13 @@ Recipes
 default
 -------
 
-This recipe just includes the `megam_postgresql::client` recipe, which installs the
-postgresql client package and required dependencies.
-
-apt_postgresql_ppa
-------------------
-Adds sources for a PosgresSQL 9.1 package for _Ubuntu 10.04_. **NOTE** that this
-recipe should only be used in Ubuntu 10.04. Newer versions of Ubuntu include
-PostgreSQL 9.1 in their package repository.
-
-To use this, you'll need to specify the PostgreSQL `version` and `dir` 
-attributes. For example, add the folloing to your role:
-
-    override_attributes(
-      :postgresql => {
-        :version => "9.1",
-        :dir => "/etc/postgresql/9.1/main"  
-      }
-    ) 
+Includes the client recipe.
 
 client
 ------
 
-Installs postgresql client packages and development headers during the
-compile phase. 
+Installs the packages defined in the
+`node['postgresql']['client']['packages']` attribute.
 
 ruby
 ----
@@ -158,41 +176,200 @@ ruby
   the
   ["Omnibus" full stack installer](http://opscode.com/chef/install) on
   some platforms due to an incompatibility with OpenSSL. See
-  [COOK-1406](http://tickets.opscode.com/browse/COOK-1406)
+  [COOK-1406](http://tickets.opscode.com/browse/COOK-1406). You can
+  build from source into the Chef omnibus installation to work around
+  this issue.
 
 Install the `pg` gem under Chef's Ruby environment so it can be used
-in other recipes.
+in other recipes. The build-essential packages and postgresql client
+packages will be installed during the compile phase, so that the
+native extensions of `pg` can be compiled.
 
 server
 ------
 
-Includes the `server_debian` or `server_redhat` recipe to get the appropriate
-server packages installed and service managed. Also manages the configuration
-for the server:
+Includes the `server_debian` or `server_redhat` recipe to get the
+appropriate server packages installed and service managed. Also
+manages the configuration for the server:
 
 * generates a strong default password (via `openssl`) for `postgres`
+  (TODO: This is broken, as it disables the password.)
 * sets the password for postgres
+* manages the `postgresql.conf` file.
 * manages the `pg_hba.conf` file.
 
 server\_debian
 --------------
 
-Installs the postgresql server packages, manages the postgresql service and
-the postgresql.conf file.
+Installs the postgresql server packages and sets up the service. You
+should include the `postgresql::server` recipe, which will include
+this on Debian platforms.
 
 server\_redhat
 --------------
 
 Manages the postgres user and group (with UID/GID 26, per RHEL package
 conventions), installs the postgresql server packages, initializes the
-database and manages the postgresql service, and manages the
-postgresql.conf file.
+database, and manages the postgresql service. You should include the
+`postgresql::server` recipe, which will include this on RHEL/Fedora
+platforms.
 
-setup
------
-Creates Roles (user account) and Databases from a data bag. See the *Usage*
-section for more info.
+config\_initdb
+--------------
 
+Takes locale and timezone settings from the system configuration.
+This recipe creates `node.default['postgresql']['config']` attributes
+that conform to the system's locale and timezone. In addition, this
+recipe creates the same error reporting and logging settings that
+`initdb` provided: a rotation of 7 days of log files named
+postgresql-Mon.log, etc.
+
+The default attributes created by this recipe are easy to override with
+normal attributes because of Chef attribute precedence. For example,
+suppose a DBA wanted to keep log files indefinitely, rolling over daily
+or when growing to 10MB. The Chef installation could include the
+`postgresql::config_initdb` recipe for the locale and timezone settings,
+but customize the logging settings with these node JSON attributes:
+
+    "postgresql": {
+      "config": {
+        "log_rotation_age": "1d",
+        "log_rotation_size": "10MB",
+        "log_filename": "postgresql-%Y-%m-%d_%H%M%S.log"
+      }
+    }
+
+Credits: This `postgresql::config_initdb` recipe is based on algorithms
+in the [source code](http://doxygen.postgresql.org/initdb_8c_source.html)
+for the PostgreSQL `initdb` utility.
+
+config\_pgtune
+--------------
+
+Performance tuning.
+Takes the wimpy default postgresql.conf and expands the database server
+to be as powerful as the hardware it's being deployed on. This recipe
+creates a baseline configuration of `node.default['postgresql']['config']`
+attributes in the right general range for a dedicated Postgresql system.
+Most installations won't need additional performance tuning.
+
+The only decision you need to make is to choose a `db_type` from the
+following database workloads. (See the recipe code comments for more
+detailed descriptions.)
+
+ * "dw" -- Data Warehouse
+ * "oltp" -- Online Transaction Processing
+ * "web" -- Web Application
+ * "mixed" -- Mixed DW and OLTP characteristics
+ * "desktop" -- Not a dedicated database
+
+This recipe uses a performance model with three input parameters.
+These node attributes are completely optional, but it is obviously
+important to choose the `db_type` correctly:
+
+ * `node['postgresql']['config_pgtune']['db_type']` --
+   Specifies database type from the list of five choices above.
+   If not specified, the default is "mixed".
+
+ * `node['postgresql']['config_pgtune']['max_connections']` --
+   Specifies maximum number of connections expected.
+   If not specified, it depends on database type:
+   "web":200, "oltp":300, "dw":20, "mixed":80, "desktop":5
+
+ * `node['postgresql']['config_pgtune']['total_memory']` --
+   Specifies total system memory in kB. (E.g., "49416564kB".)
+   If not specified, it will be taken from Ohai automatic attributes.
+   This could be used to tune a system that isn't a dedicated database.
+
+The default attributes created by this recipe are easy to override with
+normal attributes because of Chef attribute precedence. For example, if
+you are running application benchmarks to try different buffer cache
+sizes, you would experiment with this node JSON attribute:
+
+    "postgresql": {
+      "config": {
+        "shared_buffers": "3GB"
+      }
+    }
+
+Note that the recipe uses `max_connections` in its computations. If
+you want to override that setting, you should specify
+`node['postgresql']['config_pgtune']['max_connections']` instead of
+`node['postgresql']['config']['max_connections']`.
+
+Credits: This `postgresql::config_pgtune` recipe is based on the
+[pgtune python script](https://github.com/gregs1104/pgtune)
+developed by
+[Greg Smith](http://notemagnet.blogspot.com/2008/11/automating-initial-postgresqlconf.html)
+and
+[other pgsql-hackers](http://www.postgresql.org/message-id/491C6CDC.8090506@agliodbs.com).
+
+contrib
+-------
+
+Installs the packages defined in the
+`node['postgresql']['contrib']['packages']` attribute. The contrib
+directory of the PostgreSQL distribution includes porting tools,
+analysis utilities, and plug-in features that database engineers often
+require. Some (like `pgbench`) are executable. Others (like
+`pg_buffercache`) would need to be installed into the database.
+
+Also installs any contrib module extensions defined in the
+`node['postgresql']['contrib']['extensions']` attribute. These will be
+available in any subsequently created databases in the cluster, because
+they will be installed into the `template1` database using the
+`CREATE EXTENSION` command. For example, it is often necessary/helpful
+for problem troubleshooting and maintenance planning to install the
+views and functions in these [standard instrumentation extensions]
+(http://www.postgresql.org/message-id/flat/4DC32600.6080900@pgexperts.com#4DD3D6C6.5060006@2ndquadrant.com):
+
+    node['postgresql']['contrib']['extensions'] = [
+      "pageinspect",
+      "pg_buffercache",
+      "pg_freespacemap",
+      "pgrowlocks",
+      "pg_stat_statements",
+      "pgstattuple"
+    ]
+
+Note that the `pg_stat_statements` view only works if `postgresql.conf`
+loads its shared library, which can be done with this node attribute:
+
+    node['postgresql']['config']['shared_preload_libraries'] = 'pg_stat_statements'
+
+apt\_pgdg\_postgresql
+----------------------
+
+Enables the PostgreSQL Global Development Group yum repository
+maintained by Devrim G&#252;nd&#252;z for updated PostgreSQL packages.
+(The PGDG is the groups that develops PostgreSQL.)
+Automatically included if the `node['postgresql']['enable_pgdg_apt']`
+attribute is true. Also set the
+`node['postgresql']['client']['packages']` and
+`node['postgresql']['server]['packages']` to the list of packages to
+use from this repository, and set the `node['postgresql']['version']`
+attribute to the version to use (e.g., "9.2").
+
+yum\_pgdg\_postgresql
+---------------------
+
+Enables the PostgreSQL Global Development Group yum repository
+maintained by Devrim G&#252;nd&#252;z for updated PostgreSQL packages.
+(The PGDG is the groups that develops PostgreSQL.)
+Automatically included if the `node['postgresql']['enable_pgdg_yum']`
+attribute is true. Also use `override_attributes` to set a number of
+values that will need to have embedded version numbers. For example:
+
+    node['postgresql']['enable_pgdg_yum'] = true
+    node['postgresql']['version'] = "9.2"
+    node['postgresql']['dir'] = "/var/lib/pgsql/9.2/data"
+    node['postgresql']['client']['packages'] = ["postgresql92", "postgresql92-devel"]
+    node['postgresql']['server']['packages'] = ["postgresql92-server"]
+    node['postgresql']['server']['service_name'] = "postgresql-9.2"
+    node['postgresql']['contrib']['packages'] = ["postgresql92-contrib"]
+
+You may set `node['postgresql']['pgdg']['repo_rpm_url']` attributes
+to pick up recent [PGDG repo packages](http://yum.postgresql.org/repopackages.php).
 
 Resources/Providers
 ===================
@@ -204,141 +381,69 @@ users and databases.
 Usage
 =====
 
-On systems that need to connect to a PostgreSQL database, add to a run list
-`recipe[megam_postgresql]` or `recipe[megam_postgresql::client]`.
+On systems that need to connect to a PostgreSQL database, add to a run
+list `recipe[postgresql]` or `recipe[postgresql::client]`.
 
-On systems that should be PostgreSQL servers, use `recipe[megam_postgresql::server]`
-in a run list. This recipe does set a password and expect to use it. It
-performs a node.save when Chef is not running in `solo` mode. If you're using
-`chef-solo`, you'll need to set the attribute 
-`node['postgresql']['password']['postgres']` in your node's `json_attribs` file
-or in a role.
+On systems that should be PostgreSQL servers, use
+`recipe[postgresql::server]` on a run list. This recipe does set a
+password for the `postgres` user.
+If you're using `chef server`, if the attribute
+`node['postgresql']['password']['postgres']` is not found,
+the recipe generates a random password and performs a node.save.
+(TODO: This is broken, as it disables the password.)
+If you're using `chef-solo`, you'll need
+to set the attribute `node['postgresql']['password']['postgres']` in
+your node's `json_attribs` file or in a role.
 
-Streaming Replication/Hot Standby
----------------------------------
-To set this up, you'd need to:
+On Debian family systems, SSL will be enabled, as the packages on
+Debian/Ubuntu also generate the SSL certificates. If you use another
+platform and wish to use SSL in postgresql, then generate your SSL
+certificates and distribute them in your own cookbook, and set the
+`node['postgresql']['config']['ssl']` attribute to true in your
+role/cookboook/node.
 
-1. Bootstrap the Nodes (you've got know know their IP addresses!)
-2. Assign the `server` recipe to the master and slave nodes to install a
-   standard postgresql server.
-3. Log into the Standby machine and shut down PostgreSQL.
-4. Create the Master/Standby Roles (see below) and apply to each node.
-        * Make sure both nodes have access to each others' PostgreSQL service
-          by adding the appropriate values for the `node['postgresql']['hba']`
-          attribute.
-5. Run `chef-client` on the Master. Wait for it to finish.
-6. Run `chef-client` on the Standby. It will fail. That's ok. Log into the
-   standby and make sure PostgreSQL is not running.
-7. Log into the master and manually remove 
-   `/var/lib/postgresql/9.1/main/.initial_transfer_complete`, then re-run
-   `chef-client` (it will again copy the database data directory 
-   over to the standby via rsync, so you'll be prompted for a password unless 
-   you've got public keys in place... make sure this step works!)
-8. Restart postgresql on the master, then on the standby and run `chef-client`
-   on both nodes. Check to make sure PostgreSQL's `sender` and `receiver`
-   processes are running:
-    * Run `ps -ef | grep sender` on the Master
-    * Run `ps -ef | grep receiver` on the Standby
-9. Subsequent runs of `chef-client` should work without any errors.
+On server systems, the postgres server is restarted when a configuration
+file changes.  This can be changed to reload only by setting the
+following attribute:
 
-### Master Role
-To configure a Master server, you would need to create a role that sets the 
-appropriate properties. For example, given that you have a node namded `db2` 
-with an ip address of `10.0.0.11`, you might create a role similar to the one 
-below:
+    node['postgresql']['server']['config_change_notify'] = :reload
 
-    name "pg_server_master"
-    description "A PostgreSQL Master"
-    run_list "recipe[megam_postgresql::server]"
+Chef Solo Note
+==============
 
-    override_attributes(
-      :postgresql => {
-        :version => "9.1",
-        :dir => "/etc/postgresql/9.1/main",
-        :master => true,
-        :listen_addresses => "*",
-        :wal_level => "hot_standby",
-        :max_wal_senders => 5,
-        :standby_ips => [ "10.0.0.11", ],
-        :synchronous_standby_names => ["db2", ], # Omit this if you don't want
-                                                 # synchronous replication
-        :hba => [
-            { :method => 'md5', :address => '127.0.0.1/32' },
-            { :method => 'md5', :address => '::1/128' },
-            { :method => 'md5', :address => '10.0.0.10' },
-            { :method => 'md5', :address => '10.0.0.11' },
-        ]
-      }
-    )
-
-### Standby Role
-To configure a Standby, you could create a similar role. Assuming the master 
-was available at an ip address of `10.0.0.10`:
-
-    name "pg_server_standby"
-    description "A PostgreSQL Standby"
-    run_list "recipe[megam_postgresql::server]"
-
-    override_attributes(
-      :postgresql => {
-        :version => "9.1",
-        :dir => "/etc/postgresql/9.1/main",
-        :standby => true,
-        :hot_standby => "on",
-        :master_ip => "10.0.0.10",
-        :hba => [
-            { :method => 'md5', :address => '127.0.0.1/32' },
-            { :method => 'md5', :address => '::1/128' },
-            { :method => 'md5', :address => '10.0.0.10' },
-            { :method => 'md5', :address => '10.0.0.11' },
-        ]
-      }
-    )
-
-### User/Database Setup
-
-To configure users and databases, create a data bag with the name used in the
-`default[:postgresql][:databag]` attribute. Items in this databag will be used
-to create both PostgreSQL users and databases. The format of each databag item
-should be similar to the following:
+The following node attribute is stored on the Chef Server when using
+`chef-client`. Because `chef-solo` does not connect to a server or
+save the node object at all, to have the password persist across
+`chef-solo` runs, you must specify them in the `json_attribs` file
+used. For Example:
 
     {
-       "id": "sample_db_setup",
-       "users": [
-           {
-               "username":"some_user",
-               "password":"some_password",
-               "superuser": "true",
-           }
-       ],
-       "databases": [
-           {
-               "name":"some_db",
-               "owner":"some_user", 
-               "template":"template0",
-               "encoding": "UTF8",
-               "locale": "en_US.utf8"
-           }
-       ] 
+      "postgresql": {
+        "password": {
+          "postgres": "iloverandompasswordsbutthiswilldo"
+        }
+      },
+      "run_list": ["recipe[postgresql::server]"]
     }
 
+That should actually be the "encrypted password" instead of cleartext,
+so you should generate it as an md5 hash using the PostgreSQL algorithm.
 
-Then, override the `node['postgresql']['setup_items']` attribute in a role:
-
-    override_attributes(
-      :postgresql => {
-        :databag     => "postgresql", # databag from which items are fetched
-        :setup_items => ["sample_db_setup", ]  # name of item from which
-                                               # user/database info is read.
-      }
-    )
+* You could copy the md5-hashed password from an existing postgres
+database if you have `postgres` access and want to use the same password:<br>
+`select * from pg_shadow where usename='postgres';`
+* You can run this from any postgres database session to use a new password:<br>
+`select 'md5'||md5('iloverandompasswordsbutthiswilldo'||'postgres');`
+* You can run this from a linux commandline:<br>
+`echo -n 'iloverandompasswordsbutthiswilldo''postgres' | openssl md5 | sed -e 's/.* /md5/'`
 
 License and Author
 ==================
 
-Author:: Joshua Timberman (<joshua@opscode.com>)
-Author:: Lamont Granquist (<lamont@opscode.com>)
-Author:: Brad Montgomery (<brad@bradmontgomery.net>)
+- Author:: Joshua Timberman (<joshua@opscode.com>)
+- Author:: Lamont Granquist (<lamont@opscode.com>)
+- Author:: Chris Roberts (<chrisroberts.code@gmail.com>)
+- Author:: David Crane (<davidc@donorschoose.org>)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

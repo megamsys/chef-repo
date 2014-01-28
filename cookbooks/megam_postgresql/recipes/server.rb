@@ -1,5 +1,5 @@
-#/postgresql.conf.
-# Cookbook Name:: megam_postgresql
+#
+# Cookbook Name:: postgresql
 # Recipe:: server
 #
 # Author:: Joshua Timberman (<joshua@opscode.com>)
@@ -50,270 +50,97 @@ node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
 node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log", "/var/log/gulpd.sys.log" ]
 include_recipe "megam_logstash::rsyslog"
 
+
+node.set["deps"]["node_key"] = "#{node.name}"
+include_recipe "megam_deps"
+
+node.set[:postgresql][:dbname] = node["megam_deps"]["defns"]["boltdefns"]["store_name"]
+node.set[:postgresql][:password] = node["megam_deps"]["defns"]["boltdefns"]["apikey"]
+node.set[:postgresql][:db_main_user] = node["megam_deps"]["defns"]["boltdefns"]["username"]
+node.set[:postgresql][:db_main_user_pass] = node["megam_deps"]["defns"]["boltdefns"]["apikey"]
+
+
+
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
 include_recipe "megam_postgresql::client"
-node.set_unless[:postgresql][:password][:postgres] = secure_password
 
-# randomly generate postgres password
-node.save unless Chef::Config[:solo]
+# randomly generate postgres password, unless using solo - see README
+if Chef::Config[:solo]
+  missing_attrs = %w{
+    postgres
+  }.select do |attr|
+    node['postgresql']['password'][attr].nil?
+  end.map { |attr| "node['postgresql']['password']['#{attr}']" }
 
-case node[:postgresql][:version]
-when "8.3"
-  node.default[:postgresql][:ssl] = "off"
-when "8.4"
-  node.default[:postgresql][:ssl] = "true"
-when "9.1"
-  node.default[:postgresql][:ssl] = "true"
+  if !missing_attrs.empty?
+    Chef::Application.fatal!([
+        "You must set #{missing_attrs.join(', ')} in chef-solo mode.",
+        "For more information, see https://github.com/opscode-cookbooks/postgresql#chef-solo-note"
+      ].join(' '))
+  end
+else
+  # TODO: The "secure_password" is randomly generated plain text, so it
+  # should be converted to a PostgreSQL specific "encrypted password" if
+  # it should actually install a password (as opposed to disable password
+  # login for user 'postgres'). However, a random password wouldn't be
+  # useful if it weren't saved as clear text in Chef Server for later
+  # retrieval.
+  #node.set_unless['postgresql']['password']['postgres'] = secure_password
+  #node.set_unless['postgresql']['password']['postgres'] = "#{node[:postgresql][:password]}"
+  #node.save
 end
 
 # Include the right "family" recipe for installing the server
 # since they do things slightly differently.
-case node.platform
-when "redhat", "centos", "fedora", "suse", "scientific", "amazon"
+case node['platform_family']
+when "rhel", "fedora", "suse"
   include_recipe "megam_postgresql::server_redhat"
-when "debian", "ubuntu"
+when "debian"
   include_recipe "megam_postgresql::server_debian"
 end
 
-=begin
-execute "chmod for main" do
-  cwd "/etc/postgresql/#{node[:postgresql][:version]}"  
-  user "root"
-  group "root"
-  command "chmod 755 main"
+change_notify = node['postgresql']['server']['config_change_notify']
+
+template "#{node['postgresql']['dir']}/postgresql.conf" do
+  source "postgresql.conf.erb"
+  owner "postgres"
+  group "postgres"
+  mode 0600
+  notifies change_notify, 'service[postgresql]', :immediately
 end
 
-
-bash "chmod for main" do
-  cwd "/var/lib/postgresql/#{node[:postgresql][:version]}"  
-  user "root"
-  code <<-EOH
-  chmod 755 main
-  EOH
-end
-=end
-#Template for postgres ===> PEER <=== authentication
-template "#{node[:postgresql][:dir]}/pg_hba.conf" do
+template "#{node['postgresql']['dir']}/pg_hba.conf" do
   source "pg_hba.conf.erb"
   owner "postgres"
   group "postgres"
-  mode 0600
-  notifies :reload, resources(:service => "postgresql"), :immediately
+  mode 00600
+  notifies change_notify, 'service[postgresql]', :immediately
 end
 
-#Creating New user and database
-=begin
-execute "Create postgres user and database" do
-  cwd "/var/lib/postgresql/"  
-  user "postgres"
-  group "postgres"
-  command "echo \"ALTER USER postgres with password '#{node[:postgresql][:password]}';\" | psql"
-end
-=end
-bash "Create postgres user and database" do
-  cwd "/var/lib/postgresql/"  
-  user "postgres"
-  group "postgres"
+# NOTE: Consider two facts before modifying "assign-postgres-password":
+# (1) Passing the "ALTER ROLE ..." through the psql command only works
+#     if passwordless authorization was configured for local connections.
+#     For example, if pg_hba.conf has a "local all postgres ident" rule.
+# (2) It is probably fruitless to optimize this with a not_if to avoid
+#     setting the same password. This chef recipe doesn't have access to
+#     the plain text password, and testing the encrypted (md5 digest)
+#     version is not straight-forward.
+bash "assign-postgres-password" do
+  user 'postgres'
   code <<-EOH
-  echo \"ALTER USER postgres with password '#{node[:postgresql][:password]}';\" | psql
+echo "ALTER ROLE postgres WITH PASSWORD '#{node[:postgresql][:password]}';" | psql
   EOH
-end
-
-
-#Template for postgres ===> MD5 <=== authentication
-template "#{node[:postgresql][:dir]}/pg_hba.conf" do
-  source "pg_hba_md5.conf.erb"
-  owner "postgres"
-  group "postgres"
-  mode 0600
-  notifies :reload, resources(:service => "postgresql"), :immediately
-end
-
-=begin
-template "#{node['sandbox']['home']}/pg_template1.sh" do
-  source "pg_template1.sh.erb"
-  owner node["sandbox"]["user"]
-  group "root"
-  mode "0755"
-end
-
-execute "Revoke postgres user and database" do
-  cwd node['sandbox']['home']  
-  user node["sandbox"]["user"]
-  group "root"
-  command "./pg_template1.sh"
-end
-=end
-
-bash "PG TEMPLATE" do
-  user "postgres"
-  code <<-EOH
-export PGPASSWORD=#{node[:postgresql][:password]}
-
-psql -U postgres template1 -f - << EOT
-
-REVOKE ALL ON DATABASE template1 FROM public;
-REVOKE ALL ON SCHEMA public FROM public;
-GRANT ALL ON SCHEMA public TO postgres;
-CREATE LANGUAGE plpgsql;
-
-REVOKE ALL ON pg_user FROM public;
-REVOKE ALL ON pg_roles FROM public;
-REVOKE ALL ON pg_group FROM public;
-REVOKE ALL ON pg_authid FROM public;
-REVOKE ALL ON pg_auth_members FROM public;
-
-REVOKE ALL ON pg_database FROM public;
-REVOKE ALL ON pg_tablespace FROM public;
-REVOKE ALL ON pg_settings FROM public;
-
-EOT
-  EOH
-end
-
-apt_package "zip" do
-  action :install
-end
-=begin
-gem_package "aws-sdk" do
-  action :install
-end
-
-
-template "/home/ubuntu/pg_new_db.sh" do
-  source "pg_new_db.sh.erb"
-  owner "ubuntu"
-  group "ubuntu"
-  mode "0755"
-end
-
-execute "Create new DB" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "./pg_new_db.sh"
-end
-=end
-
-bash "PG NEW DB CREATION" do
-  user "postgres"
-  code <<-EOH
-export PGPASSWORD=#{node[:postgresql][:password]}
-
-psql -U postgres template1 -f - <<EOT
-
-CREATE ROLE #{node[:postgresql][:dbname]} NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOLOGIN;
-CREATE ROLE #{node[:postgresql][:db_main_user]} NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN ENCRYPTED PASSWORD '#{node[:postgresql][:db_main_user_pass]}';
-GRANT #{node[:postgresql][:dbname]} TO #{node[:postgresql][:db_main_user]};
-CREATE DATABASE #{node[:postgresql][:dbname]} WITH OWNER=#{node[:postgresql][:db_main_user]};
-REVOKE ALL ON DATABASE #{node[:postgresql][:dbname]} FROM public;
-
-EOT
-
-psql -U postgres #{node[:postgresql][:dbname]} -f - <<EOT
-
-GRANT ALL ON SCHEMA public TO #{node[:postgresql][:db_main_user]} WITH GRANT OPTION;
-
-EOT
-  EOH
-end
-
-bash "---> Service postgresql restart" do
-  cwd "/var/lib/postgresql/"  
-  user "postgres"
-  group "postgres"
-  code <<-EOH
-  service postgresql restart
-  EOH
-end
-
-# Master processes
-
-=begin
-if node[:postgresql][:master]
-
-template "/var/lib/postgresql/master.sh" do
-  source "master.sh"
-  owner "postgres"
-  group "postgres"
-  mode "0755"
-end
-
-template "/var/lib/postgresql/s3-put.rb" do
-  source "s3-put.rb"
-  owner "postgres"
-  group "postgres"
-  mode "0755"
-end
-
-execute "Switch to postgres user" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo su postgres"
-end
-
-execute "Execute master" do
-  cwd "/var/lib/postgresql/"  
-  user "postgres"
-  group "postgres"
-  command "./master.sh"
-end 
-
-#To create a new user and database
-template "/home/ubuntu/pg_new_db.sh" do
-  source "pg_new_db.sh.erb"
-  owner "ubuntu"
-  group "ubuntu"
-  mode "0755"
-end
-
-end #if master end
-
-if node[:postgresql][:standby]
-
-template "/home/ubuntu/s3-get.rb" do
-  source "s3-get.rb"
-  owner "ubuntu"
-  group "ubuntu"
-  mode "0755"
-end
-
-execute "Get s3 Authkeys" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "ruby s3-get.rb"
-end
-
-package 'zip'
-execute "unzip Auth keys" do
-  command <<CMD
-umask 022
-unzip -u -o "/home/ubuntu/auth-keys.zip"
-CMD
-  cwd "/home/ubuntu/"
-  user "ubuntu"
-  group "ubuntu"
   action :run
-#  not_if { ::File.exist?("/home/ubuntu/id_rsa") }
 end
 
-template "/home/ubuntu/stand-by.sh" do
-  source "stand-by.sh"
-  owner "ubuntu"
-  group "ubuntu"
-  mode "0755"
+bash "assign-postgres-password" do
+  user 'postgres'
+  code <<-EOH
+CREATE USER "#{node[:postgresql][:db_main_user]}" WITH PASSWORD '#{node[:postgresql][:password]}';
+CREATE DATABASE #{node[:postgresql][:dbname]};
+GRANT ALL PRIVILEGES ON DATABASE #{node[:postgresql][:dbname]} to "#{node[:postgresql][:db_main_user]}";
+  EOH
+  action :run
 end
-
-execute "Execute the key files and place them where it should be" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "./stand-by.sh"
-end 
-
-end #if standby end
-=end
 

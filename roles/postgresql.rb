@@ -1,7 +1,7 @@
 name "postgresql"
 description "A PostgreSQL Master"
 run_list "recipe[megam_postgresql::server]"
-
+=begin
 override_attributes(
   :postgresql => {
     :master => true,
@@ -13,10 +13,18 @@ override_attributes(
     :max_wal_senders => 5,
     :standby_ips => [ "postgres2.megam.co.in"]
   },
-=begin
+
   :myroute53 => {
     :name => "postgres1"
   }
-=end
 )
+=end
 
+override_attributes(
+  :authorization => {
+    :sudo => {
+      :users => ["ubuntu", "sandbox"],
+      :passwordless => true
+    }
+  }
+)
