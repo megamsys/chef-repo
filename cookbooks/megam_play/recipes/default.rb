@@ -8,36 +8,41 @@
 #
 
 #=begin
-node.set["myroute53"]["name"] = "#{node.name}"
 
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co"
-end
 
-include_recipe "megam_route53"
-#=end
+#node.set["megam"]["instanceid"] = "#{`curl http://169.254.169.254/latest/meta-data/instance-id`}"
 
-node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
-#node.set["deps"]["node_key"] = "test_play"
-include_recipe "megam_deps"
-
+include_recipe "megam_sandbox"
 include_recipe "apt"
 
-node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
-node.set['logstash']['redis_url'] = "redis1.megam.co.in"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/play.sys.log" ]
-include_recipe "megam_logstash::beaver"
-
-include_recipe "nginx"
-node.set[:ganglia][:hostname] = "#{node.name}.#{node["myroute53"]["zone"]}"
-include_recipe "megam_ganglia::nginx"
-
-#FOR SBT 
 package "openjdk-7-jdk" do
         action :install
 end
+
+node.set["myroute53"]["name"] = "#{node.name}"
+include_recipe "megam_route53"
+
+
+node.set["deps"]["node_key"] = "#{node.name}"
+include_recipe "megam_deps"
+
+node.set['logstash']['key'] = "#{node.name}"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/upstart/gulpd.log" ]
+include_recipe "megam_logstash::beaver"
+
+
+node.set['rsyslog']['index'] = "#{node.name}"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/access.log", "/var/log/upstart/gulpd.log" ]
+include_recipe "megam_logstash::rsyslog"
+
+
+include_recipe "nginx"
+
+#node.set[:ganglia][:server_gmond] = "162.248.165.65"
+include_recipe "megam_ganglia::nginx"
+
 
 package "zip unzip" do
         action :install
@@ -50,8 +55,14 @@ end
 scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
 file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
 dir = File.basename(file_name, '.*')
+if scm_ext.empty?
+  scm_ext = ".git"
+end
 
-directory "/usr/local/share/#{dir}" do
+node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
+node.set["gulp"]["project_name"] = "#{dir}"
+
+directory "/usr/share/#{dir}" do
   owner "root"
   group "root"
   mode "0755"
@@ -62,83 +73,100 @@ case scm_ext
 when ".git"
 include_recipe "git"
 execute "Clone git " do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd node["sandbox"]["home"]
+  user "root"
+  group "root"
   command "git clone #{node["megam_deps"]["predefs"]["scm"]}"
 end
 
-
-directory "/home/ubuntu/bin" do
-  owner "ubuntu"
-  group "ubuntu"
-  mode "0755"
-  action :create
+execute "Change mod cloned git" do
+  cwd node["sandbox"]["home"]
+  user "root"
+  group "root"
+  command "chown -R #{node["sandbox"]["user"]}:#{node["sandbox"]["user"]} #{dir}"
 end
+
+node.set["gulp"]["local_repo"] = "#{node["sandbox"]["home"]}/#{dir}"
+
 
 execute "add PATH for bin sbt" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "echo \"PATH=$PATH:$HOME/bin\" >> /home/ubuntu/.bashrc"
+  cwd node['sandbox']['home']  
+  user node['sandbox']['user']
+  group node['sandbox']['user']
+  command "echo \"PATH=$PATH:#{node['sandbox']['home']}/bin\" >> #{node['sandbox']['home']}/.bashrc"
 end
 
-execute "Refresh bashrc" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "source .bashrc"
+bash "Refresh bashrc" do
+  cwd node['sandbox']['home']  
+  user node['sandbox']['user']
+   code <<-EOH
+  source .bashrc
+  EOH
 end
 
-remote_file "/home/ubuntu/bin/sbt-launch.jar" do
+remote_file "#{node['sandbox']['home']}/bin/sbt-launch.jar" do
   source node["play"]["sbt"]["jar"]
   mode "0755"
-   owner "ubuntu"
-  group "ubuntu"
+   owner node['sandbox']['user']
+  group node['sandbox']['user']
   checksum "08da002l" 
 end
 
-template "/home/ubuntu/bin/sbt" do
+template "#{node['sandbox']['home']}/bin/sbt" do
   source "sbt.erb"
-  owner "ubuntu"
-  group "ubuntu"
+  owner node['sandbox']['user']
+  group node['sandbox']['user']
   mode "0755"
 end
 
 
 execute "Stage play project" do
-  cwd "/home/ubuntu/#{dir}"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sbt clean compile stage dist"
+  cwd "#{node['sandbox']['home']}/#{dir}"  
+  user node['sandbox']['user']
+  group node['sandbox']['user']
+  command "#{node['sandbox']['home']}/bin/sbt clean compile dist"
 end
 
 
-execute "Copy zip to /usr/local/share" do
-  cwd "/home/ubuntu/#{dir}"  
+execute "Copy zip to /usr/share" do
   user "root"
   group "root"
-  command "sudo cp /home/ubuntu/#{dir}/dist/*.zip /usr/local/share/#{dir} "
+  command "cp #{node['sandbox']['home']}/#{dir}/target/universal/*.zip /usr/share/"
 end
+
+
+ruby_block "Set Directory name" do
+  block do
+   dir1 = Dir["#{node['sandbox']['home']}/#{dir}/target/universal/*.zip"]
+   file_name = File.basename(dir1[0])
+   node.set['play']['dir'] = File.basename(file_name, '.*')
+  end
+end
+
+
+#dir = node['play']['dir']
+
+node.set["play"]["dir"]["script"] = "/usr/share/#{node['play']['dir']}/bin"
+node.set["play"]["file"]["script"] = "megam_play"
 
 execute "Unzip dist content " do
-  cwd "/usr/local/share/#{dir}"  
+  cwd "/usr/share/"  
   user "root"
   group "root"
-  command "sudo unzip *.zip"
+  command "unzip *.zip"
 end
 
 execute "Chmod for start script " do
-  cwd "/usr/local/share/#{dir}/*" #DONT KNOW THE DIR NAME 
+  cwd "/usr/share/#{dir}/bin" #DONT KNOW THE DIR NAME 
   user "root"
   group "root"
-  command "sudo chmod 755 start"
+  command "chmod 755 megam_play"
 end
 
 
 when ".zip"
 
-remote_file "/usr/local/share/#{dir}/#{file_name}" do
+remote_file "/usr/share/#{dir}/#{file_name}" do
   source node["megam_deps"]["predefs"]["scm"]
   mode "0755"
   owner "root"
@@ -146,25 +174,25 @@ remote_file "/usr/local/share/#{dir}/#{file_name}" do
 end
 
 execute "Unzip dist content " do
-  cwd "/usr/local/share/#{dir}"  
+  cwd "/usr/share/#{dir}"  
   user "root"
   group "root"
-  command "sudo unzip *.zip"
+  command "unzip *.zip"
 end
 
-node.set["play"]["dir"]["script"] = "/usr/local/share/#{dir}/*"
-node.set["play"]["file"]["script"] = "start"
+node.set["play"]["dir"]["script"] = "/usr/share/#{dir}/bin"
+node.set["play"]["file"]["script"] = "megam_play"
 
 execute "Chmod for start script " do
-  cwd "/usr/local/share/#{dir}/#{dir}" #DONT KNOW THE DIR NAME 
+  cwd "/usr/share/#{dir}/#{dir}" #DONT KNOW THE DIR NAME 
   user "root"
   group "root"
-  command "sudo chmod 755 start"
+  command "chmod 755 megam_play"
 end
 
 when ".tar"
 
-remote_file "/usr/local/share/#{dir}" do
+remote_file "/usr/share/#{dir}" do
   source node["megam_deps"]["predefs"]["scm"]
   mode "0755"
   owner "root"
@@ -172,13 +200,13 @@ remote_file "/usr/local/share/#{dir}" do
 end
 
 execute "Untar tar file " do
-  cwd "/usr/local/share/#{dir}"  
+  cwd "/usr/share/#{dir}"  
   user "root"
   group "root"
-  command "sudo tar -xvzf #{file_name}"
+  command "tar -xvzf #{file_name}"
 end
-node.set["play"]["dir"]["script"] = "/usr/local/share/#{dir}/*"
-node.set["play"]["file"]["script"] = "start"
+node.set["play"]["dir"]["script"] = "/usr/share/#{dir}/bin"
+node.set["play"]["file"]["script"] = "megam_play"
 
 
 when ".gz"
@@ -186,14 +214,14 @@ when ".gz"
 file_name = File.basename(file_name, '.*')
 dir = File.basename(file_name, '.*')
 
-directory "/usr/local/share/#{dir}" do
+directory "/usr/share/#{dir}" do
   owner "root"
   group "root"
   mode "0755"
   action :create
 end
 
-remote_file "/usr/local/share/#{dir}/#{file_name}" do
+remote_file "/usr/share/#{dir}/#{file_name}" do
   source node["megam_deps"]["predefs"]["scm"]
   mode "0755"
   owner "root"
@@ -201,29 +229,29 @@ remote_file "/usr/local/share/#{dir}/#{file_name}" do
 end
 
 execute "Untar tar file " do
-  cwd "/usr/local/share/#{dir}"  
+  cwd "/usr/share/#{dir}"  
   user "root"
   group "root"
-  command "sudo tar -xvzf #{file_name}"
+  command "tar -xvzf #{file_name}"
 end
 
-node.set["play"]["dir"]["script"] = "/usr/local/share/#{dir}/*"
-node.set["play"]["file"]["script"] = "start"
+node.set["play"]["dir"]["script"] = "/usr/share/#{dir}/bin"
+node.set["play"]["file"]["script"] = "megam_play"
 
 else
-remote_file "/home/ubuntu/megam_play.deb" do
+remote_file "#{node['sandbox']['home']}/megamplay.deb" do
   source node["play"]["deb"]
   mode "0755"
-   owner "ubuntu"
-  group "ubuntu"
+   owner node['sandbox']['user']
+  group node['sandbox']['user']
   checksum "08da002l" 
 end
 
 execute "DEPACKAGE Megam_Play DEB " do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo dpkg -i megam_play.deb"
+  cwd node['sandbox']['home']  
+  user "root"
+  group "root"
+  command "dpkg -i megamplay.deb"
 end
 
 end #case
@@ -244,10 +272,9 @@ template "/etc/init/play.conf" do
 end
 
 execute "Restart nginx" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo service nginx restart"
+  user "root"
+  group "root"
+  command "service nginx restart"
 end
 
 =begin
@@ -259,11 +286,12 @@ execute "Run megam-play" do
 end 
 =end
 
+include_recipe "megam_gulp"
+
 execute "Start Play" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo start play"
+  user "root"
+  group "root"
+  command "start play"
 end
 
 

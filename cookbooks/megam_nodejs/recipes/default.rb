@@ -1,6 +1,6 @@
 #
-# Author:: Thomas Alrin(alrin@megam.co.in)
-# Cookbook Name:: megam_nodejs
+# Author:: Marius Ducea (marius@promethost.com)
+# Cookbook Name:: nodejs
 # Recipe:: default
 #
 # Copyright 2010-2012, Promet Solutions
@@ -17,37 +17,67 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-#=begin
-node.set["myroute53"]["name"] = "#{node.name}"
-
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co"
+case node['platform_family']
+  when "debian"
+   include_recipe "apt"
 end
-
-include_recipe "megam_route53"
-#=end
-
-
-include_recipe "apt"
 
 include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
 
-#node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
+include_recipe "nginx"
+
+node.set["myroute53"]["name"] = "#{node.name}"
+include_recipe "megam_route53"
+
+#node.set[:ganglia][:server_gmond] = "162.248.165.65"
+include_recipe "megam_ganglia::nginx"
+
+node.set["deps"]["node_key"] = "#{node.name}"
+include_recipe "megam_deps"
+
+node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/nodejs.sys.log" ]
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::beaver"
 
 
-node.set["deps"]["node_key"] = "#{node.name}.#{node["myroute53"]["zone"]}"
-#node.set["deps"]["node_key"] = "aped.megam.co"
-include_recipe "megam_deps"
+node.set['rsyslog']['index'] = "#{node.name}"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log" ]
+include_recipe "megam_logstash::rsyslog"
+
 
 scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
 file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
 dir = File.basename(file_name, '.*')
+if scm_ext.empty?
+  scm_ext = ".git"
+end
+
+
+
+js_file = "#{node["megam_deps"]["defns"]["appdefns"]["runtime_exec"]}".split.last
+
+#SET JS FILE TO BE RUN
+node.set['nodejs']['js-file'] = "#{node["sandbox"]["home"]}/#{dir}/#{js_file}"
+
+node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
+node.set["gulp"]["project_name"] = "#{dir}"
+node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"
+node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
+
+
+
+execute "Clone Nodejs builder" do
+cwd "#{node['sandbox']['home']}/bin"
+  user "root"
+  group "root"
+  command "git clone https://github.com/indykish/megam_nodejs_builder.git"
+end
+
+
+node.set["gulp"]["builder"] = "megam_nodejs_builder"
+include_recipe "megam_gulp"
 
 
 case scm_ext
@@ -55,48 +85,65 @@ when ".git"
 
 include_recipe "git"
 execute "Clone git " do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
+  cwd node["sandbox"]["home"]
+  user "root"
+  group "root"
   command "git clone #{node["megam_deps"]["predefs"]["scm"]}"
 end
+
+execute "Change mod cloned git" do
+  cwd node["sandbox"]["home"]
+  user "root"
+  group "root"
+  command "chown -R #{node["sandbox"]["user"]}:#{node["sandbox"]["user"]} #{dir}"
+end
+
+node.set["gulp"]["local_repo"] = "#{node["sandbox"]["home"]}/#{dir}"
 
 else
 	puts "TEST CASE ELSE"
 end #CASE
 
 execute "change nodejs as executable " do
-  cwd node['nodejs']['home'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
-  command node['nodejs']['cmd']['chmod']
+  cwd node['sandbox']['home'] 
+  user node['sandbox']['user']
+  group node['sandbox']['user']
+  command "chmod 755 #{node['nodejs']['js-file']}"
 end
 
 execute "npm Install dependencies" do
-  cwd node['nodejs']['tap'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
+  cwd "#{node['sandbox']['home']}/#{dir}" 
+  user "root"
+  group "root"
   command node['nodejs']['cmd']['npm-install']
 end
 
 template node['nodejs']['init']['conf'] do
   source node['nodejs']['template']['conf']
-  owner node['nodejs']['user']
-  group node['nodejs']['user']
+  owner "root"
+  group "root"
   mode node['nodejs']['mode']
 end
 
-execute "Install forever-monitor " do
-  cwd node['nodejs']['home'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
-  command node['nodejs']['cmd']['fem']['install']
+template "/etc/nginx/sites-available/default" do
+  source "nginx.conf.erb"
+  owner "root"
+  group "root"
+  mode node['nodejs']['mode']
 end
 
+
 execute "Start server in background " do
-  cwd node['nodejs']['tap'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
+  cwd "#{node['sandbox']['home']}/#{dir}" 
+  user "root"
+  group "root"
   command node['nodejs']['start']
+end
+
+bash "restart nginx" do
+  user "root"
+   code <<-EOH
+  service nginx restart
+  EOH
 end
 

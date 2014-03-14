@@ -8,16 +8,16 @@ stop on shutdown
 script
     export HOME="/root"
 
-    echo $$ > /var/run/snowflake.pid
-    exec sudo <%= node['snowflake']['id']['script'] %> <%= node['snowflake']['conf']['scala'] %> >> /var/log/snowflake.sys.log 2>&1
+    echo $$ > /var/run/uid.pid
+    exec sudo <%= node['snowflake']['id']['script'] %> <%= node['snowflake']['conf']['scala'] %> >> /var/log/upstart/uid.log 2>&1
 end script
 
 pre-start script
     # Date format same as (new Date()).toISOString() for consistency
-    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Starting" >> /var/log/snowflake.sys.log
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Starting" >> /var/log/upstart/uid.log
 end script
 
 pre-stop script
-    rm /var/run/snowflake.pid
-    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> /var/log/snowflake.sys.log
+    rm /var/run/uid.pid
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> /var/log/upstart/uid.log
 end script

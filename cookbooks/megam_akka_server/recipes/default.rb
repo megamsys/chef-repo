@@ -27,7 +27,7 @@ include_recipe "megam_route53"
 #include_recipe "apt"
 
 #=begin
-node.set['logstash']['agent']['file-path'] = "/var/log/akka.sys.log, /usr/share/megamherk/logs/*/*"
+node.set['logstash']['agent']['file-path'] = "/var/log/upstart/herk.log, /usr/share/megamherk/logs/*/*"
 #node.set['logstash']['key'] = "#{node.name}.#{node["myroute53"]["zone"]}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
 include_recipe "megam_logstash::agent"
@@ -67,6 +67,8 @@ template node['akka']['init']['conf'] do
 end
 
 execute "Start Akka" do
+  user "root"
+  group "root"
   command node['akka']['start']
 end
 
@@ -78,7 +80,9 @@ template "/opt/logstash/agent/etc/shipper.conf" do
 end
 
 execute "Start logstash" do
-  command "sudo service logstash_agent restart"
+  user "root"
+  group "root"
+  command "service logstash_agent restart"
 end
 
 

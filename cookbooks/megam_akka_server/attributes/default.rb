@@ -19,14 +19,13 @@
 
 #Remote Locations
 
-default['akka']['location']['deb'] = "/home/ubuntu/megamherk.deb"
 
 default['akka']['mode'] = "0755"
 
-default['akka']['init']['conf'] = "/etc/init/akka.conf"
+default['akka']['init']['conf'] = "/etc/init/herk.conf"
 
 #Command
-default['akka']['start'] = "sudo start akka"
+default['akka']['start'] = "start herk"
 default['akka']['script']['cmd'] = "/usr/share/megamherk/bin/start org.megam.akka.CloApp"
 default['akka']['script']['port'] = "27020"
 

@@ -20,8 +20,8 @@ aws:
     location-constraint: true
     lowercase-bucket: true
 auth:
-  email: sandy@megamsandbox.com
-  api_key: IamAtlas{74}NobodyCanSeeME#07
+  email: <%= node["gulp"]["email"] %>
+  api_key: <%= node["gulp"]["api_key"] %>
 amqp:
   url: amqp://guest:guest@rabbitmq1.megam.co.in:5672/
   exchange: megam_<%= node.name %>_exchange

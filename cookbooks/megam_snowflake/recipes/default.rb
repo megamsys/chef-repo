@@ -50,6 +50,7 @@ template node['snowflake']['id']['conf'] do
 end
 
 execute "Start snowflake" do
+  user "root"
   command node['snowflake']['start']
 end
 

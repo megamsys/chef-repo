@@ -1,15 +1,16 @@
 
-node.set["myroute53"]["name"] = "monitor.megam.co"
+#node.set["myroute53"]["name"] = "monitor.megam.co"
 
 #node.set["myroute53"]["zone"] = "megam.co.in"
 
-include_recipe "megam_route53"
+#include_recipe "megam_route53"
 
   node.set[:ganglia][:gmetad] = true
 
 case node[:platform]
 when "ubuntu", "debian"
   package "gmetad"
+  include_recipe "megam_ganglia"
   include_recipe "megam_ganglia::graphite"
 when "redhat", "centos", "fedora"
   include_recipe "megam_ganglia::source"
@@ -46,12 +47,13 @@ when false
     notifies :restart, "service[gmetad]"
   end
 end
+include_recipe "megam_ganglia::web"
 
 service "gmetad" do
   supports :restart => true
   action [ :enable, :start ]
 end
 
-include_recipe "megam_ganglia::web"
+
 
 

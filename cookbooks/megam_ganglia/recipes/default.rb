@@ -39,7 +39,7 @@ case node[:ganglia][:unicast]
 when true
 
 #host = "#{node[:ec2][:public_hostname]}"
-host = "localhost"
+host = "#{node[:ganglia][:server_gmond]}"
 
   template "/etc/ganglia/gmond.conf" do
     source "gmond_unicast.conf.erb"

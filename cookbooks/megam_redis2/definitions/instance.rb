@@ -53,31 +53,29 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
     owner node["redis2"]["user"]
     mode "0750"
   end
-=begin
-  conf_vars = {
-    :conf => conf,
-    :instance_name => params[:name],
-    :master => params[:master],
-  }
-
-  template ::File.join(node["redis2"]["conf_dir"], "#{instance_name}.conf") do
-    source "redis.conf.erb"
-    cookbook "megam_redis2"
-    variables conf_vars
-    mode "0644"
-    notifies :restart, "service[#{instance_name}]"
+  
+  template "/etc/init/redis.conf" do
+    source "redis.upstart.conf.erb"
+  owner "root"
+  group "root"
+    mode "0755"
   end
+  
+    execute "Stop redis" do
+  user "root"
+  command "/etc/init.d/redis-server stop"
+  action :run
+end
 
-  uplevel_params = params
-
-  runit_service instance_name do
-    run_template_name "redis"
-    log_template_name "redis"
-    cookbook "megam_redis2"
-    options \
-	  :user => node["redis2"]["user"],
-      :config_file => ::File.join(node["redis2"]["conf_dir"], "#{instance_name}.conf"),
-      :timeouts => node["redis2"]["instances"]["default"]["timeout"]
-  end
-=end
+  execute "Disable service" do
+  user "root"
+  command "sudo update-rc.d redis-server disable"
+  action :run
+end
+  execute "Start redis" do
+  user "root"
+  command "start redis"
+  action :run
+end
+  
 end

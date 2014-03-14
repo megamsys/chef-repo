@@ -18,14 +18,17 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
-node.set["myroute53"]["name"] = "#{node.name}"
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co"
-end
+#normal["megam"]["instanceid"] = "#{`curl http://169.254.169.254/latest/meta-data/instance-id`}"
+#node.set["megam"]["test"] = node
+#"#{node['ec2']['instance_id']}"	#Instance_id
+#curl http://169.254.169.254/latest/meta-data/instance-id
 
+
+include_recipe "megam_sandbox"
+
+include_recipe "apt"
+
+node.set["myroute53"]["name"] = "#{node.name}"
 include_recipe "megam_route53"
 
 
@@ -35,17 +38,18 @@ node.set["gulp"]["builder"] = "megam_ruby_builder"
 node.set["gulp"]["project_name"] = "test"
 include_recipe "megam_gulp"
 
-
+#node.set[:ganglia][:server_gmond] = "162.248.165.65"
+include_recipe "megam_ganglia::riak"
 
 node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/riak/*.log", "/var/log/gulpd.sys.log" ]
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/riak/*.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::beaver"
 
 
 node.set['rsyslog']['index'] = "#{node.name}"
 node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
-node.set['rsyslog']['input']['files'] = [ "/var/log/riak/*.log", "/var/log/gulpd.sys.log" ]
+node.set['rsyslog']['input']['files'] = [ "/var/log/riak/*.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::rsyslog"
 
 

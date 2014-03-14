@@ -21,9 +21,9 @@ bash "install_Ruby" do
   user "root"
   cwd "/tmp"
   code <<-EOH
-  wget -nv ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.gz
-  tar zxvf ruby-2.0.0-p353.tar.gz
-  cd ruby-2.0.0-p353
+  wget -nv ftp://ftp.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.gz
+  tar zxvf ruby-2.1.1.tar.gz
+  cd ruby-2.1.1
   ./configure --with-openssl-dir=/usr/local/openssl
   make
   make install
@@ -34,7 +34,6 @@ execute "UPDATE " do
   user "root"
   group "root"
   command "gem update -f -q"
-  action :run
 end
 
 gem_package "bundler" do

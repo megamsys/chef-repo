@@ -88,11 +88,13 @@ template "/etc/init/play.conf" do
 end
 
 execute "Start Play" do
-  command "sudo start play"
+user "root"
+  command "start play"
 end
 
 execute "Restart nginx" do
-  command "sudo service nginx restart"
+user "root"
+  command "service nginx restart"
 end
 
 

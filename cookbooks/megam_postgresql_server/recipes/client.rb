@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: megam_postgresql
+# Cookbook Name:: megam_postgresql_server
 # Recipe:: client
 #
 # Author:: Joshua Timberman (<joshua@opscode.com>)
@@ -19,8 +19,20 @@
 # limitations under the License.
 #
 
+if node['postgresql']['version'].to_f > 9.1 && platform_family?('ubuntu', 'debian')
+  node.default['postgresql']['enable_pgdg_apt'] = true
+end
+
+if(node['postgresql']['enable_pgdg_apt'])
+  include_recipe 'megam_postgresql_server::apt_pgdg_postgresql'
+end
+
+if(node['postgresql']['enable_pgdg_yum'])
+  include_recipe 'megam_postgresql_server::yum_pgdg_postgresql'
+end
+
 node['postgresql']['client']['packages'].each do |pg_pack|
-  package pg_pack do
-    action :install
-  end
+
+  package pg_pack
+
 end

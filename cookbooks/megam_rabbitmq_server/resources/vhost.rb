@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: rabbitmq
+# Cookbook Name:: megam_rabbitmq_server
 # Resource:: vhost
 #
 # Copyright 2011, Opscode, Inc.

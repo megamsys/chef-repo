@@ -23,25 +23,25 @@ default['akka']['mode'] = "0755"
 default['akka']['init']['conf'] = "/etc/init/akka.conf"
 
 #Command
-default['akka']['start'] = "sudo start akka"
-default['akka']['script']['cmd'] = "/usr/share/megamakka/bin/start org.megam.akka.CloApp"
+default['akka']['start'] = "start akka"
+default['akka']['script']['cmd'] = "/usr/share/megamherk/bin/start org.megam.akka.CloApp"
 default['akka']['script']['port'] = "27020"
 
 
 if node['megam_version']
-default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node['megam_version']}/debs/megam_akka.deb"
+default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/#{node['megam_version']}/debs/megamherk.deb"
 else
-default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/debs/megam_akka.deb"
+default['akka']['deb'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/debs/megamherk.deb"
 end
-default['akka']['dpkg'] = "sudo dpkg -i megam_akka.deb"
+default['akka']['dpkg'] = "dpkg -i megamherk.deb"
 
 #Template File
 default['akka']['template']['conf'] = "akka.conf.erb"
 
 #script file location
-default['akka']['init']['script'] = "/usr/share/megamakka/bin/start org.megam.akka.CloApp"
+default['akka']['init']['script'] = "/usr/share/megamherk/bin/start org.megam.akka.CloApp"
 
-default["akka"]["dir"]["script"] = "/usr/share/megamakka/bin/"
+default["akka"]["dir"]["script"] = "/usr/share/megamherk/bin/"
 default["akka"]["file"]["script"] = "start"
 
 default["akka"]["sbt"]["jar"] = "http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar"

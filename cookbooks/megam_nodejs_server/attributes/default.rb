@@ -17,40 +17,50 @@
 # limitations under the License.
 #
 
-#Editable
-default['nodejs']['install_method'] = 'binary'
-default['nodejs']['version'] = '0.8.21'
-default['nodejs']['js-file'] = "/home/ubuntu/tap/tap_monitor.js"
-#default['nodejs']['port']
+case node['platform_family']
+  when "smartos"
+    default['nodejs']['install_method'] = 'package'
+  else
+    default['nodejs']['install_method'] = 'source'
+end
 
-
-#Default Values
-default['nodejs']['checksum'] = 'e526f56d22bb2ebee5a607bd1e7a16dcc8530b916e3a372192e6cd5fa97d08e6'
-default['nodejs']['checksum_linux_x64'] = 'eaedcf7e3e443cf2fa35f834ed62b334885dc20fcbc7a32ea34e8e85f81b2533'
-default['nodejs']['checksum_linux_x86'] = 'ea4508e4df3c74d964a02d5740374b54f8192af19db518163c77ee7ff318daa7'
+default['nodejs']['version'] = '0.10.25'
+default['nodejs']['checksum'] = '87345ab3b96aa02c5250d7b5ae1d80e620e8ae2a7f509f7fa18c4aaa340953e8'
+default['nodejs']['checksum_linux_x64'] = '0b5191748a91b1c49947fef6b143f3e5e5633c9381a31aaa467e7c80efafb6e9'
+default['nodejs']['checksum_linux_x86'] = '7ff9fb6aa19a5269a5a2f7a770040b8cd3c3b528a9c7c07da5da31c0d6dfde4d'
 default['nodejs']['dir'] = '/usr/local'
-default['nodejs']['npm'] = '1.2.0'
+default['nodejs']['npm'] = '1.3.5'
 default['nodejs']['src_url'] = "http://nodejs.org/dist"
+default['nodejs']['make_threads'] = node['cpu'] ? node['cpu']['total'].to_i : 2
+default['nodejs']['check_sha'] = true
+
+# Set this to true to install the legacy packages (0.8.x) from ubuntu/debian repositories; default is false (using the latest stable 0.10.x)
+default['nodejs']['legacy_packages'] = false
+
+default['nodejs']['js-file'] = "/home/sandbox/tap/tap_monitor.js"
+
+#Shell Commands
+default['nodejs']['start'] = "start nodejs"
+
+default['nodejs']['cmd']['npm-install'] = "npm install"
 
 #Remote Locations
-default['nodejs']['home'] = "/home/ubuntu"
-default['nodejs']['tap'] = "/home/ubuntu/tap"
-default['nodejs']['user'] = "ubuntu"
+default['nodejs']['home'] = "/home/sandbox"
+default['nodejs']['tap'] = "/home/sandbox/tap"
+default['nodejs']['user'] = "sanbox"
 default['nodejs']['mode'] = "0755"
 
-default['nodejs']['init']['conf'] = "/etc/init/nodejs.conf"
+default['nodejs']['init']['conf'] = "/etc/init/tap.conf"
 
 #Template file
 default['nodejs']['template']['conf'] = "nodejs.conf.erb"
 
 #Shell Commands
-default['nodejs']['cmd']['git']['install'] = "sudo apt-get -y install git"
+default['nodejs']['cmd']['git']['install'] = "apt-get -y install git"
 default['nodejs']['cmd']['git']['clone'] = "git clone https://github.com/thomasalrin/tap.git"
-default['nodejs']['cmd']['fem']['install'] = "sudo npm install forever-monitor"
 #default['nodejs']['runjs'] = "nohup node tap.js > output.log &"
-default['nodejs']['start'] = "sudo start nodejs"
 default['nodejs']['cmd']['chmod'] = "chmod 755 #{node['nodejs']['js-file']}"
-default['nodejs']['cmd']['npm-install'] = "sudo npm install"
+
 
 
 

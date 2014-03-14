@@ -32,6 +32,7 @@ cwd "#{node['sandbox']['home']}/bin"
    code <<-EOH
   unzip gulpd.zip
   chmod 0755 gulpd
+  rm gulpd.zip
   EOH
 end
 

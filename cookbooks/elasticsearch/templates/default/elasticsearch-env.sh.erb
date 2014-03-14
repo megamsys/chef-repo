@@ -15,15 +15,12 @@ ES_JAVA_OPTS="
   -Xms<%= node.elasticsearch[:allocated_memory] %>
   -Xmx<%= node.elasticsearch[:allocated_memory] %>
   -Xss<%= node.elasticsearch[:thread_stack_size] %>
-  -XX:+UseParNewGC
-  -XX:+UseConcMarkSweepGC
-  -XX:CMSInitiatingOccupancyFraction=75
-  -XX:+UseCMSInitiatingOccupancyOnly
-  -XX:+HeapDumpOnOutOfMemoryError
+  <%= node.elasticsearch[:gc_settings] %>
 <% if node.elasticsearch[:jmx] %>
   -Dcom.sun.management.jmxremote.ssl=false
   -Dcom.sun.management.jmxremote.authenticate=false
   -Dcom.sun.management.jmxremote.port=3333
   -Djava.rmi.server.hostname=<%= node[:ipaddress] %>
 <% end %>
+  <%= node.elasticsearch[:env_options] %>
 "

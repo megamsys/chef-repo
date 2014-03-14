@@ -21,6 +21,7 @@ default["tomcat-nginx"]["dir-path"]["mvn-install"] = "/home/sandbox/maven-instal
 #Remote files location
 default["tomcat-nginx"]["remote-location"]["nginx-tar"]="/home/sandbox/tomcat8.tar.gz"
 default["tomcat-nginx"]["remote-location"]["tomcat-init"] = "/etc/init/tomcat.conf"
+default["tomcat-nginx"]["remote-location"]["tomcat-initd"] = "/etc/init.d/tomcat"
 default["tomcat-nginx"]["remote-location"]["nginx_conf"] = "/etc/nginx/sites-available/default"
 
 #shell commands
@@ -36,5 +37,6 @@ default["tomcat-nginx"]["cmd"] ["mvn"] = "sudo ./maven-install.sh"
 
 #Template files
 default["tomcat-nginx"]["template"]["tomcat_init"] = "tomcat.conf.erb"
+default["tomcat-nginx"]["template"]["tomcat_initd"] = "tomcat_init.sh.erb"
 default["tomcat-nginx"]["template"]["conf"] = "nginx.conf.erb"
 default["tomcat-nginx"]["template"]["mvn"] = "maven-install.sh"

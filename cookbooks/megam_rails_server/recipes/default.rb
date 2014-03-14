@@ -7,6 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
+=begin
 include_recipe "megam_ruby" #installs ruby2.0-p353
 
 include_recipe "megam_sandbox"
@@ -37,6 +38,9 @@ include_recipe "git" # install git, no support for svn for now
 #include_recipe "megam_ciakka"
 #node.set[:ganglia][:hostname] = "#{node.name}.#{node["myroute53"]["zone"]}"
 #include_recipe "megam_ganglia::nginx"
+
+
+=end
 
 # create deploy user & group
 user node[:rails][:owner] do

@@ -1,6 +1,6 @@
 #
 # Author:: Marius Ducea (marius@promethost.com)
-# Cookbook Name:: megam_nodejs
+# Cookbook Name:: nodejs
 # Recipe:: npm
 #
 # Copyright 2010-2012, Promet Solutions
@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe "megam_nodejs"
+include_recipe "nodejs"
 
 package "curl"
 
