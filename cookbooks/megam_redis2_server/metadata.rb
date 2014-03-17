@@ -1,20 +1,19 @@
-name             "megam_redis2_server"
 maintainer       "Megam Systems"
+name             'megam_redis2_server'
 maintainer_email "alrin@megam.co.in"
 license          "Apache 2.0"
 description      "Installs/Configures redis"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
-version          "0.4.6"
+version          "0.5.0"
+
 supports         "ubuntu", ">= 9.04"
 supports         "debian", ">= 6.0"
 supports         "centos", ">= 5.5"
 supports         "redhat", ">= 5.5"
-%w{ runit megam_route53 megam_ganglia }.each do |cookbooks|
-  depends cookbooks
-end
+depends          "runit", ">= 1.0.0"
+depends          "build-essential"
+depends          "ark"
 
-recipe           "megam_redis2_server", "Installs and configures redis"
-recipe           "megam_redis2_server::auto", "Configures and activates redis instances defined by attributes"
 
 attribute 'redis2/source_url',
   :display_name => "Redis source URL",

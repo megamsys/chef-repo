@@ -23,9 +23,12 @@ include_recipe "php"
 node.set["myroute53"]["name"] = "#{node.name}"
 include_recipe "megam_route53"
 
+#include_recipe "megam_deps"
+
 node.set[:ganglia][:hostname] = "#{node.name}"
 include_recipe "megam_ganglia::apache"
 
+=begin
 node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/apache2/*.log", "/var/log/upstart/gulpd.log" ]
@@ -36,6 +39,7 @@ node.set['rsyslog']['index'] = "#{node.name}"
 node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
 node.set['rsyslog']['input']['files'] = [ "/var/log/apache2/wordpress-access.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::rsyslog"
+=end
 
 # On Windows PHP comes with the MySQL Module and we use IIS on Windows
 unless platform? "windows"

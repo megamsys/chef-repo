@@ -20,6 +20,7 @@ depends "megam_route53"
 depends "megam_ganglia"
 depends "megam_logstash"
 depends "megam_gulp"
+depends "megam_deps"
 
 %w{ debian ubuntu windows centos redhat scientific oracle }.each do |os|
   supports os

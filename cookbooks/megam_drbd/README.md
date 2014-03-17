@@ -1,68 +1,54 @@
-megam_drbd Cookbook
-===================
-TODO: Enter the cookbook description here.
+Description
+===========
+Installs and configures the Distributed Replicated Block Device (DRBD) service for mirroring block devices between a pair of hosts. Right now it simply works in pairs, multiple hosts could be supported with a few small changes.
 
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+The `drbd` cookbook does not partition drives. It will format partitions given a filesystem type, but it does not explicitly depend on the `xfs` cookbook if you want that type of filesystem, but you can put it in your run list and set the node['drbd']['fs_type'] to 'xfs' or 'ext4' or whatever.
 
 Requirements
-------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
+============
+Platform
+--------
+Tested with Ubuntu 10.04 and 10.10. You must have the 'linux-server' package and 'linux-headers-server' kernel installed to properly support the drbd module.
 
-e.g.
-#### packages
-- `toaster` - megam_drbd needs toaster to brown your bagel.
+Recipes
+=======
+default
+-------
+Installs drbd but does no configuration.
+
+default
+-------
+Given a filesystem and a partner host, configures block replication between the hosts. The master will claim the primary, format the filesystem and mount the partition. The slave will simply mirror without mounting. **It currently takes 2 chef-client runs to ensure the pair is synced properly.**
 
 Attributes
-----------
-TODO: List your cookbook attributes here.
+==========
+The required attributes are
 
-e.g.
-#### megam_drbd::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['megam_drbd']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+* `node['drbd]['remote_host']` - Remote host to pair with.
+* `node['drbd]['disk']` - Disk partition to mirror.
+* `node['drbd]['mount']` - Mount point to mirror.
+* `node['drbd]['fs_type']` - Disk format for the mirrored disk, defaults to `ext3`.
+* `node['drbd]['master']` - Whether this node is master between the pair, defaults to `false`.
 
-Usage
------
-#### megam_drbd::default
-TODO: Write usage instructions for each cookbook.
+Roles
+=====
+There are a pair of example roles `drbd-pair.rb` and `drbd-pair-master.rb` with the cookbook source.
 
-e.g.
-Just include `megam_drbd` in your node's `run_list`:
+License and Author
+==================
 
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[megam_drbd]"
-  ]
-}
-```
+Author: Matt Ray (<matt@opscode.com>)
 
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
+Copyright 2011, Opscode, Inc.
 
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write your change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-License and Authors
--------------------
-Authors: TODO: List authors
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
