@@ -1,6 +1,6 @@
 #
 # Author:: Marius Ducea (marius@promethost.com)
-# Cookbook Name:: megam_nodejs_server
+# Cookbook Name:: nodejs
 # Recipe:: source
 #
 # Copyright 2010-2012, Promet Solutions
@@ -49,14 +49,13 @@ execute "tar --no-same-owner -zxf #{nodejs_tar}" do
   creates "/usr/local/src/node-v#{node['nodejs']['version']}"
 end
 
-make_threads = node['cpu'] ? node['cpu']['total'].to_i : 2
-bash "compile node.js (on #{make_threads} cpu)" do
+bash "compile node.js (on #{node['nodejs']['make_threads']} cpu)" do
   # OSX doesn't have the attribute so arbitrarily default 2
   cwd "/usr/local/src/node-v#{node['nodejs']['version']}"
   code <<-EOH
     PATH="/usr/local/bin:$PATH"
     ./configure --prefix=#{node['nodejs']['dir']} && \
-    make -j #{make_threads}
+    make -j #{node['nodejs']['make_threads']}
   EOH
   creates "/usr/local/src/node-v#{node['nodejs']['version']}/node"
 end
@@ -65,5 +64,5 @@ execute "nodejs make install" do
   environment({"PATH" => "/usr/local/bin:/usr/bin:/bin:$PATH"})
   command "make install"
   cwd "/usr/local/src/node-v#{node['nodejs']['version']}"
-  not_if {File.exists?("#{node['nodejs']['dir']}/bin/node") && `#{node['nodejs']['dir']}/bin/node --version`.chomp == "v#{node['nodejs']['version']}" }
+  not_if {::File.exists?("#{node['nodejs']['dir']}/bin/node") && `#{node['nodejs']['dir']}/bin/node --version`.chomp == "v#{node['nodejs']['version']}" }
 end

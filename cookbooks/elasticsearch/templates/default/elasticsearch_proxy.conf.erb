@@ -23,7 +23,7 @@ server {
 <% end %>
 
     # Pass requests to ElasticSearch
-    proxy_pass http://<%= node.elasticsearch.network.host rescue 'localhost' %>:<%= node.elasticsearch.http.port rescue 9200 %>;
+    proxy_pass http://<%= node.elasticsearch.network.host rescue 'localhost' %>:<%= node.elasticsearch[:http][:port] %>;
     proxy_redirect off;
 
     proxy_set_header  X-Real-IP  $remote_addr;
@@ -37,9 +37,11 @@ server {
     add_header Access-Control-Allow-Headers 'X-Requested-With, Content-Type';
     add_header Access-Control-Allow-Credentials true;
 
+<% unless node.elasticsearch[:nginx][:users].empty? %>
     # Authorize access
     auth_basic           "ElasticSearch";
     auth_basic_user_file <%= node.elasticsearch[:nginx][:passwords_file] %>;
+<% end %>
 
   }
 
@@ -47,7 +49,7 @@ server {
   location /status {
     proxy_method HEAD;
     proxy_intercept_errors on;
-    proxy_pass http://localhost:9200/;
+    proxy_pass http://localhost:<%= node.elasticsearch[:http][:port] %>/;
   }
 <% end %>
 

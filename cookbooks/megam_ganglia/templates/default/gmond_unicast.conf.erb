@@ -14,7 +14,7 @@ gexec = no
 send_metadata_interval = 1200
 
   override_hostname = <%= node[:ganglia][:hostname] %>
-  override_ip = 127.0.0.1
+  override_ip = <%= node[:ganglia][:ip] %>
 
 }
 
@@ -55,7 +55,7 @@ send_metadata_interval = 1200
 			/* You can specify as many tcp_accept_channels as you like to share
 			an xml description of the state of the cluster */
 			tcp_accept_channel {
-			port = 8649
+			/* port = 8649 */
 			}
 
 			/* Each metrics module that is referenced by gmond must be specified and

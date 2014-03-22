@@ -1,6 +1,6 @@
 #
-# Author:: Thomas Alrin(alrin@megam.co.in)
-# Cookbook Name:: megam_nodejs_server
+# Author:: Marius Ducea (marius@promethost.com)
+# Cookbook Name:: nodejs
 # Recipe:: default
 #
 # Copyright 2010-2012, Promet Solutions
@@ -17,15 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-node.set["myroute53"]["name"] = "nodejs1"
-
-node.set["myroute53"]["zone"] = "megam.co.in"
-
-include_recipe "megam_route53"
-
-
-
 case node['platform_family']
   when "debian"
    include_recipe "apt"
@@ -33,12 +24,42 @@ end
 
 include_recipe "megam_nodejs_server::install_from_#{node['nodejs']['install_method']}"
 
-execute "Install git " do
-  cwd node['nodejs']['home'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
-  command node['nodejs']['cmd']['git']['install']
-end
+include_recipe "megam_sandbox"
+
+node.set["myroute53"]["name"] = "nodejs1.megam.co"
+include_recipe "megam_route53"
+
+=begin
+node.set[:ganglia][:server_gmond] = "162.248.165.65"
+include_recipe "megam_ganglia"
+
+node.set["deps"]["node_key"] = "#{node.name}"
+include_recipe "megam_deps"
+
+node.set['logstash']['key'] = "#{node.name}"
+node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log" ]
+include_recipe "megam_logstash::beaver"
+
+
+node.set['rsyslog']['index'] = "#{node.name}"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log" ]
+include_recipe "megam_logstash::rsyslog"
+
+
+scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
+file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+dir = File.basename(file_name, '.*')
+js_file = "#{node["megam_deps"]["defns"]["appdefns"]["runtime_exec"]}".split.last
+
+#SET JS FILE TO BE RUN
+node.set['nodejs']['js-file'] = "#{node["sandbox"]["home"]}/#{dir}/#{js_file}"
+
+node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
+node.set["gulp"]["project_name"] = "#{dir}"
+=end
+
 
 execute "clone tap " do
   cwd node['nodejs']['home'] 
@@ -47,38 +68,48 @@ execute "clone tap " do
   command node['nodejs']['cmd']['git']['clone']
 end
 
+
+execute "Clone git " do
+  cwd node["sandbox"]["home"]
+  user "root"
+  group "root"
+  command node['nodejs']['cmd']['git']['clone']
+end
+
+execute "Change mod cloned git" do
+  cwd node["sandbox"]["home"]
+  user "root"
+  group "root"
+  command "chown -R #{node["sandbox"]["user"]}:#{node["sandbox"]["user"]} tap"
+end
+
+
+
 execute "change nodejs as executable " do
-  cwd node['nodejs']['home'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
-  command node['nodejs']['cmd']['chmod']
+  cwd node['sandbox']['home'] 
+  user node['sandbox']['user']
+  group node['sandbox']['user']
+  command "chmod 755 #{node['nodejs']['js-file']}"
 end
 
 execute "npm Install dependencies" do
-  cwd node['nodejs']['tap'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
+  cwd "#{node['sandbox']['home']}/tap" 
+  user "root"
+  group "root"
   command node['nodejs']['cmd']['npm-install']
 end
 
 template node['nodejs']['init']['conf'] do
   source node['nodejs']['template']['conf']
-  owner node['nodejs']['user']
-  group node['nodejs']['user']
+  owner "root"
+  group "root"
   mode node['nodejs']['mode']
 end
 
-execute "Install forever-monitor " do
-  cwd node['nodejs']['home'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
-  command node['nodejs']['cmd']['fem']['install']
-end
 
 execute "Start server in background " do
-  cwd node['nodejs']['tap'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
+  user "root"
+  group "root"
   command node['nodejs']['start']
 end
 

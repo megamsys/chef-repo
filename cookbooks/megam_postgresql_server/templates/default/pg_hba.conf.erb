@@ -1,14 +1,35 @@
-# Database administrative login by Unix domain socket
-local   all             postgres                                peer
+# This file was automatically generated and dropped off by Chef!
 
-host all all <%= node[:postgresql][:server_ip] %> 255.255.255.0 trust
+# PostgreSQL Client Authentication Configuration File
+# ===================================================
+#
+# Refer to the "Client Authentication" section in the PostgreSQL
+# documentation for a complete description of this file.
 
-# TYPE      DATABASE    USER        CIDR-ADDRESS        METHOD
-local       all         all                             md5
-<% node.postgresql.hba.each do |h| %>
-host        all         all         <%= h["address"] %> <%= h["method"] %>
+<% if node['postgresql']['version'].to_f < 9.1 -%>
+# TYPE  DATABASE        USER            CIDR-ADDRESS            METHOD
+<% elsif node['postgresql']['version'].to_f >= 9.1 -%>
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+<% end -%>
+
+###########
+# Other authentication configurations taken from chef node defaults:
+###########
+<% node['postgresql']['pg_hba'].each do |auth| -%>
+
+<%   if auth[:comment] %>
+<%= auth[:comment] %>
+<%   end %>
+<%   if auth[:addr] %>
+<%= auth[:type].ljust(7) %> <%= auth[:db].ljust(15) %> <%= auth[:user].ljust(15) %> <%= auth[:addr].ljust(23) %> <%= auth[:method] %>
+<%   else %>
+<%= auth[:type].ljust(7) %> <%= auth[:db].ljust(15) %> <%= auth[:user].ljust(15) %>                         <%= auth[:method] %>
+<%   end %>
 <% end %>
 
-<% node.postgresql.standby_ips.each do |ip| %>
-host        replication postgres         <%= ip -%>       trust
-<% end %>
+# "local" is for Unix domain socket connections only
+<% if node['postgresql']['version'].to_f < 9.1 -%>
+local   all             all                                     ident
+<% elsif node['postgresql']['version'].to_f >= 9.1 -%>
+local   all             all                                     peer
+<% end -%>

@@ -1,4 +1,4 @@
-# <a name="title"></a> megam_nodejs-cookbook [![Build Status](https://secure.travis-ci.org/mdxp/nodejs-cookbook.png)](http://travis-ci.org/mdxp/nodejs-cookbook)
+# <a name="title"></a> nodejs-cookbook [![Build Status](https://secure.travis-ci.org/mdxp/nodejs-cookbook.png)](http://travis-ci.org/mdxp/nodejs-cookbook)
 
 DESCRIPTION
 ===========
@@ -17,6 +17,7 @@ REQUIREMENTS
 ## Cookbooks:
 
 * build-essential
+* apt
 
 Opscode cookbooks (http://github.com/opscode/cookbooks/tree/master)
 
@@ -29,32 +30,33 @@ ATTRIBUTES
 * nodejs['dir'] - location where node will be installed, default /usr/local
 * nodejs['npm'] - version of npm to install
 * nodejs['npm_src_url'] - download location for npm source tarball
+* nodejs['check_sha'] - test for valid sha_sum, default: true
 
 USAGE
 =====
 
-Include the megam_nodejs recipe to install node on your system based on the default installation method:
+Include the nodejs recipe to install node on your system based on the default installation method:
 
-*  include_recipe "megam_nodejs"
+*  include_recipe "nodejs"
 
 Include the install_from_source recipe to install node from sources:
 
-*  include_recipe "megam_nodejs::install_from_source"
+*  include_recipe "nodejs::install_from_source"
 
 Include the install_from_package recipe to install node from packages:
 Note that only apt (Ubuntu, Debian) appears to have up to date packages available.
 Centos, RHEL, etc are non-functional. (Try install_from_binary for those)
 
-*  include_recipe "megam_nodejs::install_from_package"
+*  include_recipe "nodejs::install_from_package"
 
 Include the install_from_binary recipe to install node from official prebuilt binaries:
-(Currently Linux x86, x86_64 only)
+(Currently Linux x86, x86_64, armv6l only)
 
-*  include_recipe "megam_nodejs::install_from_binary"
+*  include_recipe "nodejs::install_from_binary"
 
 Include the npm recipe to install npm:
 
-*  include_recipe "megam_nodejs::npm"
+*  include_recipe "nodejs::npm"
 
 LICENSE and AUTHOR
 ==================

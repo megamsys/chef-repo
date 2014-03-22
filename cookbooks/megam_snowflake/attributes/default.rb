@@ -4,14 +4,14 @@
 
 default['snowflake']['mode'] = "0755"
 
-default['snowflake']['id']['conf'] = "/etc/init/snowflake.conf"
+default['snowflake']['id']['conf'] = "/etc/init/uid.conf"
 default['snowflake']['conf']['scala'] = "production.scala"
-default['snowflake']['id']['script'] = "./usr/share/megamsnowflake/bin/start"
+default['snowflake']['id']['script'] = "./usr/local/share/megamsnowflake/bin/start"
 
-default['snowflake']['id']['scala_conf'] = "/usr/share/megamsnowflake/config/production.scala"
+default['snowflake']['id']['scala_conf'] = "/usr/local/share/megamsnowflake/config/production.scala"
 
 
-default['snowflake']['location']['deb'] = "/home/ubuntu/megamsnowflake.deb"
+default['snowflake']['location']['deb'] = "/tmp/megamsnowflake.deb"
 
 #Template file
 default['snowflake']['template']['upstart'] = "snowflake.conf.erb"
@@ -23,5 +23,5 @@ default['snowflake']['zookeeper'] = "localhost"
 
 #Shell Commands
 
-default['snowflake']['start'] = "sudo start snowflake"
+default['snowflake']['start'] = "start snowflake"
 

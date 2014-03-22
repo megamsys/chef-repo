@@ -10,9 +10,10 @@ node.normal[:elasticsearch]  ||= {}
 node.normal[:elasticsearch]    = DeepMerge.merge(node.default[:elasticsearch].to_hash, node.normal[:elasticsearch].to_hash)
 node.normal[:elasticsearch]    = DeepMerge.merge(node.normal[:elasticsearch].to_hash, settings.to_hash)
 
+
 # === VERSION AND LOCATION
 #
-default.elasticsearch[:version]       = "0.90.2"
+default.elasticsearch[:version]       = "0.90.5"
 default.elasticsearch[:host]          = "http://download.elasticsearch.org"
 default.elasticsearch[:repository]    = "elasticsearch/elasticsearch"
 default.elasticsearch[:filename]      = "elasticsearch-#{node.elasticsearch[:version]}.tar.gz"
@@ -40,8 +41,18 @@ default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.ela
 # Maximum amount of memory to use is automatically computed as one half of total available memory on the machine.
 # You may choose to set it in your node/role configuration instead.
 #
-allocated_memory = "#{(node.memory.total.to_i * 0.2 ).floor / 1024}m"
+allocated_memory = "#{(node.memory.total.to_i * 0.6 ).floor / 1024}m"
 default.elasticsearch[:allocated_memory] = allocated_memory
+
+# === GARBAGE COLLECTION SETTINGS
+#
+default.elasticsearch[:gc_settings] =<<-CONFIG
+  -XX:+UseParNewGC
+  -XX:+UseConcMarkSweepGC
+  -XX:CMSInitiatingOccupancyFraction=75
+  -XX:+UseCMSInitiatingOccupancyOnly
+  -XX:+HeapDumpOnOutOfMemoryError
+CONFIG
 
 # === LIMITS
 #
@@ -66,9 +77,25 @@ default.elasticsearch[:gateway][:expected_nodes] = 1
 
 default.elasticsearch[:thread_stack_size] = "256k"
 
+default.elasticsearch[:env_options] = ""
+
+# === OTHER SETTINGS
+#
+default.elasticsearch[:skip_restart] = false
+
+# === PORT
+#
+default.elasticsearch[:http][:port] = 9200
+
 # === CUSTOM CONFIGURATION
 #
 default.elasticsearch[:custom_config] = {}
+
+# === LOGGING
+#
+# See `attributes/logging.rb`
+#
+default.elasticsearch[:logging] = {}
 
 # --------------------------------------------------
 # NOTE: Setting the attributes for elasticsearch.yml

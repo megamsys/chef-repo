@@ -1,30 +1,17 @@
 # This recipe is for compiling redis from source.
 #
 #
-node["redis2"]["daemon"] = "/usr/local/bin/redis-server"
-directory node["redis2"]["build_dir"] do
-  owner node["redis2"]["build_user"]
-  mode "0755"
-  recursive true
+include_recipe "build-essential"
+
+node.default["redis2"]["daemon"] = "/usr/local/bin/redis-server"
+
+ark "redis" do
+  url node["redis2"]["source"]["url"]
+  checksum node["redis2"]["source"]["checksum"]
+  version node["redis2"]["source"]["version"]
+  prefix_root "/usr/local/src"
+  prefix_home "/usr/local/src"
+  action :install_with_make
 end
 
-remote_file ::File.join(node["redis2"]["build_dir"], ::File.basename(node["redis2"]["source_url"])) do
-  source node["redis2"]["source_url"]
-  mode "0644"
-end
-
-url = node["redis2"]["source_url"]
-tarball = url.split("?").first.split("/").last
-script "unpack and make redis" do
-  cwd node["redis2"]["build_dir"]
-  code <<EOS
-  wget -O #{tarball} #{url}
-  tar -xzf #{tarball}
-  cd redis-2.6.11
-  make
-  make install
-EOS
-  interpreter "bash"
-  creates node["redis2"]["daemon"]
-end
-
+node.default["redis2"]["version"] = node["redis2"]["source"]["version"]

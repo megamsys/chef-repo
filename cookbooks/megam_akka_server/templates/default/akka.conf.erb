@@ -5,20 +5,26 @@ author      "Megam Systems"
 start on startup
 stop on shutdown
 
-script
-    export HOME="/root"
-
-    echo $$ > /var/run/akka.pid
-    cd /usr/share/megamherk/
-    exec sudo <%= node['akka']['script']['cmd'] %>  <%= node['akka']['script']['port'] %> >> /var/log/akka.sys.log 2>&1
-end script
-
 pre-start script
     # Date format same as (new Date()).toISOString() for consistency
-    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Starting" >> /var/log/akka.sys.log
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] AKKA Starting" >> /var/log/upstart/herk.log
+  cd /usr/share/megamherk
+  ./env.sh
+
 end script
 
-pre-stop script
-    rm /var/run/akka.pid
-    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> /var/log/akka.sys.log
+script
+
+    echo $$ > /var/run/herk.pid
+    cd /usr/share/megamherk/
 end script
+
+exec start-stop-daemon --start --chdir "/usr/share/megamherk" --exec /usr/share/megamherk/bin/start org.megam.akka.CloApp  27020 >> /var/log/up$
+
+#respawn
+
+pre-stop script
+    rm /var/run/herk.pid
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> /var/log/upstart/herk.log
+end script
+

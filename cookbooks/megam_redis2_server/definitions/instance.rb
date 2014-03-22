@@ -71,11 +71,13 @@ define :redis_instance, :port => nil, :data_dir => nil, :master => nil, :service
   uplevel_params = params
 
   runit_service instance_name do
-    template_name "redis"
+    run_template_name "redis"
+    log_template_name "redis"
     cookbook "megam_redis2_server"
     options \
 	  :user => node["redis2"]["user"],
       :config_file => ::File.join(node["redis2"]["conf_dir"], "#{instance_name}.conf"),
       :timeouts => uplevel_params[:service_timeouts]
   end
+
 end

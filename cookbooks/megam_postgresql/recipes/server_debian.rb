@@ -27,8 +27,10 @@ node['postgresql']['server']['packages'].each do |pg_pack|
 
 end
 
+=begin
 service "postgresql" do
   service_name node['postgresql']['server']['service_name']
   supports :restart => true, :status => true, :reload => true
   action [:enable, :start]
 end
+=end

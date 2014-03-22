@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-include_recipe "megam_sandbox"
+#include_recipe "megam_sandbox"
 include_recipe "apt"
 node.set["myroute53"]["name"] = "#{node.name}"
 if node['megam_domain']
@@ -41,13 +41,13 @@ include_recipe "megam_gulp"
 
 node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/postgresql/*.log", "/var/log/gulpd.sys.log" ]
+node.set['logstash']['beaver']['inputs'] = [ "/var/log/postgresql/*.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::beaver"
 
 
 node.set['rsyslog']['index'] = "#{node.name}"
 node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
-node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log", "/var/log/gulpd.sys.log" ]
+node.set['rsyslog']['input']['files'] = [ "/var/log/postgresql/postgresql-9.1-main.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::rsyslog"
 
 
@@ -107,7 +107,7 @@ template "#{node['postgresql']['dir']}/postgresql.conf" do
   owner "postgres"
   group "postgres"
   mode 0600
-  notifies change_notify, 'service[postgresql]', :immediately
+  #notifies change_notify, 'service[postgresql]', :immediately
 end
 
 template "#{node['postgresql']['dir']}/pg_hba.conf" do
@@ -115,7 +115,14 @@ template "#{node['postgresql']['dir']}/pg_hba.conf" do
   owner "postgres"
   group "postgres"
   mode 00600
-  notifies change_notify, 'service[postgresql]', :immediately
+  #notifies change_notify, 'service[postgresql]', :immediately
+end
+
+template "/etc/init/postgresql.conf" do
+  source "postgresql_upstart.conf.erb"
+  owner "root"
+  group "root"
+  mode 00755
 end
 
 # NOTE: Consider two facts before modifying "assign-postgres-password":
@@ -137,10 +144,31 @@ end
 bash "assign-postgres-password" do
   user 'postgres'
   code <<-EOH
+psql -U postgres template1 -f - <<EOT
 CREATE USER "#{node[:postgresql][:db_main_user]}" WITH PASSWORD '#{node[:postgresql][:password]}';
 CREATE DATABASE #{node[:postgresql][:dbname]};
 GRANT ALL PRIVILEGES ON DATABASE #{node[:postgresql][:dbname]} to "#{node[:postgresql][:db_main_user]}";
+EOT
   EOH
   action :run
 end
+
+execute "Stop postgresql" do
+  user "root"
+  command "/etc/init.d/postgresql stop"
+  action :run
+end
+
+execute "Disable service" do
+  user "root"
+  command "sudo update-rc.d -f postgresql disable"
+  action :run
+end
+
+execute "Start postgresql" do
+  user "root"
+  command "start postgresql"
+  action :run
+end
+
 

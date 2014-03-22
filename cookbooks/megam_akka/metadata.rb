@@ -12,5 +12,7 @@ depends "git"
 depends "megam_route53"
 depends "apt"
 depends "megam_logstash"
+depends "megam_ganglia"
+depends "megam_gulp"
 
 

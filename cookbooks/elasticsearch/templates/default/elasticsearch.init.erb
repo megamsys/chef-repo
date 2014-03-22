@@ -61,8 +61,20 @@ stop() {
       fi
 
       # KILL PROCESS
+      pid=$(cat $PIDFILE)
       su <%= node[:elasticsearch][:user] %> -m -c "kill $(cat $PIDFILE)"
       r=$?
+
+      # Check for process
+      timeout=0
+      while [ $(ps -p $pid | wc -l ) -gt '1' ]; do
+        echo -n '.'
+        (( timeout ++))
+        if [ $timeout -gt '30' ]; then return; fi
+        sleep 1
+      done;
+
+      # Check for pidfile
       timeout=0
       while [ -f $PIDFILE  ]; do
         echo -n '.'
@@ -94,11 +106,11 @@ status() {
 
   # RUNNING
   if [[ $pid && -d "/proc/$pid" ]]; then
-    version=$(curl -s 'http://localhost:9200' | ruby -rubygems -e 'require "json"; print JSON.parse(STDIN.read)["version"]["number"]')
+    version=$(curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>' | ruby -rubygems -e 'require "json"; print JSON.parse(STDIN.read)["version"]["number"]')
     echo -e "\033[1;37;46melasticsearch $version running with PID $pid\033[0m"
     # VERBOSE
     if [[ $pid && $1 == '-v' || $1 == '--verbose' ]]; then
-      curl -s 'http://localhost:9200/_cluster/nodes/<%= node.elasticsearch[:node][:name] %>?os&process&jvm&network&transport&settings&pretty' | \
+      curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>/_cluster/nodes/<%= node.elasticsearch[:node][:name] %>?os&process&jvm&network&transport&settings&pretty' | \
       ruby -rubygems -e '
         begin
           require "json"; h = JSON.parse(STDIN.read); id, node = h["nodes"].first;

@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: megam_postgresql
+# Cookbook Name:: postgresql
 # Recipe:: default
 #
 # Copyright 2009, Opscode, Inc.
