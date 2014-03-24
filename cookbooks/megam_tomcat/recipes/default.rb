@@ -62,7 +62,7 @@ include_recipe "megam_logstash::beaver"
 
 
 node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
 node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/access.log", "#{node["tomcat-nginx"]["tomcat-home"]}/logs/*.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::rsyslog"
 

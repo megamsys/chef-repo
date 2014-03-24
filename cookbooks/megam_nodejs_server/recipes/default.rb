@@ -22,13 +22,14 @@ case node['platform_family']
    include_recipe "apt"
 end
 
+=begin
 include_recipe "megam_nodejs_server::install_from_#{node['nodejs']['install_method']}"
 
 include_recipe "megam_sandbox"
 
 node.set["myroute53"]["name"] = "nodejs1.megam.co"
 include_recipe "megam_route53"
-
+=end
 =begin
 node.set[:ganglia][:server_gmond] = "162.248.165.65"
 include_recipe "megam_ganglia"
@@ -43,7 +44,7 @@ include_recipe "megam_logstash::beaver"
 
 
 node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
 node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::rsyslog"
 
@@ -61,15 +62,8 @@ node.set["gulp"]["project_name"] = "#{dir}"
 =end
 
 
-execute "clone tap " do
-  cwd node['nodejs']['home'] 
-  user node['nodejs']['user']
-  group node['nodejs']['user']
-  command node['nodejs']['cmd']['git']['clone']
-end
-
-
-execute "Clone git " do
+   include_recipe "git"
+execute "Clone tap " do
   cwd node["sandbox"]["home"]
   user "root"
   group "root"
