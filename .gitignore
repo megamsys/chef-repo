@@ -1,7 +1,9 @@
 .rake_test_cache
 
 .chef/*.pem
-data_bags/
+
+#ignore data_bags
+data_bags/*
 
 # emacs
 *~

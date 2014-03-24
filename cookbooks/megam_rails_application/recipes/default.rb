@@ -65,7 +65,7 @@ node.set[:ganglia][:hostname] = "#{node.name}"
 include_recipe "megam_ganglia::default"
 
 node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
 node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::rsyslog"
 

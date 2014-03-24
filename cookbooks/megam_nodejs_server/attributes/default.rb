@@ -47,7 +47,7 @@ default['nodejs']['cmd']['npm-install'] = "npm install"
 #Remote Locations
 default['nodejs']['home'] = "/home/sandbox"
 default['nodejs']['tap'] = "/home/sandbox/tap"
-default['nodejs']['user'] = "sanbox"
+default['nodejs']['user'] = "sandbox"
 default['nodejs']['mode'] = "0755"
 
 default['nodejs']['init']['conf'] = "/etc/init/tap.conf"
