@@ -2,7 +2,7 @@
 
 .chef/*.pem
 
-/data_bags
+/data_bags/*
 
 # emacs
 *~
