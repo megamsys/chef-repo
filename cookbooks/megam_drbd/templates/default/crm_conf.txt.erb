@@ -1,0 +1,23 @@
+primitive VolumeDRBD ocf:linbit:drbd params drbd_resource="<%= node['drbd']['resource'] %>" \
+ operations $id="VolumeDRBD-operations" \
+ op start interval="0" timeout="240"\
+ op promote interval="0" timeout="90" \
+ op demote interval="0" timeout="90" \
+ op stop interval="0" timeout="100" \
+ op monitor interval="40" timeout="60" start-delay="0" \
+ op notify interval="0" timeout="90" \
+ meta target-role="started"
+primitive FileSystemDRBD ocf:heartbeat:Filesystem \
+ params device="<%= node['drbd']['dev'] %>" directory="<%= node['drbd']['mount'] %>" fstype="<%= node['drbd']['fs_type'] %>" \
+ operations $id="FileSystemDRBD-operations" \
+ op start interval="0" timeout="60" \
+ op stop interval="0" timeout="60" fast_stop="no" \
+ op monitor interval="40" timeout="60" start-delay="0" \
+ op notify interval="0" timeout="60"
+ms MasterDRBD VolumeDRBD \
+ meta clone-max="2" notify="true" target-role="started"
+group Cluster FileSystemDRBD \
+ meta target-role="Started"
+colocation WebServerWithIP inf: Cluster MasterDRBD:Master
+order StartFileSystemFirst inf: MasterDRBD:promote Cluster:start
+commit
