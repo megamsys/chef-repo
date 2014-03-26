@@ -118,26 +118,63 @@ execute "npm Install dependencies" do
   command node['nodejs']['cmd']['npm-install']
 end
 
-template node['nodejs']['init']['conf'] do
+# use upstart when supported to get nice things like automatic respawns
+use_upstart = false
+case node['platform_family']
+when "debian"  
+  if node['platform_version'].to_f >= 12.04
+      use_upstart = true  
+  end
+end
+
+if use_upstart
+  template node['nodejs']['init']['conf'] do
   source node['nodejs']['template']['conf']
   owner "root"
   group "root"
-  mode node['nodejs']['mode']
+  mode "0755"
 end
+else
+  template "/etc/init.d/nodejs" do
+  source "nodejs.erb"
+  variables(
+              :js_file => node['nodejs']['js-file']
+              )
+  owner "root"
+  group "root"
+  mode "0755" 
+  end
+end
+
 
 template "/etc/nginx/sites-available/default" do
   source "nginx.conf.erb"
   owner "root"
   group "root"
-  mode node['nodejs']['mode']
+  mode "0755"
 end
 
 
-execute "Start server in background " do
-  cwd "#{node['sandbox']['home']}/#{dir}" 
+if use_upstart
+   execute "Start nodejs server in background" do
+   cwd "#{node['sandbox']['home']}/#{dir}"
+   user "root"
+   group "root"
+   command node['nodejs']['start']
+   end
+else
+bash "Start service nodejs server in background" do
   user "root"
-  group "root"
-  command node['nodejs']['start']
+   code <<-EOH
+    /etc/init.d/nodejs start
+  EOH
+end   
+bash "Restart service nodejs server in background" do
+  user "root"
+   code <<-EOH
+    /etc/init.d/nodejs restart
+  EOH
+end   
 end
 
 bash "restart nginx" do

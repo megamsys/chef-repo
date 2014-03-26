@@ -61,6 +61,19 @@ end
 
 node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
 node.set["gulp"]["project_name"] = "#{dir}"
+node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"
+node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
+
+execute "Clone play builder" do
+cwd "#{node['sandbox']['home']}/bin"
+  user "root"
+  group "root"
+  command "git clone https://github.com/rajthilakmca/megam_play_builder.git"
+end
+
+
+node.set["gulp"]["builder"] = "megam_play_builder"
+include_recipe "megam_gulp"
 
 directory "/usr/share/#{dir}" do
   owner "root"
@@ -105,7 +118,7 @@ bash "Refresh bashrc" do
 end
 
 remote_file "#{node['sandbox']['home']}/bin/sbt-launch.jar" do
-  source node["play"]["sbt"]["jar"]
+  source "http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar"
   mode "0755"
    owner node['sandbox']['user']
   group node['sandbox']['user']
@@ -127,131 +140,51 @@ execute "Stage play project" do
   command "#{node['sandbox']['home']}/bin/sbt clean compile dist"
 end
 
-
-execute "Copy zip to /usr/share" do
-  user "root"
-  group "root"
-  command "cp #{node['sandbox']['home']}/#{dir}/target/universal/*.zip /usr/share/"
-end
-
-
-ruby_block "Set Directory name" do
-  block do
-   dir1 = Dir["#{node['sandbox']['home']}/#{dir}/target/universal/*.zip"]
-   file_name = File.basename(dir1[0])
-   node.set['play']['dir'] = File.basename(file_name, '.*')
-  end
-end
-
-
-#dir = node['play']['dir']
-
-node.set["play"]["dir"]["script"] = "/usr/share/#{node['play']['dir']}/bin"
-node.set["play"]["file"]["script"] = "megam_play"
-
-execute "Unzip dist content " do
-  cwd "/usr/share/"  
-  user "root"
-  group "root"
-  command "unzip *.zip"
-end
-
-execute "Chmod for start script " do
-  cwd "/usr/share/#{dir}/bin" #DONT KNOW THE DIR NAME 
-  user "root"
-  group "root"
-  command "chmod 755 megam_play"
-end
-
-
-when ".zip"
-
-remote_file "/usr/share/#{dir}/#{file_name}" do
-  source node["megam_deps"]["predefs"]["scm"]
-  mode "0755"
-  owner "root"
-  group "root"
-end
-
-execute "Unzip dist content " do
-  cwd "/usr/share/#{dir}"  
-  user "root"
-  group "root"
-  command "unzip *.zip"
-end
-
-node.set["play"]["dir"]["script"] = "/usr/share/#{dir}/bin"
-node.set["play"]["file"]["script"] = "megam_play"
-
-execute "Chmod for start script " do
-  cwd "/usr/share/#{dir}/#{dir}" #DONT KNOW THE DIR NAME 
-  user "root"
-  group "root"
-  command "chmod 755 megam_play"
-end
-
-when ".tar"
-
-remote_file "/usr/share/#{dir}" do
-  source node["megam_deps"]["predefs"]["scm"]
-  mode "0755"
-  owner "root"
-  group "root"
-end
-
-execute "Untar tar file " do
-  cwd "/usr/share/#{dir}"  
-  user "root"
-  group "root"
-  command "tar -xvzf #{file_name}"
-end
-node.set["play"]["dir"]["script"] = "/usr/share/#{dir}/bin"
-node.set["play"]["file"]["script"] = "megam_play"
-
-
-when ".gz"
-
-file_name = File.basename(file_name, '.*')
-dir = File.basename(file_name, '.*')
-
-directory "/usr/share/#{dir}" do
-  owner "root"
-  group "root"
-  mode "0755"
-  action :create
-end
-
-remote_file "/usr/share/#{dir}/#{file_name}" do
-  source node["megam_deps"]["predefs"]["scm"]
-  mode "0755"
-  owner "root"
-  group "root"
-end
-
-execute "Untar tar file " do
-  cwd "/usr/share/#{dir}"  
-  user "root"
-  group "root"
-  command "tar -xvzf #{file_name}"
-end
-
-node.set["play"]["dir"]["script"] = "/usr/share/#{dir}/bin"
-node.set["play"]["file"]["script"] = "megam_play"
-
-else
-remote_file "#{node['sandbox']['home']}/megamplay.deb" do
-  source node["play"]["deb"]
-  mode "0755"
-   owner node['sandbox']['user']
+execute "Copy the zip file" do
+  cwd "#{node['sandbox']['home']}/#{dir}/target/universal/"  
+  user node['sandbox']['user']
   group node['sandbox']['user']
-  checksum "08da002l" 
+  command "cp #{node['sandbox']['home']}/#{dir}/target/universal/#{dir}*.zip #{node['sandbox']['home']}/#{dir}/target/"
 end
 
-execute "DEPACKAGE Megam_Play DEB " do
-  cwd node['sandbox']['home']  
+execute "Unzip dist content" do
+  cwd "#{node['sandbox']['home']}/#{dir}/target/"  
+  user node['sandbox']['user']
+  group node['sandbox']['user']
+  command "unzip *.zip"
+end
+
+execute "Delete zip file" do
+  cwd "#{node['sandbox']['home']}/#{dir}/target/"  
+  user node['sandbox']['user']
+  group node['sandbox']['user']
+  command "rm -rf *.zip"
+end
+
+execute "rename the unzipped file" do
+  cwd "#{node['sandbox']['home']}/#{dir}/target/"  
+  user node['sandbox']['user']
+  group node['sandbox']['user']
+  command "mv #{dir}* #{dir}"
+end
+
+execute "Copy unzipped folder to /usr/share" do
   user "root"
   group "root"
-  command "dpkg -i megamplay.deb"
+  command "mv #{node['sandbox']['home']}/#{dir}/target/#{dir} /usr/share/"
+end
+
+execute "chown root" do
+  user "root"
+  group "root"
+  command "chown root:root /usr/share/#{dir}"
+end
+
+execute "Chmod for start script" do
+   cwd "/usr/share/#{dir}/bin" #DONT KNOW THE DIR NAME 
+  user "root"
+  group "root"
+  command "chmod 755 #{dir}"
 end
 
 end #case
@@ -264,17 +197,33 @@ template "/etc/nginx/sites-available/default" do
   mode "0644"
 end
 
+# use upstart when supported to get nice things like automatic respawns
+use_upstart = false
+case node['platform_family']
+when "debian"  
+  if node['platform_version'].to_f >= 12.04
+      use_upstart = true  
+  end
+end
+
+if use_upstart
 template "/etc/init/play.conf" do
   source "play-init.conf.erb"
   owner "root"
   group "root"
   mode "0644"
 end
-
-execute "Restart nginx" do
-  user "root"
+else
+template "/etc/init.d/play" do
+  source "play.erb"  
+  variables(
+              :script_file => "/usr/share/#{dir}/bin/#{dir}",
+              :server => "#{dir}"
+              )
+  owner "root"
   group "root"
-  command "service nginx restart"
+  mode "0755" 
+  end
 end
 
 =begin
@@ -286,12 +235,25 @@ execute "Run megam-play" do
 end 
 =end
 
-include_recipe "megam_gulp"
-
-execute "Start Play" do
+if use_upstart
+   execute "Start Play" do
   user "root"
   group "root"
   command "start play"
+end
+else
+bash "Start service play server in background" do
+  user "root"
+   code <<-EOH
+    /etc/init.d/play start
+  EOH
+end  
+end
+
+execute "Restart nginx" do
+  user "root"
+  group "root"
+  command "service nginx restart"
 end
 
 

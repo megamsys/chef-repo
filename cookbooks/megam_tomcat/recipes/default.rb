@@ -95,14 +95,35 @@ template node["tomcat-nginx"]["remote-location"]["tomcat-initd"] do
   mode node["tomcat-nginx"]["mode"]
 end
 
+# use upstart when supported to get nice things like automatic respawns
+use_upstart = false
+supports_setuid = false
+case node['platform_family']
+when "debian"  
+  if node['platform_version'].to_f >= 12.04
+    supports_setuid = true
+    use_upstart = true  
+  end
+end
 
-bash "update tomcat defaults" do
+if use_upstart
+  bash "update tomcat defaults" do
   user "root"
    code <<-EOH
   update-rc.d tomcat defaults
   start tomcat
   EOH
 end
+else
+  bash "update service tomcat defaults" do
+  user "root"
+   code <<-EOH
+   /etc/init.d/tomcat start
+  EOH
+end
+end
+
+
 
 scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
 file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
@@ -242,11 +263,23 @@ bash "restart nginx" do
   EOH
 end
 
-bash "Restart tomcat" do
+if use_upstart
+  bash "Restart tomcat" do
   "root"
    code <<-EOH
   stop tomcat
   start tomcat
   EOH
+  end
+else
+bash "Restart service tomcat" do
+  "root"
+   code <<-EOH
+  /etc/init.d/tomcat stop 
+  /etc/init.d/tomcat start
+  EOH
+end 
 end
+
+
 

@@ -1,10 +1,11 @@
+current_dir = File.dirname(__FILE__)
 log_level                :debug
 log_location             STDOUT
-node_name                "#{ENV['CHEF_CLIENT_NAME']}"
-client_key               "~/chef-repo/.chef/#{ENV['CHEF_CLIENT_NAME']}.pem"
+node_name                "megam"
+client_key               "#{current_dir}/megam.pem"
 validation_client_name   'chef-validator'
-validation_key           '~/chef-repo/.chef/chef-validator.pem'
-chef_server_url          "#{ENV['CHEF_SERVER']}"
+validation_key           "#{current_dir}/chef-validator.pem"
+chef_server_url          "https://chef.megam.co.in"
 syntax_check_cache_path  '~/chef-repo/.chef/syntax_check_cache'
 cache_type               'BasicFile'
 cache_options( :path => '~/chef-repo/.chef/checksums')
