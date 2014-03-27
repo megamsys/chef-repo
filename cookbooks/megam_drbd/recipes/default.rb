@@ -108,7 +108,7 @@ end
 ruby_block "Checking Synchronixation" do
   block do
   	print "Synchronization in progress "
-	until `drbdadm cstate #{node['drbd']['resource']}`.eql? "Connected"
+	until `drbdadm cstate #{node['drbd']['resource']}`.strip.eql? "Connected"
 	print "."
   	sleep(1)
 	end
