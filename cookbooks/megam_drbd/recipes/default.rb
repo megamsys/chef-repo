@@ -22,16 +22,7 @@ node.save unless Chef::Config[:solo]
 
 require 'chef/shell_out'
 
-service "drbd" do
-  supports(
-    :restart => true,
-    :status => true
-  )
-  action :nothing
-end
-
-
-resource = "pair"
+resource = "#{node['drbd']['resource']}"
 
 if node['drbd']['remote_host'].nil?
   Chef::Application.fatal! "You must have a ['drbd']['remote_host'] defined to use the drbd::pair recipe."
@@ -39,7 +30,7 @@ end
 
 remote = search(:node, "name:#{node['drbd']['remote_host']}")[0]
 
-case remote.cloud.provider
+case "#{remote.cloud.provider}"
 when "hp"
 include_recipe "megam_drbd::hp"
 	node.set['drbd']['disk'] = "/dev/vdc"
@@ -53,17 +44,17 @@ end
 
 ruby_block "Add volume Checking" do
   block do
-case remote.cloud.provider
+case "#{remote.cloud.provider}"
 when "hp"
-	puts "Attaching Volume"
+	print "Attaching Volume"
 	until File.exists?("/dev/vdc")
-	puts "."
+	print "."
   	sleep(1)
 	end
 when "ec2"
-	puts "Attaching Volume"
+	print "Attaching Volume"
 	until File.exists?("/dev/xvdf")
-	puts "."
+	print "."
   	sleep(1)
 	end
 else
@@ -80,7 +71,6 @@ template "/etc/drbd.d/#{resource}.res" do
     )
   owner "root"
   group "root"
-  action :create
 end
 
 directory node['drbd']['mount'] do
@@ -89,24 +79,19 @@ end
 
 #File.exists?("/dev/vdc")
 
-execute "drbdadm create-md #{resource}" do
-  subscribes :run, "template[/etc/drbd.d/#{resource}.res]"
-  notifies :restart, "service[drbd]", :immediately
-end
+execute "drbdadm create-md #{resource}" 
+
+execute "service drbd restart"
 
 if node['drbd']['master']
 
 #first pass only, initialize drbd
 
 #claim primary based off of node['drbd']['master']
-execute "drbdadm -- --overwrite-data-of-peer primary all" do
-  subscribes :run, "execute[drbdadm create-md #{resource}]"
-end
+execute "drbdadm -- --overwrite-data-of-peer primary all"
 
 #You may now create a filesystem on the device, use it as a raw block device
-execute "mkfs -t #{node['drbd']['fs_type']} #{node['drbd']['dev']}" do
-  subscribes :run, "execute[drbdadm -- --overwrite-data-of-peer primary all]"
-end
+execute "mkfs -t #{node['drbd']['fs_type']} #{node['drbd']['dev']}"
 
 #mount -t xfs -o rw /dev/drbd0 /shared
 mount node['drbd']['mount'] do
@@ -120,15 +105,15 @@ execute "cp -r #{node['drbd']['source_dir']} #{node['drbd']['mount']}"
 
 end
 
-#cp -r /home/sandbox/ghost/ /drbd_mnt
-
-=begin
-#hack to get around the mount failing
-ruby_block "set drbd configured flag" do
+ruby_block "Checking Synchronixation" do
   block do
-    node.set['drbd']['configured'] = true
-  end
-  subscribes :create, "execute[mkfs -t #{node['drbd']['fs_type']} #{node['drbd']['dev']}]"
-  action :nothing
+  	print "Synchronization in progress "
+	until `drbdadm cstate #{node['drbd']['resource']}`.eql? "Connected"
+	print "."
+  	sleep(1)
+	end
 end
-=end
+end
+
+include_recipe "megam_drbd::pacemaker"
+

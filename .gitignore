@@ -3,7 +3,7 @@
 .chef/*.pem
 
 #ignore data_bags
-data_bags/*
+data_bags/
 
 # emacs
 *~
