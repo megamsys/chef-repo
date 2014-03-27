@@ -122,10 +122,10 @@ when "fedora"
   if node['platform_version'].to_i >= 9
     use_upstart = true
   end
-when "debian"
-  use_upstart = true
+when "debian"  
   if node['platform_version'].to_f >= 12.04
     supports_setuid = true
+    use_upstart = true
   end
 end
 

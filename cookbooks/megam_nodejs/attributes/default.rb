@@ -39,9 +39,9 @@ default['nodejs']['legacy_packages'] = false
 
 #MY ATTRIBUTES
 default['nodejs']['init']['conf'] = "/etc/init/nodejs.conf"
+
 #Template file
 default['nodejs']['template']['conf'] = "nodejs.conf.erb"
-
 #Shell Commands
 default['nodejs']['start'] = "start nodejs"
 
