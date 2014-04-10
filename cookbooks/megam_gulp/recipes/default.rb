@@ -21,7 +21,7 @@ directory "#{node['sandbox']['home']}/bin" do
 end
 
 remote_file "#{node['sandbox']['home']}/bin/gulpd.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/zip/gulpd.zip"
+  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.2/zip/gulpd.zip"
     owner node["sandbox"]["user"]
   group node["sandbox"]["user"]
 end
@@ -55,6 +55,13 @@ template "/etc/init/gulpd.conf" do
   owner "root"
   group "root"
   mode "0755"
+end
+
+execute "Start gulp Demon" do
+  cwd "#{node['sandbox']['home']}/bin"
+  user "root"
+  group "root"
+  command "./gulpd update -n #{node.name} -s running"
 end
 
 execute "Start gulp Demon" do

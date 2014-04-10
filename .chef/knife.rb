@@ -26,6 +26,11 @@ knife[:region] = "#{ENV['AWS_REGION']}"
 
 knife[:podnix_api_key] = "#{ENV['PODNIX_API_KEY']}"
 
+#GOGRID
+knife[:go_grid_api_key] = "#{ENV['GOGRID_API_KEY']}"
+knife[:go_grid_shared_secret] = "#{ENV['GOGRID_SHARED_SECRET']}" 
+
+
 #rackspace 
 knife[:rackspace_api_username] = "#{ENV['RACKSPACE_USERNAME']}"
 knife[:rackspace_api_key] = "#{ENV['RACKSPACE_API_KEY']}"

@@ -19,7 +19,8 @@ aws:
     bucketEndpoint: s3-ap-southeast-1.amazonaws.com
     location-constraint: true
     lowercase-bucket: true
-auth:
+api:
+  server: https://api.megam.co
   email: <%= node["gulp"]["email"] %>
   api_key: <%= node["gulp"]["api_key"] %>
 amqp:

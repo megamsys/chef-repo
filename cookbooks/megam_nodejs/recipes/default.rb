@@ -54,12 +54,13 @@ if scm_ext.empty?
   scm_ext = ".git"
 end
 
-
+node.set['megam_app']['home'] = "#{node["sandbox"]["home"]}/#{dir}"
+include_recipe "megam_app_env"
 
 js_file = "#{node["megam_deps"]["defns"]["appdefns"]["runtime_exec"]}".split.last
 
 #SET JS FILE TO BE RUN
-node.set['nodejs']['js-file'] = "#{node["sandbox"]["home"]}/#{dir}/#{js_file}"
+node.set['nodejs']['js-file'] = "#{js_file}"
 
 node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
 node.set["gulp"]["project_name"] = "#{dir}"
@@ -74,10 +75,6 @@ cwd "#{node['sandbox']['home']}/bin"
   group "root"
   command "git clone https://github.com/indykish/megam_nodejs_builder.git"
 end
-
-
-node.set["gulp"]["builder"] = "megam_nodejs_builder"
-include_recipe "megam_gulp"
 
 
 case scm_ext
@@ -108,7 +105,14 @@ execute "change nodejs as executable " do
   cwd node['sandbox']['home'] 
   user node['sandbox']['user']
   group node['sandbox']['user']
-  command "chmod 755 #{node['nodejs']['js-file']}"
+  command "chmod 755 #{node["sandbox"]["home"]}/#{dir}/#{js_file}"
+end
+
+execute "npm update" do
+  cwd "#{node['sandbox']['home']}/#{dir}" 
+  user "root"
+  group "root"
+  command "npm install -g npm"
 end
 
 execute "npm Install dependencies" do
@@ -146,4 +150,7 @@ bash "restart nginx" do
   service nginx restart
   EOH
 end
+
+node.set["gulp"]["builder"] = "megam_nodejs_builder"
+include_recipe "megam_gulp"
 

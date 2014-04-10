@@ -24,6 +24,7 @@ case node['platform_family']
     default['nodejs']['install_method'] = 'binary'
 end
 
+
 default['nodejs']['version'] = '0.10.15'
 default['nodejs']['checksum'] = '87345ab3b96aa02c5250d7b5ae1d80e620e8ae2a7f509f7fa18c4aaa340953e8'
 default['nodejs']['checksum_linux_x64'] = '0b5191748a91b1c49947fef6b143f3e5e5633c9381a31aaa467e7c80efafb6e9'
@@ -46,4 +47,7 @@ default['nodejs']['template']['conf'] = "nodejs.conf.erb"
 default['nodejs']['start'] = "start nodejs"
 
 default['nodejs']['cmd']['npm-install'] = "npm install"
+
+
+
 

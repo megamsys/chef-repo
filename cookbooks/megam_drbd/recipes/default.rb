@@ -105,9 +105,23 @@ execute "cp -r #{node['drbd']['source_dir']} #{node['drbd']['mount']}"
 
 end
 
+if !node['drbd']['master']
+
+ruby_block "Waiting For Synchronixation" do
+  block do
+	puts "\nWaiting For Synchronixation"
+	until `drbdadm cstate #{node['drbd']['resource']}`.strip.eql? "SyncTarget"
+	print "."
+  	sleep(1)
+	end
+end
+end
+
+end
+
 ruby_block "Checking Synchronixation" do
   block do
-  	print "Synchronization in progress "
+  	puts "\nSynchronization in progress "
 	until `drbdadm cstate #{node['drbd']['resource']}`.strip.eql? "Connected"
 	print "."
   	sleep(1)

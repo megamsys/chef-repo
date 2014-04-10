@@ -5,7 +5,7 @@
 
 # we need all the packgages installed and so on.  also, this node should have
 # its own ganglia client.
-include_recipe "ganglia::default"
+include_recipe "megam_ganglia::default"
 
 node['ganglia']['clusterport'].each do |clust,port|
   template "/etc/ganglia/gmond_collector_#{clust}.conf" do

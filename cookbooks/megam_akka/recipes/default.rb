@@ -261,7 +261,7 @@ remote_file "#{node["sandbox"]["home"]}/megamherk.deb" do
   source node['akka']['deb']
   owner node["sandbox"]["user"]
   group node["sandbox"]["user"]
-  mode node['akka']['mode']
+  mode "0755"
 end
 
 execute "Depackage megam akka" do
@@ -272,11 +272,11 @@ execute "Depackage megam akka" do
 end
 end #case
 
-template node['akka']['init']['conf'] do
+template "/etc/init/akka.conf" do
   source node['akka']['template']['conf']
   owner "root"
   group "root"
-  mode node['akka']['mode']
+  mode "0755"
 end
 
 include_recipe "megam_gulp"

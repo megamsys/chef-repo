@@ -31,11 +31,15 @@ node.set[:rails][:app][:name] = "#{dir}"
 
 include_recipe "git"
 
+node.set['megam_app']['home'] = "#{node[:rails][:app][:path]}/current"
+include_recipe "megam_app_env"
+
+
 node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
 node.set["gulp"]["local_repo"] = "#{node[:rails][:app][:path]}/current"
 node.set["gulp"]["builder"] = "megam_ruby_builder"
 node.set["gulp"]["project_name"] = node[:rails][:app][:name]
-include_recipe "megam_gulp"
+
 
 bash "Clone ruby builder" do
 cwd "#{node['sandbox']['home']}/bin"
@@ -251,4 +255,5 @@ end
   command "sudo ./start unicorn_#{node[:rails][:app][:name]}"
   end
 
+include_recipe "megam_gulp"
 
