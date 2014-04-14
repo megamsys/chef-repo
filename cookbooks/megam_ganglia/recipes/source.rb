@@ -7,7 +7,7 @@ end
 
 remote_file "/usr/src/ganglia-#{node[:ganglia][:version]}.tar.gz" do
   source node[:ganglia][:uri]
-  checksum node[:ganglia][:checksum]
+  #checksum node[:ganglia][:checksum]
 end
 
 src_path = "/usr/src/ganglia-#{node[:ganglia][:version]}"

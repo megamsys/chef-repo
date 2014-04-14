@@ -12,11 +12,10 @@ globals {
   cleanup_threshold = 300 /*secs */ 
   gexec = no             
   send_metadata_interval = 30
-<% if @spoof_hostname %>
+  <% if node[:gagnlia][:spoof_hostname] %>
   override_hostname = <%= node[:ganglia][:hostname] %>
   override_ip = <%= node[:ganglia][:ip] %>
-<% end %>
-    
+  <% end %>
 } 
 
 /* If a cluster attribute is specified, then all gmond hosts are wrapped inside 

@@ -23,6 +23,8 @@ when "ubuntu", "debian"
 when "redhat", "centos", "fedora"
   include_recipe "megam_ganglia::source"
 
+node.set[:gagnlia][:spoof_hostname] = false
+
   execute "copy ganglia-monitor init script" do
     command "cp " +
       "/usr/src/ganglia-#{node[:ganglia][:version]}/gmond/gmond.init " +

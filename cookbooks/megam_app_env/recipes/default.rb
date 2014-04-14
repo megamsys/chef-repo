@@ -7,7 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
-template "#{node['sandbox']['home']}/env.sh" do
+platform_family = "#{node[:platform]}"
+template "#{node['sandbox']['home']}/bin/conf/env.sh" do
   source "env.sh.erb"
   mode "0755"
+  variables( :platform_family => "#{platform_family}" )
 end
