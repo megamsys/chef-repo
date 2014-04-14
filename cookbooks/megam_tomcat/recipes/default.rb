@@ -135,6 +135,9 @@ node.set["gulp"]["project_name"] = "#{dir}"
 node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"
 node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
 
+node.set['megam_app']['home'] = "#{node["tomcat-nginx"]["home"]}/#{dir}"
+include_recipe "megam_app_env"
+
 case scm_ext
 
 when ".git"

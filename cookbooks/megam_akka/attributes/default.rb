@@ -18,9 +18,9 @@
 #
 
 #Remote Locations
-default['akka']['mode'] = "0755"
+#default['akka']['mode'] = "0755"
 
-default['akka']['init']['conf'] = "/etc/init/akka.conf"
+#default['akka']['init']['conf'] = "/etc/init/akka.conf"
 
 #Command
 default['akka']['start'] = "start akka"

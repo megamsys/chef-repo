@@ -35,7 +35,7 @@ node.set["gulp"]["remote_repo"] = "test"
 node.set["gulp"]["local_repo"] = "test"
 node.set["gulp"]["builder"] = "megam_ruby_builder"
 node.set["gulp"]["project_name"] = "test"
-include_recipe "megam_gulp"
+
 
 
 
@@ -171,4 +171,5 @@ execute "Start postgresql" do
   action :run
 end
 
+include_recipe "megam_gulp"
 

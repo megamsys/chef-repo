@@ -5,7 +5,8 @@
 #
 
 #rsyslog template
-
+case node[:platform]
+when "ubuntu", "debian"
 bash "Install Rsyslog" do
   user "root"
    code <<-EOH
@@ -14,7 +15,7 @@ wget http://www.rsyslog.com/files/download/rsyslog/rsyslog-7.4.4.tar.gz
 wget http://libestr.adiscon.com/files/download/libestr-0.1.9.tar.gz
 wget http://www.libee.org/files/download/libee-0.4.1.tar.gz
 
-sudo apt-get -y install gcc make pkg-config libjson0-dev uuid-dev libcurl4-openssl-dev python-docutils bison flex
+apt-get -y install gcc make pkg-config libjson0-dev uuid-dev libcurl4-openssl-dev python-docutils bison flex
 
 tar xzf libestr-0.1.9.tar.gz
 tar xzf libee-0.4.1.tar.gz
@@ -22,19 +23,64 @@ tar xzf rsyslog-7.4.4.tar.gz
 
 cd /tmp/libestr-0.1.9
 ./configure --libdir=/usr/lib --includedir=/usr/include --enable-rfc3195
-sudo make 
-sudo make install
+make 
+make install
 
 cd /tmp/libee-0.4.1
 ./configure --libdir=/usr/lib --includedir=/usr/include
-sudo make 
-sudo make install
+make 
+make install
 
 cd /tmp/rsyslog-7.4.4
 ./configure --prefix=/usr --enable-imfile --enable-elasticsearch
-sudo make
-sudo make install
+make
+make install
   EOH
+end
+#=begin
+when "redhat", "centos", "fedora"
+
+bash "Install Rsyslog" do
+  user "root"
+   code <<-EOH
+   yum install -y pcre pcre-devel mysql-server mysql-devel gnutls gnutls-devel gnutls-utils net-snmp net-snmp-devel net-snmp-libs net-snmp-perl net-snmp-utils libnet libnet-devel
+   
+   cd /tmp
+wget http://sourceforge.net/projects/libestr/files/libestr-0.1.0.tar.gz/download
+tar -xvf libestr-0.1.0.tar.gz
+cd libestr-0.1.0
+./configure --prefix=/usr
+make
+make install
+
+cd /tmp
+wget http://www.libee.org/files/download/libee-0.1.0.tar.gz
+tar -xvf libee-0.1.0.tar.gz
+cd libee-0.1.0
+./configure --prefix=/usr
+make
+make install
+
+cd /tmp
+wget http://honeynet.ir/software/rsyslog/librelp-1.0.0.tar.gz
+tar -xvf librelp-1.0.0.tar.gz
+cd librelp-1.0.0
+./configure --prefix=/usr
+make
+make install 
+
+cd /tmp
+wget http://www.rsyslog.com/files/download/rsyslog/rsyslog-5.7.9.tar.gz
+tar -xvf rsyslog-5.7.9.tar.gz
+cd rsyslog-5.7.9 
+
+./configure --enable-regexp --enable-zlib --enable-pthreads --enable-klog --enable-inet --enable-unlimited-select --enable-debug --enable-rtinst --enable-memcheck --enable-diagtools --enable-mysql --enable-snmp --enable-gnutls --enable-rsyslogrt --enable-rsyslogd --enable-extended-tests --enable-mail --enable-imptcp --enable-omruleset --enable-valgrind --enable-imdiag --enable-relp --enable-testbench --enable-imfile --enable-omstdout --enable-omdbalerting --enable-omuxsock --enable-imtemplate --enable-omtemplate --enable-pmlastmsg --enable-omudpspoof --enable-omprog --enable-impstats
+make
+make install 
+  EOH
+end
+#=end
+
 end
 
 template "/etc/rsyslog.conf" do

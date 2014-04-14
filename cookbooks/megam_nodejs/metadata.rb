@@ -7,7 +7,7 @@ version          "1.3.0"
 name             "megam_nodejs"
 provides         "nodejs"
 
-%w{ megam_route53 build-essential yum apt git megam_deps nginx megam_logstash megam_ganglia megam_sandbox megam_gulp}.each do |cookbooks|
+%w{ megam_route53 build-essential yum apt git megam_deps nginx megam_logstash megam_ganglia megam_sandbox megam_gulp megam_app_env}.each do |cookbooks|
   depends cookbooks
 end
 

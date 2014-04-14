@@ -21,7 +21,7 @@ depends "megam_logstash"
 depends "megam_sandbox"
 depends "megam_ruby"
 depends "megam_gulp"
-
+depends "megam_app_env"
 
 
 # to use the rails_application::database_credentials recipe

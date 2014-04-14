@@ -13,15 +13,8 @@ package "unzip" do
         action :install
 end
 
-directory "#{node['sandbox']['home']}/bin" do
-  owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
-  mode 0755
-  action :create
-end
-
 remote_file "#{node['sandbox']['home']}/bin/gulpd.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/zip/gulpd.zip"
+  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/zip/gulpd.zip"
     owner node["sandbox"]["user"]
   group node["sandbox"]["user"]
 end
@@ -34,13 +27,6 @@ cwd "#{node['sandbox']['home']}/bin"
   chmod 0755 gulpd
   rm gulpd.zip
   EOH
-end
-
-directory "#{node['sandbox']['home']}/bin/conf" do
-  owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
-  mode 0755
-  action :create
 end
 
 template "#{node['sandbox']['home']}/bin/conf/gulpd.conf" do
@@ -66,6 +52,7 @@ if use_upstart
   group "root"
   mode "0755"
 end
+
 else
   template "/etc/init.d/gulpd" do
   source "gulpd.erb"
@@ -76,6 +63,14 @@ else
   group "root"
   mode "0755" 
   end
+end
+
+
+execute "Update gulp Demon" do
+  cwd "#{node['sandbox']['home']}/bin"
+  user "root"
+  group "root"
+  command "./gulpd update -n #{node.name} -s running"
 end
 
 if use_upstart

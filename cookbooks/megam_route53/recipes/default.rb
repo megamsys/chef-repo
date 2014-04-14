@@ -11,7 +11,7 @@ include_recipe "megam_sandbox"
 keys = data_bag_item('ec2', 'keys')
 
 remote_file "#{node['sandbox']['home']}/bin/seru.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.1/zip/seru.zip"
+  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.2/zip/seru.zip"
     owner node["sandbox"]["user"]
   group node["sandbox"]["user"]
 end
