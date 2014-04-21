@@ -1,0 +1,43 @@
+# $Id: default.prefs,v 1.2 2011/04/19 07:17:03 sbajic Exp $
+# default.prefs v3.2
+# Default preferences for DSPAM
+
+# This file serves two purposes. First, it sets the default preferences each
+# user will see when using the preferences section of the DSPAM Control
+# Center. Second, it may be symbolically linked (or copied) into DSPAM_HOME to
+# set the system-wide default preferences, overriding any commandline or
+# dspam.conf parameters. If symlinked, an administrator can edit these options 
+# in the DSPAM Administrative Suite.
+
+# Training Mode: TEFT, TOE, TUM, NOTRAIN
+trainingMode=<%=node[:dspam][:trainingMode]%>
+
+# Spam Action: quarantine, tag, deliver
+spamAction=<%=node[:dspam][:spamAction]%>
+
+# Spam Subject: the text to be prepended onto the subject line of tagged spams
+spamSubject=<%=node[:dspam][:spamSubject]%>
+
+# Bayesian Noise Reduction: on/off
+enableBNR=<%=node[:dspam][:enableBNR]%>
+
+# Automatic Whitelisting: on/off
+enableWhitelist=<%=node[:dspam][:enableWhitelist]%>
+
+# Statistical Sedation: 0-10
+statisticalSedation=<%=node[:dspam][:statisticalSedation]%>
+
+# Signature Location: message, headers, attachment
+signatureLocation=<%=node[:dspam][:optOut]%>
+
+# Whitelist Threshold: the minimum number of innocent hits from a recipient to
+# be automatically whitelisted. Do not set this value too low!
+whitelistThreshold=<%=node[:dspam][:optOut]%>
+
+# showFactors: when set to on, the determining factors for each message will
+# be added to a X-DSPAM-Factors message header.
+showFactors=<%=node[:dspam][:optOut]%>
+
+# optIn/optOut: Depending on the opt mode set, you can also use one of these.
+optIn=<%=node[:dspam][:optIn]%>
+optOut=<%=node[:dspam][:optOut]%>

@@ -1,0 +1,8 @@
+bind_dn = <%= @ldap_server.openldap.anon_binddn %>
+bind_pw = <%= @ldap_server.openldap.anon_pass %>
+server_host = <%= @ldap_server.openldap.server %>
+search_base = <%= @ldap_server.openldap.users_root %>
+version = 3
+scope = sub
+query_filter = (zarafaAliases=%s)
+result_attribute = mail

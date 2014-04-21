@@ -32,12 +32,12 @@ node.set['logstash']['redis_url'] = "redis1.megam.co.in"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::beaver"
 
-=begin
+#=begin
 node.set['rsyslog']['index'] = "#{node.name}"
 node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
 node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::rsyslog"
-=end
+#=end
 
 scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
 file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
@@ -47,10 +47,12 @@ node.set["gulp"]["project_name"] = "#{dir}"
 node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"  
 node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
 
-node.set['megam_app']['home'] = "#{node["sandbox"]["home"]}/#{dir}"
+node.set['megam_app']['home'] = "/tmp/op5"
 include_recipe "megam_app_env"
 
-remote_file "/tmp/#{file_name}" do
+directory "/tmp/op5"
+
+remote_file "/tmp/op5/#{file_name}" do
   source node["megam_deps"]["predefs"]["scm"]
   mode "0755"
    owner node["sandbox"]["user"]
@@ -58,21 +60,19 @@ remote_file "/tmp/#{file_name}" do
 end
 
 execute "Untar op5-monitor" do
-cwd "/tmp"
+cwd "/tmp/op5"
   user "root"
   group "root"
-  command "tar -xvf #{file_name}"
+  command "tar --strip-components=1 -zxvf #{file_name}"
 end
 
-include_recipe "megam_gulp"
-
 execute "Install op5" do
-cwd "/tmp/op5-monitor"
+cwd "/tmp/op5"
   user "root"
   group "root"
   command "./install.sh"
 end
 
 
-#include_recipe "megam_gulp"
+include_recipe "megam_gulp"
 

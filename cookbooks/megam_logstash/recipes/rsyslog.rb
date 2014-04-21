@@ -7,6 +7,7 @@
 #rsyslog template
 case node[:platform]
 when "ubuntu", "debian"
+=begin
 bash "Install Rsyslog" do
   user "root"
    code <<-EOH
@@ -37,43 +38,74 @@ make
 make install
   EOH
 end
+=end
 #=begin
 when "redhat", "centos", "fedora"
 
-bash "Install Rsyslog" do
+#package "openjdk-7-jre"
+execute "yum -y install java-1.7.0-openjdk.x86_64"
+
+bash "Install Libestr" do
   user "root"
    code <<-EOH
-   yum install -y pcre pcre-devel mysql-server mysql-devel gnutls gnutls-devel gnutls-utils net-snmp net-snmp-devel net-snmp-libs net-snmp-perl net-snmp-utils libnet libnet-devel
+   yum install -y pcre pcre-devel mysql-server mysql-devel gnutls gnutls-devel gnutls-utils net-snmp net-snmp-devel net-snmp-libs net-snmp-perl net-snmp-utils libnet libnet-devel libxml2-devel.x86_64
    
    cd /tmp
 wget http://sourceforge.net/projects/libestr/files/libestr-0.1.0.tar.gz/download
 tar -xvf libestr-0.1.0.tar.gz
 cd libestr-0.1.0
-./configure --prefix=/usr
+./configure --prefix=/usr --libdir=/usr/lib64
 make
 make install
+EOH
+end
 
+bash "Install libee" do
+  user "root"
+   code <<-EOH
 cd /tmp
 wget http://www.libee.org/files/download/libee-0.1.0.tar.gz
 tar -xvf libee-0.1.0.tar.gz
 cd libee-0.1.0
-./configure --prefix=/usr
+./configure --prefix=/usr --libdir=/usr/lib64
 make
 make install
+EOH
+end
 
+bash "Install relp" do
+  user "root"
+   code <<-EOH
+   
 cd /tmp
-wget http://honeynet.ir/software/rsyslog/librelp-1.0.0.tar.gz
+wget http://download.rsyslog.com/librelp/librelp-1.0.0.tar.gz
 tar -xvf librelp-1.0.0.tar.gz
 cd librelp-1.0.0
-./configure --prefix=/usr
+./configure --prefix=/usr --libdir=/usr/lib64
 make
-make install 
+make install
+EOH
+end
 
+if `rpm -qa | grep libnet`.to_s.strip.length == 0
+bash "Install Libnet" do
+  user "root"
+   code <<-EOH
+wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libnet-1.1.6-7.el6.x86_64.rpm
+rpm -ivh libnet-1.1.6-7.el6.x86_64.rpm
+wget http://dl.fedoraproject.org/pub/epel/6/x86_64/libnet-devel-1.1.6-7.el6.x86_64.rpm
+rpm -ivh libnet-devel-1.1.6-7.el6.x86_64.rpm
+  EOH
+end
+end
+
+bash "Install Rsyslog" do
+  user "root"
+   code <<-EOH
 cd /tmp
 wget http://www.rsyslog.com/files/download/rsyslog/rsyslog-5.7.9.tar.gz
 tar -xvf rsyslog-5.7.9.tar.gz
 cd rsyslog-5.7.9 
-
 ./configure --enable-regexp --enable-zlib --enable-pthreads --enable-klog --enable-inet --enable-unlimited-select --enable-debug --enable-rtinst --enable-memcheck --enable-diagtools --enable-mysql --enable-snmp --enable-gnutls --enable-rsyslogrt --enable-rsyslogd --enable-extended-tests --enable-mail --enable-imptcp --enable-omruleset --enable-valgrind --enable-imdiag --enable-relp --enable-testbench --enable-imfile --enable-omstdout --enable-omdbalerting --enable-omuxsock --enable-imtemplate --enable-omtemplate --enable-pmlastmsg --enable-omudpspoof --enable-omprog --enable-impstats
 make
 make install 

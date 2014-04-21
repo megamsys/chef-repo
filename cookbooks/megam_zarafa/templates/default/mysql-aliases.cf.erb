@@ -1,0 +1,8 @@
+# The user name and password to log into the mysql server.
+user = <%= node['zarafa']['mysql_user'] %>
+password = <%= node['zarafa']['mysql_password'] %>
+hosts = 127.0.0.1
+dbname = <%= node['zarafa']['mysql_database'] %>
+# For Postfix 2.2 and later The SQL query template.
+# See mysql_table(5) for details.
+query = select value from objectproperty where objectid=(select objectid from objectproperty where value='%s' limit 1) and propname='loginname';

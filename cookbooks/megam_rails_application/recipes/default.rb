@@ -29,6 +29,10 @@ dir = File.basename(file_name, '.*')
 node.set[:rails][:app][:name] = "#{dir}"
 #=end
 
+node.set[:rails][:app][:name] = "#{dir}"
+node.set[:rails][:app][:path] = "/var/www/projects/#{node[:rails][:app][:name]}"
+node.set[:rails][:database][:name] = node[:rails][:app][:name]
+node.set[:rails][:database][:username] = node[:rails][:app][:name]
 include_recipe "git"
 
 node.set['megam_app']['home'] = "#{node[:rails][:app][:path]}/current"
