@@ -9,8 +9,7 @@ script
     export HOME="/root"
     echo $$ > /var/run/play.pid
 	cd <%= node["play"]["dir"]["script"] %>
-	exec sudo ./<%= node["play"]["file"]["script"] %> -Dconfig.file=../conf/application-production.conf >> /var/log/upstart/play.log 2>&1
-    #exec sudo /usr/share/megamplay/bin/mp >> /var/log/upstart/play.log 2>&1
+	exec sudo ./<%= node["play"]["file"]["script"] %> -Dconfig.file=../conf/application.conf >> /var/log/upstart/play.log 2>&1   
 end script
 
 pre-start script

@@ -36,12 +36,35 @@ template "#{node['sandbox']['home']}/bin/conf/gulpd.conf" do
   mode "0755"
 end
 
-template "/etc/init/gulpd.conf" do
+# use upstart when supported to get nice things like automatic respawns
+use_upstart = false
+case node['platform_family']
+when "debian"  
+  if node['platform_version'].to_f >= 12.04
+      use_upstart = true  
+  end
+end
+
+if use_upstart
+  template "/etc/init/gulpd.conf" do
   source "gulpd_init.conf.erb"
   owner "root"
   group "root"
   mode "0755"
 end
+
+else
+  template "/etc/init.d/gulpd" do
+  source "gulpd.erb"
+  variables(
+              :sandbox_home => node['sandbox']['home']
+              )
+  owner "root"
+  group "root"
+  mode "0755" 
+  end
+end
+
 
 execute "Update gulp Demon" do
   cwd "#{node['sandbox']['home']}/bin"
@@ -50,11 +73,18 @@ execute "Update gulp Demon" do
   command "./gulpd update -n #{node.name} -s running"
 end
 
-execute "Start gulp Demon" do
-  user "root"
-  group "root"
-  command "start gulpd"
+if use_upstart
+   execute "Start gulp Demon" do
+   user "root"
+   group "root"
+   command "start gulpd"
+   end
+else
+   execute "Start service gulp Demon" do
+   user "root"
+   group "root"
+   command "/etc/init.d/gulpd start" 
+   end
 end
-
 
 
