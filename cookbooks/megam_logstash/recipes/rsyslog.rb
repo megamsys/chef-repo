@@ -6,8 +6,8 @@
 
 #rsyslog template
 case node[:platform]
-when "ubuntu", "debian"
-=begin
+when "debian"
+
 bash "Install Rsyslog" do
   user "root"
    code <<-EOH
@@ -38,7 +38,7 @@ make
 make install
   EOH
 end
-=end
+
 #=begin
 when "redhat", "centos", "fedora"
 
