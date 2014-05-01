@@ -1,0 +1,8 @@
+server_host = <%= @ldap_server.openldap.server %>
+bind_dn = <%= @ldap_server.openldap.anon_binddn %>
+bind_pw = <%= @ldap_server.openldap.anon_pass %>
+search_base = <%= @ldap_server.openldap.users_root %>
+version = 3
+scope = sub
+query_filter = (mail=%s)
+result_attribute = mail

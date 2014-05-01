@@ -23,15 +23,15 @@ when "ubuntu", "debian"
 when "redhat", "centos", "fedora"
   include_recipe "megam_ganglia::source"
 
-node.set[:gagnlia][:spoof_hostname] = false
-
+#node.set[:gagnlia][:spoof_hostname] = false
+=begin
   execute "copy ganglia-monitor init script" do
     command "cp " +
-      "/usr/src/ganglia-#{node[:ganglia][:version]}/gmond/gmond.init " +
+      "/usr/local/src/ganglia-3.6.0/gmond/gmond.init " +
       "/etc/init.d/ganglia-monitor"
     not_if "test -f /etc/init.d/ganglia-monitor"
   end
-
+=end
   user "ganglia"
 end
 
@@ -65,19 +65,25 @@ when true
                :ports => ports,
                :spoof_hostname => node[:ganglia][:spoof_hostname],
                :hostname => "#{node.name}" )
-    notifies :restart, "service[ganglia-monitor]"
+    notifies :restart, "service[ganglia-monitor]" unless platform?( "redhat", "centos", "fedora" )
   end
 when false
   template "/etc/ganglia/gmond.conf" do
     source "gmond.conf.erb"
     variables( :cluster_name => clusternames[0],
                :ports => ports )
-    notifies :restart, "service[ganglia-monitor]"
+    notifies :restart, "service[ganglia-monitor]" unless platform?( "redhat", "centos", "fedora" )
   end
 end
 
+if platform?( "redhat", "centos", "fedora" )
+
+execute "service gmond start"
+
+else
 service "ganglia-monitor" do
   pattern "gmond"
   supports :restart => true
   action [ :enable, :start ]
+end
 end

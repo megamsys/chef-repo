@@ -1,0 +1,4 @@
+@<%=node['domain']%> <%=node['zarafa']['catchall']%>
+<% node['zarafa']['additional_domains'].each do |dom| %>
+@<%= dom %> <%=node['zarafa']['catchall']%>
+<%end%>

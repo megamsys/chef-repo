@@ -1,0 +1,5 @@
+# Everything beginning with either ham or spam avoids the filter
+/^(spam|ham)@.*$/ OK
+ 
+# The rest is redirected to be filtered
+/./ FILTER dspam:dspam

@@ -1,0 +1,1540 @@
+Instance ID: i-e12675c9
+Flavor: m1.small
+Image: ami-18a0f64a
+Region: ap-southeast-1
+Availability Zone: ap-southeast-1a
+Security Groups: megam
+Tags: Name: i-e12675c9
+SSH Key: megam_ec2
+
+Waiting for instance.........
+Public DNS Name: ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com
+Public IP Address: 54.254.68.194
+Private DNS Name: ip-10-130-82-154.ap-southeast-1.compute.internal
+Private IP Address: 10.130.82.154
+....................................................done
+Bootstrapping Chef on ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com --2014-04-16 12:44:39--  https://www.opscode.com/chef/install.sh
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Resolving www.opscode.com (www.opscode.com)... 184.106.28.91
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Connecting to www.opscode.com (www.opscode.com)|184.106.28.91|:443... connected.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com HTTP request sent, awaiting response... 200 OK
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Length: 15934 (16K) [application/x-sh]
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Saving to: `STDOUT'
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  0% [                                       ] 0           --.-K/s              100%[======================================>] 15,934      --.-K/s   in 0.003s  
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 2014-04-16 12:44:41 (5.48 MB/s) - written to stdout [15934/15934]
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Downloading Chef 11.10.4 for debian...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com downloading https://www.opscode.com/chef/metadata?v=11.10.4&prerelease=false&nightlies=false&p=debian&pv=6&m=x86_64
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   to file /tmp/install.sh.1809/metadata.txt
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com trying wget...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com url	https://opscode-omnibus-packages.s3.amazonaws.com/debian/6/x86_64/chef_11.10.4-1.debian.6.0.5_amd64.deb
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com md5	3dde48f0d4d46636c7b8dacdca16c928
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com sha256	eaa5a8615723b502f8d107e9c3fc6a601796631e96559f0845cfd24df4a6f5fe
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com downloaded metadata file looks valid...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com downloading https://opscode-omnibus-packages.s3.amazonaws.com/debian/6/x86_64/chef_11.10.4-1.debian.6.0.5_amd64.deb
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   to file /tmp/install.sh.1809/chef_11.10.4-1.debian.6.0.5_amd64.deb
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com trying wget...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Comparing checksum with sha256sum...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Installing Chef 11.10.4
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com installing with dpkg...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package chef.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 17904 files and directories currently installed.)
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking chef (from .../chef_11.10.4-1.debian.6.0.5_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Setting up chef (11.10.4-1.debian.6.0.5) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Thank you for installing Chef!
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Starting Chef Client, version 11.10.4[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Creating a new client identity for i-e12675c9 using the validator key.[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com resolving cookbooks for run list: ["zarafa"][0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Synchronizing Cookbooks:[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - ark[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - dspam[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - cron[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - yum[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - yum-epel[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - logrotate[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - apt[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - clamav[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - nscd[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - iptables[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - openssh[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - openssl[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - openldap[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - xfs[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - aws[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - build-essential[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - postgresql[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - mysql[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - database[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   - zarafa[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Compiling Cookbooks...[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: mysql::ruby[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[apt-get update] action run[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - execute apt-get update[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [2014-04-16T12:49:56+00:00] WARN: node['build_essential'] has been changed to node['build-essential'] to match the
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com cookbook name and community standards. I have gracefully converted the attribute
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com for you, but this warning and conversion will be removed in the next major
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com release of the build-essential cookbook.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [2014-04-16T12:49:56+00:00] WARN: node['build-essential']['compiletime'] has been deprecated. Please use
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com node['build-essential']['compile_time'] instead. I have gracefully converted the
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com attribute for you, but this warning and converstion will be removed in the next
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com major release of the build-essential cookbook.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: build-essential::_debian[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[autoconf] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 2.69-1 of package autoconf[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[binutils-doc] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 2.22-8 of package binutils-doc[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[bison] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 1:2.5.dfsg-2.1 of package bison[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[build-essential] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 11.5 of package build-essential[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[flex] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 2.5.35-10.1 of package flex[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[gettext] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 0.18.1.1-9 of package gettext[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[ncurses-dev] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 5.9-10 of package ncurses-dev[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: mysql::client[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[mysql-client] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 5.5.33+dfsg-0+wheezy1 of package mysql-client[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[libmysqlclient-dev] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 5.5.33+dfsg-0+wheezy1 of package libmysqlclient-dev[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: mysql::ruby[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * chef_gem[mysql] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 2.9.1 of package mysql[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Converging 53 resources[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: zarafa::default[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[apache2] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 2.2.22-13+deb7u1 of package apache2[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[libapache2-mod-php5] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 5.4.4-14+deb7u7 of package libapache2-mod-php5[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[apache2] action nothing[0m (up to date)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[postfix] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 2.9.6-2 of package postfix[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[postfix-mysql] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 2.9.6-2 of package postfix-mysql[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[postfix-ldap] action install[0m (skipped due to only_if)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[postfix] action nothing[0m (up to date)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[postmap catchall] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/postfix/catchall] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create new file /etc/postfix/catchall[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/postfix/catchall from none to be472e[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/postfix/catchall	2014-04-16 12:53:20.229210376 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-2trc9l	2014-04-16 12:53:20.229210376 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -1 +1,2 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +@ap-southeast-1.compute.internal alrin@megam.co.in[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/postfix/main.cf] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/postfix/main.cf from ec76fe to 6d3841[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/postfix/main.cf	2014-04-16 12:53:09.409209266 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-1t8t7g	2014-04-16 12:53:21.705210355 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -6,7 +6,7 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # is /etc/mailname.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #myorigin = /etc/mailname[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          biff = no[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # appending .domain is the MUA's job.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -23,7 +23,16 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          smtpd_use_tls=yes[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +smtpd_sasl_auth_enable = yes[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#TODO ???[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#smtpd_client_restrictions =[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#        permit_mynetworks,[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#        permit_auth_destination,[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#        permit_sasl_authenticated,[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#        check_client_access pcre:/etc/postfix/dspam_filter_access[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # information on enabling SSL in the smtp client.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -31,10 +40,22 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          alias_maps = hash:/etc/aliases[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          alias_database = hash:/etc/aliases[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          myorigin = /etc/mailname[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -mydestination = ip-10-130-82-154.ap-southeast-1.compute.internal, localhost.ap-southeast-1.compute.internal, , localhost[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -relayhost = [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mydestination = ip-10-130-82-154.ap-southeast-1.compute.internal, localhost.ap-southeast-1.compute.internal, localhost [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +relayhost =[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          mailbox_size_limit = 0[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          recipient_delimiter = +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          inet_interfaces = all[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +virtual_mailbox_domains = ap-southeast-1.compute.internal[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#virtual_alias_maps = mysql:/etc/postfix/mysql-aliases.cf, mysql:/etc/postfix/mysql-email2email.cf, hash:/etc/postfix/catchall[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +virtual_alias_maps = hash:/etc/postfix/catchall[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +virtual_transport = lmtp:127.0.0.1:2003[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# mailbox_transport = zarafa: zarafa_destination_recipient_limit = 1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# mailbox_command = /usr/bin/zarafa-dagent “$USER”[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[sasl2-bin] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 2.1.25.dfsg1-6+deb7u1 of package sasl2-bin[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[saslauthd] action enable[0m (up to date)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[saslauthd] action start[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - start service service[saslauthd][0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/postfix/sasl/smtpd.conf] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create new file /etc/postfix/sasl/smtpd.conf[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/postfix/sasl/smtpd.conf from none to 6617c2[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/postfix/sasl/smtpd.conf	2014-04-16 12:53:29.977205900 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-8c7ffz	2014-04-16 12:53:29.977205900 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -1 +1,3 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +pwcheck_method: saslauthd[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mech_list: plain login[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/default/saslauthd] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/default/saslauthd from 700ecd to b3c47e[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/default/saslauthd	2013-06-09 10:12:01.000000000 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-gzc80q	2014-04-16 12:53:31.161209870 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -1,63 +1,9 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Settings for saslauthd daemon[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Please read /usr/share/doc/sasl2-bin/README.Debian for details.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Should saslauthd run automatically on startup? (default: no)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -START=no[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Description of this saslauthd instance. Recommended.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# (suggestion: SASL Authentication Daemon)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +START=yes[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          DESC="SASL Authentication Daemon"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Short name of this saslauthd instance. Strongly recommended.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# (suggestion: saslauthd)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          NAME="saslauthd"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Which authentication mechanisms should saslauthd use? (default: pam)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Available options in this Debian package:[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# getpwent  -- use the getpwent() library function[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# kerberos5 -- use Kerberos 5[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# pam       -- use PAM[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# rimap     -- use a remote IMAP server[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# shadow    -- use the local shadow password file[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# sasldb    -- use the local sasldb database file[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# ldap      -- use LDAP (configuration is in /etc/saslauthd.conf)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Only one option may be used at a time. See the saslauthd man page[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# for more information.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Example: MECHANISMS="pam"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -MECHANISMS="pam"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Additional options for this mechanism. (default: none)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# See the saslauthd man page for information about mech-specific options.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -MECH_OPTIONS=""[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# How many saslauthd processes should we run? (default: 5)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# A value of 0 will fork a new process for each connection.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -THREADS=5[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Other options (default: -c -m /var/run/saslauthd)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Note: You MUST specify the -m option or saslauthd won't run![0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# WARNING: DO NOT SPECIFY THE -d OPTION.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# The -d option will cause saslauthd to run in the foreground instead of as[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# a daemon. This will PREVENT YOUR SYSTEM FROM BOOTING PROPERLY. If you wish[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# to run saslauthd in debug mode, please run it by hand to be safe.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# See /usr/share/doc/sasl2-bin/README.Debian for Debian-specific information.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# See the saslauthd man page and the output of 'saslauthd -h' for general[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# information about these options.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Example for chroot Postfix users: "-c -m /var/spool/postfix/var/run/saslauthd"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Example for non-chroot Postfix users: "-c -m /var/run/saslauthd"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# To know if your Postfix is running chroot, check /etc/postfix/master.cf.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# If it has the line "smtp inet n - y - - smtpd" or "smtp inet n - - - - smtpd"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# then your Postfix is running in a chroot.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# If it has the line "smtp inet n - n - - smtpd" then your Postfix is NOT[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# running in a chroot.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -OPTIONS="-c -m /var/run/saslauthd"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +MECHANISMS="rimap"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +MECH_OPTIONS="127.0.0.1"[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +THREADS=0[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +OPTIONS="-c -m /var/spool/postfix/var/run/saslauthd -r"[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[saslauthd] action restart[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - restart service service[saslauthd][0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/postfix/master.cf] action create[0m (skipped due to only_if)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * directory[/var/spool/postfix/var/run/saslauthd] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change owner from 'root' to 'postfix'[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: mysql::client[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[mysql-client] action install[0m (up to date)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[libmysqlclient-dev] action install[0m (up to date)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: mysql::server[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * directory[/var/cache/local/preseeding] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create new directory /var/cache/local/preseeding[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change mode from '' to '0755'[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change owner from '' to 'root'[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change group from '' to 'root'[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[preseed mysql-server] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/var/cache/local/preseeding/mysql-server.seed] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create new file /var/cache/local/preseeding/mysql-server.seed[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /var/cache/local/preseeding/mysql-server.seed from none to c65cff[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /var/cache/local/preseeding/mysql-server.seed	2014-04-16 12:53:35.205201297 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-1mfnydc	2014-04-16 12:53:35.205201297 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -1 +1,11 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server/root_password_again        select dZkYej9xO4fBBFj4t96j[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server/root_password      select dZkYej9xO4fBBFj4t96j[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server-5.0/really_downgrade       boolean false[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server-5.0/need_sarge_compat      boolean false[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server-5.0/start_on_boot  boolean true[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server/error_setting_password     boolean false[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server-5.0/nis_warning    note[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server-5.0/postrm_remove_databases        boolean false[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server/password_mismatch  boolean false[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql-server-5.0        mysql-server-5.0/need_sarge_compat_done boolean true[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change mode from '' to '0600'[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change owner from '' to 'root'[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change group from '' to 'root'[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[preseed mysql-server] action run[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - execute debconf-set-selections /var/cache/local/preseeding/mysql-server.seed[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/mysql/debian.cnf] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create new file /etc/mysql/debian.cnf[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/mysql/debian.cnf from none to 82f827[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/mysql/debian.cnf	2014-04-16 12:53:36.941209864 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-1f20t9c	2014-04-16 12:53:36.945209767 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -1 +1,13 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[client][0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +host     = localhost[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +user     = debian-sys-maint[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +password = BtzEoadAxoWPwJHznPxl[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +socket   = /var/run/mysqld/mysqld.sock[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[mysql_upgrade][0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +host     = localhost[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +user     = debian-sys-maint[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +password = BtzEoadAxoWPwJHznPxl[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +socket   = /var/run/mysqld/mysqld.sock[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +basedir  = /usr[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change mode from '' to '0600'[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change owner from '' to 'root'[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change group from '' to 'root'[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[mysql-server] action install[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - install version 5.5.33+dfsg-0+wheezy1 of package mysql-server[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * directory[/etc/mysql/conf.d] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change owner from 'root' to 'mysql'[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change group from 'root' to 'mysql'[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[mysql] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/mysql/my.cnf] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/mysql/my.cnf from 3ed4da to d4f18c[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/mysql/my.cnf	2013-12-13 17:24:30.000000000 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-wrg9tz	2014-04-16 12:54:12.605209266 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -1,10 +1,14 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Generated by Chef for ip-10-130-82-154[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Local modifications will be overwritten.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # The MySQL database server configuration file.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # You can copy this to one of:[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # - "/etc/mysql/my.cnf" to set global options,[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # - "~/.my.cnf" to set user-specific options.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # One can use all long options that the program supports.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Run program with --help to get a list of available options and with[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # --print-defaults to see which it would actually understand and use.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -17,82 +21,109 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # escpecially if they contain "#" chars...[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Remember to edit /etc/mysql/debian.cnf when changing the socket location.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [client][0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -port		= 3306[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -socket		= /var/run/mysqld/mysqld.sock[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +port            = 3306[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +socket          = /var/run/mysqld/mysqld.sock[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Here is entries for some specific programs[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # The following values assume you have at least 32M ram[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # This was formally known as [safe_mysqld]. Both versions are currently parsed.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [mysqld_safe][0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -socket		= /var/run/mysqld/mysqld.sock[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -nice		= 0[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +socket          = /var/run/mysqld/mysqld.sock[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +nice            = 0[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [mysqld][0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # * Basic Settings[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -user		= mysql[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -pid-file	= /var/run/mysqld/mysqld.pid[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -socket		= /var/run/mysqld/mysqld.sock[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -port		= 3306[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -basedir		= /usr[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -datadir		= /var/lib/mysql[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -tmpdir		= /tmp[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -lc-messages-dir	= /usr/share/mysql[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# * IMPORTANT[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#   If you make changes to these settings and your system uses apparmor, you may[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#   also need to also adjust /etc/apparmor.d/usr.sbin.mysqld.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +user            = mysql[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +pid-file        = /var/run/mysqld/mysqld.pid[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +socket          = /var/run/mysqld/mysqld.sock[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +port            = 3306[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +basedir         = /usr[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +datadir         = /var/lib/mysql[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +tmpdir          = /tmp[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          skip-external-locking[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Instead of skip-networking the default is now to listen only on[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # localhost which is more compatible and is not less secure.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -bind-address		= 127.0.0.1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +bind-address            = 127.0.0.1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # * Fine Tuning[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -key_buffer		= 16M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -max_allowed_packet	= 16M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -thread_stack		= 192K[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +key_buffer              = 256M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +max_allowed_packet      = 16M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +thread_stack            = 256K[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          thread_cache_size       = 8[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +auto-increment-increment = 1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +auto-increment-offset    = 1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # This replaces the startup script and checks MyISAM tables if needed[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # the first time they are touched[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -myisam-recover         = BACKUP[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +myisam-recover          = BACKUP[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #max_connections        = 100[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #table_cache            = 64[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #thread_concurrency     = 10[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +max_connections         = 800[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +wait_timeout            = 180[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +net_read_timeout        = 30[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +net_write_timeout       = 30[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +back_log                = 128[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +table_cache             = 128[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +max_heap_table_size     = 32M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # * Query Cache Configuration[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -query_cache_limit	= 1M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +query_cache_limit       = 1M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          query_cache_size        = 16M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # * Logging and Replication[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Both location gets rotated by the cronjob.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Be aware that this log type is a performance killer.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# As of 5.1 you can enable the log at runtime![0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#general_log_file        = /var/log/mysql/mysql.log[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#general_log             = 1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#log            = /var/log/mysql/mysql.log[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Error logging goes to syslog due to /etc/mysql/conf.d/mysqld_safe_syslog.cnf.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Error logging goes to syslog. This is a Debian improvement :)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Here you can see queries with especially long duration[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#log_slow_queries	= /var/log/mysql/mysql-slow.log[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#long_query_time = 2[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#log-queries-not-using-indexes[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +log_slow_queries        = /var/log/mysql/slow.log[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +long_query_time         = 2[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +log-queries-not-using-indexes[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # The following can be used as easy to replay backup logs or for replication.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # note: if you are setting up a replication slave, see README.Debian about[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #       other settings you may need to change.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#server-id		= 1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#log_bin			= /var/log/mysql/mysql-bin.log[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -expire_logs_days	= 10[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#server-id              = 1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +expire_logs_days        = 10[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          max_binlog_size         = 100M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#binlog_do_db		= include_database_name[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#binlog_ignore_db	= include_database_name[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#binlog_do_db           = include_database_name[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#binlog_ignore_db       = include_database_name[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +sync_binlog             = 0[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # * InnoDB[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Read the manual for more InnoDB related options. There are many![0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# You might want to disable InnoDB to shrink the mysqld process by circa 100MB.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#skip-innodb[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +innodb_buffer_pool_size = 128M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +innodb_log_file_size    = 5M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +innodb_additional_mem_pool_size = 8M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +innodb_data_file_path   = ibdata1:10M:autoextend[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +innodb_file_per_table[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +innodb_flush_log_at_trx_commit = 1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +innodb_log_buffer_size  = 8M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # * Security Features[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -105,18 +136,27 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # ssl-cert=/etc/mysql/server-cert.pem[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # ssl-key=/etc/mysql/server-key.pem[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [mysqldump][0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          quick[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          quote-names[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -max_allowed_packet	= 16M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +max_allowed_packet      = 16M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [mysql][0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -#no-auto-rehash	# faster start of mysql but no tab completition[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#no-auto-rehash # faster start of mysql but no tab completition[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [isamchk][0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -key_buffer		= 16M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +key_buffer              = 16M[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# * NDB Cluster[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# See /usr/share/doc/mysql-server-*/README.Debian for more information.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# The following configuration is read by the NDB Data Nodes (ndbd processes)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# not from the NDB Management Nodes (ndb_mgmd processes).[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +#[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# [MYSQL_CLUSTER][0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# ndb-connectstring=127.0.0.1[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # * IMPORTANT: Additional settings that can override those from this file![0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[mysql] action restart[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - restart service service[mysql][0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * ruby_block[save node data] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - execute the ruby block save node data[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/mysql/grants.sql] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create new file /etc/mysql/grants.sql[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/mysql/grants.sql from none to d205b4[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/mysql/grants.sql	2014-04-16 12:54:21.197209568 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-ks78x5	2014-04-16 12:54:21.197209568 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -1 +1,10 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Generated by Chef for ip-10-130-82-154.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Local modifications will be overwritten.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, RELOAD, SHUTDOWN, PROCESS, FILE, REFERENCES, INDEX, ALTER, SHOW DATABASES, SUPER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY 'BtzEoadAxoWPwJHznPxl' WITH GRANT OPTION;[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Grant replication for a slave user.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by 'JbJOAkU3dIprt8sS4oCt';[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Set the server root password. This should be preseeded by the package installation.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +SET PASSWORD FOR 'root'@'localhost' = PASSWORD('dZkYej9xO4fBBFj4t96j');[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change mode from '' to '0600'[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change owner from '' to 'root'[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change group from '' to 'root'[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[mysql-install-privileges] action run[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - execute "/usr/bin/mysql" -u root -p"dZkYej9xO4fBBFj4t96j" < "/etc/mysql/grants.sql"[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[mysql-install-privileges] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: mysql::ruby[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[apt-get update] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: build-essential::_debian[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[autoconf] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[binutils-doc] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[bison] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[build-essential] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[flex] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[gettext] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * package[ncurses-dev] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: mysql::ruby[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * chef_gem[mysql] action install[0m (up to date)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: zarafa::default[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * mysql_database_user[zarafa] action grant[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * mysql_database[zarafa] action create[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * ark[zarafa] action install[0mRecipe: <Dynamically Defined Resource>[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * remote_file[/var/chef/cache/zarafa.tar.gz] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create new file /var/chef/cache/zarafa.tar.gz[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /var/chef/cache/zarafa.tar.gz from none to 3b0c36[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         (file sizes exceed 10000000 bytes, diff output suppressed)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * directory[/usr/local/zarafa-1] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create new directory /usr/local/zarafa-1[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - change mode from '' to '0755'[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * bash[zarafa] action run[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - execute "bash" -x "/tmp/chef-script20140416-1886-tgusnz"[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * link[/usr/local/zarafa] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create symlink at /usr/local/zarafa to /usr/local/zarafa-1[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Recipe: zarafa::default[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[/usr/local/zarafa/install.sh] action run[0m[2014-04-16T12:55:16+00:00] ERROR: execute[/usr/local/zarafa/install.sh] (zarafa::default line 191) had an error: Expected process to exit with [0], but received '1'
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com ---- Begin output of /usr/local/zarafa/install.sh ----
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com STDOUT: Zarafa Collaboration Platform, version 7.1.7-42779
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com (C) Copyright 2004-2012 Zarafa, The Netherlands
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Please visit http://www.zarafa.com/ for more information.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com About to install for Debian 7.4 amd64
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Found MySQL version 5.5
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com We will now install Zarafa onto your system. You may be
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com required to install dependencies if the installation fails.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Press <enter> to continue
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Installing packages ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package libvmime0.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com (Reading database ... 38804 files and directories currently installed.)
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking libvmime0 (from libvmime0_0.9.2+svn603-4_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package libkyotocabinet16.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking libkyotocabinet16 (from libkyotocabinet16_1.2.72-2_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa (from zarafa_7.1.7-42779_all.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package php5-mapi.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking php5-mapi (from php5-mapi_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package python-mapi.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking python-mapi (from python-mapi_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-client.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-client (from zarafa-client_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-common.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-common (from zarafa-common_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-dagent.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-dagent (from zarafa-dagent_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-gateway.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-gateway (from zarafa-gateway_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-ical.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-ical (from zarafa-ical_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-search.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-search (from zarafa-search_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-libarchiver.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-libarchiver (from zarafa-libarchiver_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-libs.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-libs (from zarafa-libs_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-monitor.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-monitor (from zarafa-monitor_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-server.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-server (from zarafa-server_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-spooler.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-spooler (from zarafa-spooler_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-utils.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-utils (from zarafa-utils_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-contacts.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-contacts (from zarafa-contacts_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-webaccess.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-webaccess (from zarafa-webaccess_7.1.7-42779_all.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Webaccess files have been moved to /usr/share/zarafa-webaccess
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Please read /usr/share/doc/zarafa-webaccess/NEWS.Debian.gz for more information
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-licensed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-licensed (from zarafa-licensed_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-webapp.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-webapp (from zarafa-webapp_1.4-42633_all.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Setting up libvmime0 (0.9.2+svn603-4) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Setting up libkyotocabinet16 (1.2.72-2) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Setting up zarafa-common (7.1.7-42779) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Processing triggers for man-db ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Will now try to automatically resolve above dependency problems.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Reading package lists...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Building dependency tree...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Reading state information...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Correcting dependencies... Done
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com The following extra packages will be installed:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   catdoc dbus fontconfig-config fonts-droid gawk ghostscript gsfonts
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libavahi-client3 libavahi-common-data libavahi-common3
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libboost-filesystem1.49.0 libboost-system1.49.0 libcairo2 libcups2
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libcupsimage2 libcurl3 libdbus-1-3 libfontconfig1 libgc1c2 libgpm2 libgs9
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libgs9-common libical0 libicu48 libijs-0.35 libjasper1 libjbig0 libjbig2dec0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libjpeg8 liblcms1 liblcms2-2 libopenjpeg2 libpaper-utils libpaper1
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libpixman-1-0 libpng12-0 libpoppler19 libpython2.7 libsigsegv2
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libsystemd-login0 libtiff4 libx11-6 libx11-data libxau6 libxcb-render0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libxcb-shm0 libxcb1 libxdmcp6 libxrender1 libxslt1.1 mktemp php-gettext
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   poppler-data poppler-utils ttf-dejavu-core unzip w3m xsltproc
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Suggested packages:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   tk wish dbus-x11 gawk-doc ghostscript-cups ghostscript-x hpijs cups-common
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   gpm libjasper-runtime liblcms-utils liblcms2-utils fonts-japanese-mincho
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   fonts-ipafont-mincho fonts-japanese-gothic fonts-ipafont-gothic
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   fonts-arphic-ukai fonts-arphic-uming fonts-unfonts-core zip w3m-img menu
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   w3m-el migemo
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com The following NEW packages will be installed:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   catdoc dbus fontconfig-config fonts-droid gawk ghostscript gsfonts
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libavahi-client3 libavahi-common-data libavahi-common3
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libboost-filesystem1.49.0 libboost-system1.49.0 libcairo2 libcups2
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libcupsimage2 libcurl3 libdbus-1-3 libfontconfig1 libgc1c2 libgpm2 libgs9
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libgs9-common libical0 libicu48 libijs-0.35 libjasper1 libjbig0 libjbig2dec0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libjpeg8 liblcms1 liblcms2-2 libopenjpeg2 libpaper-utils libpaper1
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libpixman-1-0 libpng12-0 libpoppler19 libpython2.7 libsigsegv2
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libsystemd-login0 libtiff4 libx11-6 libx11-data libxau6 libxcb-render0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libxcb-shm0 libxcb1 libxdmcp6 libxrender1 libxslt1.1 mktemp php-gettext
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   poppler-data poppler-utils ttf-dejavu-core unzip w3m xsltproc
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 0 upgraded, 58 newly installed, 0 to remove and 1 not upgraded.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 18 not fully installed or removed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Need to get 31.2 MB of archives.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com After this operation, 94.7 MB of additional disk space will be used.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Do you want to continue [Y/n]? Abort.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Please resolve above errors from apt-get / dpkg, and restart the installer.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com STDERR: dpkg: warning: package not in database at line 1: libical0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: warning: package not in database at line 1: libvmime0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing libical0_0.44-*_amd64.deb (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  cannot access archive: No such file or directory
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of php5-mapi:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  php5-mapi depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing php5-mapi (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of python-mapi:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  python-mapi depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  python-mapi depends on libpython2.7 (>= 2.7); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libpython2.7 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing python-mapi (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-client:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-client depends on libboost-filesystem1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-filesystem1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-client depends on libboost-system1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-system1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-client depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-client (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-dagent:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on libpython2.7 (>= 2.7); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libpython2.7 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on php5-mapi (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package php5-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on python-mapi (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package python-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-dagent (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-gateway:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-gateway depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-gateway depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-gateway (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-ical:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-ical depends on libical0 (>= 0.30); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libical0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-ical depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-ical depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-ical (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-search:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on libboost-filesystem1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-filesystem1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on libboost-system1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-system1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on mktemp (>= 1.5); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package mktemp is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on gawk; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package gawk is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on w3m; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package w3m is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on xsltproc; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package xsltproc is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on poppler-utils; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package poppler-utils is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on unzip; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package unzip is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-search (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-libarchiver:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libarchiver depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libarchiver depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-libarchiver (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-libs:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libs depends on libical0 (>= 0.44); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libical0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libs depends on zarafa-client; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-libs (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-monitor:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-monitor depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-monitor depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-monitor (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-server:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-server depends on libboost-filesystem1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-filesystem1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-server depends on libboost-system1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-system1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-server depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-server (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-spooler:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on libpython2.7 (>= 2.7); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libpython2.7 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on zarafa-libarchiver; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-libarchiver is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on zarafa-libs (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-libs is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on python-mapi (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package python-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-spooler (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-utils:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-utils depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-utils depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-utils depends on zarafa-libarchiver (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-libarchiver is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-utils (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-contacts:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-contacts depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-contacts depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-contacts (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-webaccess:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webaccess depends on php5-mapi; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package php5-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-webaccess (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-licensed:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on libboost-filesystem1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-filesystem1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on libboost-system1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-system1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on libcurl3 (>= 7.16.2); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libcurl3 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on zarafa-server (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-server is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-licensed (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-webapp:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webapp depends on php5-mapi (>= 7.0.6-32585); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package php5-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webapp depends on zarafa-contacts (>= 7.0.6-32585); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-contacts is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webapp depends on php-gettext; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package php-gettext is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-webapp (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-server (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-server is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-libs (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-libs is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-utils; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-utils is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-monitor; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-monitor is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-spooler; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-spooler is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-dagent; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-dagent is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-ical; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-ical is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-gateway; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-gateway is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-search; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-search is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Errors were encountered while processing:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  libical0_0.44-*_amd64.deb
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  php5-mapi
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  python-mapi
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-client
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-gateway
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-ical
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libarchiver
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libs
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-monitor
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-server
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-utils
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-contacts
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webaccess
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webapp
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com ---- End output of /usr/local/zarafa/install.sh ----
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Ran /usr/local/zarafa/install.sh returned 1; ignore_failure is set, continuing
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com ================================================================================[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [31mError executing action `run` on resource 'execute[/usr/local/zarafa/install.sh]'[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com ================================================================================[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Mixlib::ShellOut::ShellCommandFailed[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com ------------------------------------[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Expected process to exit with [0], but received '1'
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com ---- Begin output of /usr/local/zarafa/install.sh ----
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com STDOUT: Zarafa Collaboration Platform, version 7.1.7-42779
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com (C) Copyright 2004-2012 Zarafa, The Netherlands
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Please visit http://www.zarafa.com/ for more information.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com About to install for Debian 7.4 amd64
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Found MySQL version 5.5
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com We will now install Zarafa onto your system. You may be
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com required to install dependencies if the installation fails.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Press <enter> to continue
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Installing packages ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package libvmime0.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com (Reading database ... 38804 files and directories currently installed.)
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking libvmime0 (from libvmime0_0.9.2+svn603-4_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package libkyotocabinet16.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking libkyotocabinet16 (from libkyotocabinet16_1.2.72-2_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa (from zarafa_7.1.7-42779_all.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package php5-mapi.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking php5-mapi (from php5-mapi_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package python-mapi.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking python-mapi (from python-mapi_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-client.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-client (from zarafa-client_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-common.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-common (from zarafa-common_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-dagent.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-dagent (from zarafa-dagent_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-gateway.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-gateway (from zarafa-gateway_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-ical.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-ical (from zarafa-ical_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-search.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-search (from zarafa-search_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-libarchiver.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-libarchiver (from zarafa-libarchiver_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-libs.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-libs (from zarafa-libs_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-monitor.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-monitor (from zarafa-monitor_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-server.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-server (from zarafa-server_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-spooler.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-spooler (from zarafa-spooler_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-utils.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-utils (from zarafa-utils_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-contacts.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-contacts (from zarafa-contacts_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-webaccess.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-webaccess (from zarafa-webaccess_7.1.7-42779_all.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Webaccess files have been moved to /usr/share/zarafa-webaccess
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Please read /usr/share/doc/zarafa-webaccess/NEWS.Debian.gz for more information
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-licensed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-licensed (from zarafa-licensed_7.1.7-42779_amd64.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Selecting previously unselected package zarafa-webapp.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Unpacking zarafa-webapp (from zarafa-webapp_1.4-42633_all.deb) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Setting up libvmime0 (0.9.2+svn603-4) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Setting up libkyotocabinet16 (1.2.72-2) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Setting up zarafa-common (7.1.7-42779) ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Processing triggers for man-db ...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Will now try to automatically resolve above dependency problems.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Reading package lists...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Building dependency tree...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Reading state information...
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Correcting dependencies... Done
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com The following extra packages will be installed:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   catdoc dbus fontconfig-config fonts-droid gawk ghostscript gsfonts
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libavahi-client3 libavahi-common-data libavahi-common3
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libboost-filesystem1.49.0 libboost-system1.49.0 libcairo2 libcups2
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libcupsimage2 libcurl3 libdbus-1-3 libfontconfig1 libgc1c2 libgpm2 libgs9
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libgs9-common libical0 libicu48 libijs-0.35 libjasper1 libjbig0 libjbig2dec0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libjpeg8 liblcms1 liblcms2-2 libopenjpeg2 libpaper-utils libpaper1
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libpixman-1-0 libpng12-0 libpoppler19 libpython2.7 libsigsegv2
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libsystemd-login0 libtiff4 libx11-6 libx11-data libxau6 libxcb-render0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libxcb-shm0 libxcb1 libxdmcp6 libxrender1 libxslt1.1 mktemp php-gettext
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   poppler-data poppler-utils ttf-dejavu-core unzip w3m xsltproc
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Suggested packages:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   tk wish dbus-x11 gawk-doc ghostscript-cups ghostscript-x hpijs cups-common
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   gpm libjasper-runtime liblcms-utils liblcms2-utils fonts-japanese-mincho
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   fonts-ipafont-mincho fonts-japanese-gothic fonts-ipafont-gothic
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   fonts-arphic-ukai fonts-arphic-uming fonts-unfonts-core zip w3m-img menu
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   w3m-el migemo
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com The following NEW packages will be installed:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   catdoc dbus fontconfig-config fonts-droid gawk ghostscript gsfonts
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libavahi-client3 libavahi-common-data libavahi-common3
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libboost-filesystem1.49.0 libboost-system1.49.0 libcairo2 libcups2
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libcupsimage2 libcurl3 libdbus-1-3 libfontconfig1 libgc1c2 libgpm2 libgs9
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libgs9-common libical0 libicu48 libijs-0.35 libjasper1 libjbig0 libjbig2dec0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libjpeg8 liblcms1 liblcms2-2 libopenjpeg2 libpaper-utils libpaper1
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libpixman-1-0 libpng12-0 libpoppler19 libpython2.7 libsigsegv2
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libsystemd-login0 libtiff4 libx11-6 libx11-data libxau6 libxcb-render0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   libxcb-shm0 libxcb1 libxdmcp6 libxrender1 libxslt1.1 mktemp php-gettext
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   poppler-data poppler-utils ttf-dejavu-core unzip w3m xsltproc
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 0 upgraded, 58 newly installed, 0 to remove and 1 not upgraded.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 18 not fully installed or removed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Need to get 31.2 MB of archives.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com After this operation, 94.7 MB of additional disk space will be used.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Do you want to continue [Y/n]? Abort.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Please resolve above errors from apt-get / dpkg, and restart the installer.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com STDERR: dpkg: warning: package not in database at line 1: libical0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: warning: package not in database at line 1: libvmime0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing libical0_0.44-*_amd64.deb (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  cannot access archive: No such file or directory
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of php5-mapi:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  php5-mapi depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing php5-mapi (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of python-mapi:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  python-mapi depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  python-mapi depends on libpython2.7 (>= 2.7); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libpython2.7 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing python-mapi (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-client:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-client depends on libboost-filesystem1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-filesystem1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-client depends on libboost-system1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-system1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-client depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-client (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-dagent:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on libpython2.7 (>= 2.7); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libpython2.7 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on php5-mapi (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package php5-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent depends on python-mapi (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package python-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-dagent (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-gateway:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-gateway depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-gateway depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-gateway (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-ical:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-ical depends on libical0 (>= 0.30); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libical0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-ical depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-ical depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-ical (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-search:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on libboost-filesystem1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-filesystem1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on libboost-system1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-system1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on mktemp (>= 1.5); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package mktemp is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on gawk; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package gawk is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on w3m; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package w3m is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on xsltproc; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package xsltproc is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on poppler-utils; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package poppler-utils is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends on unzip; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package unzip is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search depends
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-search (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-libarchiver:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libarchiver depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libarchiver depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-libarchiver (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-libs:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libs depends on libical0 (>= 0.44); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libical0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libs depends on zarafa-client; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-libs (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-monitor:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-monitor depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-monitor depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-monitor (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-server:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-server depends on libboost-filesystem1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-filesystem1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-server depends on libboost-system1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-system1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-server depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-server (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-spooler:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on libpython2.7 (>= 2.7); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libpython2.7 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on zarafa-libarchiver; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-libarchiver is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on zarafa-libs (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-libs is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler depends on python-mapi (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package python-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-spooler (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-utils:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-utils depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-utils depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-utils depends on zarafa-libarchiver (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-libarchiver is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-utils (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-contacts:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-contacts depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-contacts depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-contacts (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-webaccess:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webaccess depends on php5-mapi; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package php5-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-webaccess (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-licensed:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on libboost-filesystem1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-filesystem1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on libboost-system1.49.0 (>= 1.49.0-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libboost-system1.49.0 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on libcurl3 (>= 7.16.2); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libcurl3 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on libicu48 (>= 4.8-1); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package libicu48 is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed depends on zarafa-server (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-server is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-licensed (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa-webapp:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webapp depends on php5-mapi (>= 7.0.6-32585); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package php5-mapi is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webapp depends on zarafa-contacts (>= 7.0.6-32585); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-contacts is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webapp depends on php-gettext; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package php-gettext is not installed.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa-webapp (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: dependency problems prevent configuration of zarafa:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-server (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-server is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-client (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-client is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-libs (= 7.1.7-42779); however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-libs is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-utils; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-utils is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-monitor; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-monitor is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-spooler; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-spooler is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-dagent; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-dagent is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-ical; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-ical is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-gateway; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-gateway is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa depends on zarafa-search; however:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   Package zarafa-search is not configured yet.
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com dpkg: error processing zarafa (--install):
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  dependency problems - leaving unconfigured
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Errors were encountered while processing:
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  libical0_0.44-*_amd64.deb
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  php5-mapi
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  python-mapi
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-client
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-dagent
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-gateway
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-ical
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-search
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libarchiver
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-libs
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-monitor
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-server
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-spooler
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-utils
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-contacts
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webaccess
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-licensed
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa-webapp
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com  zarafa
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com ---- End output of /usr/local/zarafa/install.sh ----
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Ran /usr/local/zarafa/install.sh returned 1[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Resource Declaration:[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com ---------------------[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com # In /var/chef/cache/cookbooks/zarafa/recipes/default.rb
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 191: execute "/usr/local/zarafa/install.sh" do
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 192:   cwd "/usr/local/zarafa"
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 193:   ignore_failure true
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 194:   action :nothing
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 195:   subscribes :run, "ark[zarafa]", :immediately
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 196: end
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 197: 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Compiled Resource:[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com ------------------[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com # Declared in /var/chef/cache/cookbooks/zarafa/recipes/default.rb:191:in `from_file'
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com execute("/usr/local/zarafa/install.sh") do
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   action [:nothing]
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   ignore_failure true
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   retries 0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   retry_delay 2
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   command "/usr/local/zarafa/install.sh"
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   backup 5
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   cwd "/usr/local/zarafa"
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   returns 0
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   cookbook_name "zarafa"
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   recipe_name "default"
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com end
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[apt-get install -f -y] action run[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - execute apt-get install -f -y[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[/usr/local/zarafa/install.sh] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[apt-get install -f -y] action nothing[0m (skipped due to action :nothing)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * directory[/var/lib/zarafa-webapp/tmp] action create[0m (up to date)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[zarafa-server] action start[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - start service service[zarafa-server][0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[zarafa-gateway] action start[0m (up to date)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/zarafa/ldap.cfg] action create[0m (skipped due to only_if)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/zarafa/server.cfg] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/zarafa/server.cfg from 03a54e to 1a534e[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/zarafa/server.cfg	2013-09-27 22:16:52.000000000 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-6ycgh0	2014-04-16 12:56:15.665209265 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -36,8 +36,9 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # local admin users who can connect to any store (use this for the zarafa-dagent)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # field is SPACE separated[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # eg: local_admin_users = root vmail[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -local_admin_users	= root[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +local_admin_users       = root[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # e-mail address of the Zarafa System user[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          system_email_address	= postmaster@localhost[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -53,9 +54,6 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # run server in this path (when not using the -F switch)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          running_path = /[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# create memory coredumps upon crash in the running_path directory[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -coredump_enabled = yes[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # session timeout for clients. Values lower than 300 will be upped to 300[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # automatically. If the server hears nothing from a client in session_timeout[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # seconds, then the session is killed.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -90,7 +88,7 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          audit_log_enabled	= no[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Audit logging method (syslog, file), syslog facility is 'authpriv'[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -audit_log_method	= syslog[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +audit_log_method	= file[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Audit logfile (for log_method = file, '-' for stderr)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          audit_log_file		= /var/log/zarafa/audit.log[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -111,10 +109,10 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          mysql_port		= 3306[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # The user under which we connect with MySQL[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -mysql_user		= root[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql_user		= zarafa[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # The password for the user (leave empty for no password)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -mysql_password		= [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +mysql_password		= hUB3n1nVdKM_lEUCHcv9[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Override the default MySQL socket to access mysql locally[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Works only if the mysql_host value is empty or 'localhost'[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -154,9 +152,6 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Path with CA certificates, e.g. /etc/ssl/certs[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          server_ssl_ca_path	=[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Accept SSLv2 only connections. Normally v3 connections are used.[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -server_ssl_enable_v2 = no[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Path of SSL Public keys of clients[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          sslkeys_path		= /etc/zarafa/sslkeys[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -284,26 +279,14 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          ##############################################################[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #  USER PLUGIN SETTINGS[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Name of the plugin that handles users[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Required, default = ldap[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Values: ldap, unix, db, ldapms (available in enterprise license)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -user_plugin		= db[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# configuration file of the user plugin, examples can be found in /usr/share/zarafa/example-config[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -user_plugin_config	= /etc/zarafa/ldap.cfg[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # location of the zarafa plugins[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # if you have a 64bit distribution, this probably should be changed to /usr/lib64/zarafa[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          plugin_path		= /usr/lib/zarafa[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# scripts which create stores for users from an external source[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# used for ldap and unix plugins only[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -createuser_script		=	/etc/zarafa/userscripts/createuser[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -deleteuser_script		=	/etc/zarafa/userscripts/deleteuser[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -creategroup_script		=	/etc/zarafa/userscripts/creategroup[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -deletegroup_script		=	/etc/zarafa/userscripts/deletegroup[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -createcompany_script	=	/etc/zarafa/userscripts/createcompany[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -deletecompany_script	=	/etc/zarafa/userscripts/deletecompany[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Name of the plugin that handles users[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Required, default = ldap[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +# Values: ldap, unix, db, ldapms (available in enterprise license)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +user_plugin            = db[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Set this option to 'yes' to skip the creation and deletion of new users[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # The action will be logged, so you can see if your changes to the plugin[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/zarafa/gateway.cfg] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/zarafa/gateway.cfg from 0ed33b to afae10[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/zarafa/gateway.cfg	2013-09-27 22:16:52.000000000 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-2fi0cp	2014-04-16 12:56:17.229208634 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -26,7 +26,7 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          running_path = /[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # enable/disable POP3, and POP3 listen port[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -pop3_enable	=	yes[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +pop3_enable	=	no[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          pop3_port	=	110[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # enable/disable Secure POP3, and Secure POP3 listen port[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -38,7 +38,7 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          imap_port	=	143[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # enable/disable Secure IMAP, and Secure IMAP listen port[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -imaps_enable	=	no[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +imaps_enable	=	yes[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          imaps_port	=	993[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Only mail folder for IMAP or all subfolders (calendar, contacts, tasks, etc. too)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -62,14 +62,11 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Store full rfc822 message during APPEND[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          imap_store_rfc822 = yes[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Maximum count of allowed failed IMAP command counts per client[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -imap_max_fail_commands = 10[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # File with RSA key for SSL[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -ssl_private_key_file	=	/etc/zarafa/gateway/privkey.pem[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +ssl_private_key_file	=	/etc/zarafa/ssl/privkey.pem[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          #File with certificate for SSL[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -ssl_certificate_file	=	/etc/zarafa/gateway/cert.pem[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +ssl_certificate_file	=	/etc/zarafa/ssl/cert.pem[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Verify client certificate[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          ssl_verify_client	=	no[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -77,9 +74,6 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Client verify file and/or path[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          ssl_verify_file		=	[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          ssl_verify_path		=[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -# Accept SSLv2 only incoming connections[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         -ssl_enable_v2 = no[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          [0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          # Process model, using pthreads (thread) or processes (fork)[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com          process_model = fork[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * directory[/var/log/zarafa/] action create[0m (skipped due to only_if)[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[a2dissite default-ssl] action run[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - execute a2dissite default-ssl[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[a2ensite default] action run[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - execute a2ensite default[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * template[/etc/apache2/httpd.conf] action create[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - create new file /etc/apache2/httpd.conf[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - update content in file /etc/apache2/httpd.conf from none to 01ba47[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         --- /etc/apache2/httpd.conf	2014-04-16 12:56:19.085196607 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +++ /tmp/chef-rendered-template20140416-1886-1j78it1	2014-04-16 12:56:19.085196607 +0000[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         @@ -1 +1,2 @@[0m[37m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com         +[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * execute[postmap catchall] action run[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - execute postmap catchall[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[postfix] action restart[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - restart service service[postfix][0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[zarafa-server] action restart[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - restart service service[zarafa-server][0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[zarafa-gateway] action restart[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - restart service service[zarafa-gateway][0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com   * service[apache2] action reload[0m[32m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com     - reload service service[apache2][0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com 
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Running handlers:[0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Running handlers complete
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com [0m
+ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com Chef Client finished, 53/61 resources updated in 663.695521991 seconds[0m
+
+Instance ID: i-e12675c9
+Flavor: m1.small
+Image: ami-18a0f64a
+Region: ap-southeast-1
+Availability Zone: ap-southeast-1a
+Security Groups: megam
+Security Group Ids: default
+Tags: Name: i-e12675c9
+SSH Key: megam_ec2
+Root Device Type: ebs
+Root Volume ID: vol-1bbbf413
+Root Device Name: /dev/sda
+Root Device Delete on Terminate: true
+Public DNS Name: ec2-54-254-68-194.ap-southeast-1.compute.amazonaws.com
+Public IP Address: 54.254.68.194
+Private DNS Name: ip-10-130-82-154.ap-southeast-1.compute.internal
+Private IP Address: 10.130.82.154
+Environment: _default
+Run List: recipe[zarafa]

@@ -1,0 +1,8 @@
+START=yes
+DESC="SASL Authentication Daemon"
+NAME="saslauthd"
+
+MECHANISMS="rimap"
+MECH_OPTIONS="127.0.0.1"
+THREADS=0
+OPTIONS="-c -m /var/spool/postfix/var/run/saslauthd -r"
