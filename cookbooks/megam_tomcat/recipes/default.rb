@@ -24,6 +24,10 @@ include_recipe "nginx"
 #ONLY FOR THIS COOKBOOK JDK
 #USES JAVA IMAGE
 #=begin
+package "openjdk-7-jre" do
+        action :install
+end
+
 package "openjdk-7-jdk" do
         action :install
 end

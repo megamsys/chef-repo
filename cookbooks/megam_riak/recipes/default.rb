@@ -24,9 +24,6 @@
 #curl http://169.254.169.254/latest/meta-data/instance-id
 
 
-include_recipe "megam_sandbox"
-
-include_recipe "apt"
 
 node.set["myroute53"]["name"] = "#{node.name}"
 include_recipe "megam_route53"
@@ -36,7 +33,10 @@ node.set["gulp"]["remote_repo"] = "test_riak"
 node.set["gulp"]["local_repo"] = "test_riak"
 node.set["gulp"]["builder"] = "megam_ruby_builder"
 node.set["gulp"]["project_name"] = "test"
-include_recipe "megam_gulp"
+
+node.set["deps"]["node_key"] = "#{node.name}"
+include_recipe "megam_deps"
+
 
 #node.set[:ganglia][:server_gmond] = "162.248.165.65"
 include_recipe "megam_ganglia::riak"
@@ -53,55 +53,35 @@ node.set['rsyslog']['input']['files'] = [ "/var/log/riak/*.log", "/var/log/upsta
 include_recipe "megam_logstash::rsyslog"
 
 
+scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
+file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+dir = File.basename(file_name, '.*')
+if scm_ext.empty?
+  scm_ext = ".git"
+end
+node.set["gulp"]["project_name"] = "#{dir}"
+node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"
+node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
+
+node.set['megam_app']['home'] = "/tmp/#{dir}"
+include_recipe "megam_app_env"
+
 
 include_recipe "ulimit"
 
-version_str = "#{node['riak']['package']['version']['major']}.#{node['riak']['package']['version']['minor']}"
-base_uri = "#{node['riak']['package']['url']}/#{version_str}/#{version_str}.#{node['riak']['package']['version']['incremental']}/"
-base_filename = "riak-#{version_str}.#{node['riak']['package']['version']['incremental']}"
 
 case node['platform']
-when "fedora", "centos", "redhat"
-  node.set['riak']['config']['riak_core']['platform_lib_dir'] = "/usr/lib64/riak".to_erl_string if node['kernel']['machine'] == 'x86_64'
-  machines = {"x86_64" => "x86_64", "i386" => "i386", "i686" => "i686"}
-  base_uri = "#{base_uri}#{node['platform']}/#{node['platform_version'].to_i}/"
-  package_file = "#{base_filename}-#{node['riak']['package']['version']['build']}.fc#{node['platform_version'].to_i}.#{node['kernel']['machine']}.rpm"
-  package_uri = base_uri + package_file
-  package_name = package_file.split("[-_]\d+\.").first
-end
-
-if node['riak']['package']['local_package'] == true
-  package_file = node['riak']['package']['local_package']
-
-  cookbook_file "#{Chef::Config[:file_cache_path]}/#{package_file}" do
-    source package_file
-    owner "root"
-    mode 0644
-    not_if(File.exists?("#{Chef::Config[:file_cache_path]}/#{package_file}") && Digest::SHA256.file("#{Chef::Config[:file_cache_path]}/#{package_file}").hexdigest == checksum_val)
-  end
-else
-  case node['platform']
   when "ubuntu", "debian"
-
 
 bash "install riak" do
   user "root"
   cwd "/tmp"
   code <<-EOH
-  wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.2/ubuntu/precise/riak_1.4.2-1_amd64.deb
-  dpkg -i riak_1.4.2-1_amd64.deb
+  wget #{node["megam_deps"]["predefs"]["scm"]}
+  dpkg -i #{file_name}
   EOH
 end
 
-=begin
-execute "WGET RIAK DEB PACKAGE " do
-  command "wget http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.2/ubuntu/precise/riak_1.4.2-1_amd64.deb"
-end 
-
-execute "DEPACKAGE RIAK DEB " do
-  command "sudo dpkg -i riak_1.4.2-1_amd64.deb"
-end
-=end
   when "centos", "rhel"
     include_recipe "yum"
 
@@ -136,8 +116,9 @@ end
       action :install
     end
   end
-end
 
+
+if node["megam_deps"]["predefs"]["scm"] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_1.4.2-1_amd64.deb"
 file "#{node['riak']['package']['config_dir']}/app.config" do
   content Eth::Config.new(node['riak']['config'].to_hash).pp
   owner "root"
@@ -152,19 +133,20 @@ file "#{node['riak']['package']['config_dir']}/vm.args" do
   notifies :restart, "service[riak]"
 end
 
+elsif node["megam_deps"]["predefs"]["scm"] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_2.0.0beta1-1_amd64.deb"
+
+template "/etc/riak/riak.conf" do
+  source "riak2.conf.erb"
+  owner "riak"
+  group "riak"
+  mode "0644"
+end
+end
+
 user_ulimit "riak" do
   filehandle_limit node['riak']['limits']['nofile']
 end
 
-node['riak']['patches'].each do |patch|
-  cookbook_file "#{node['riak']['config']['riak_core']['platform_lib_dir'].gsub(/__string_/,'')}/lib/basho-patches/#{patch}" do
-    source patch
-    owner "root"
-    mode 0644
-    checksum
-    notifies :restart, "service[riak]"
-  end
-end
 
 service "riak" do
   supports :start => true, :stop => true, :restart => true
@@ -172,22 +154,4 @@ service "riak" do
 end
 
 
-if node['riak']['cluster']['node_name']
-
-execute "Start riak" do
-  command "riak start"
-end
-
-execute "Execute Cluster node" do
-  command "riak-admin cluster join riak@#{node['riak']['cluster']['node_name']}"
-end 
-
-execute "Execute Cluster plan" do
-  command "riak-admin cluster plan"
-end 
-
-execute "Execute Cluster commit" do
-  command "riak-admin cluster commit"
-end 
-
-end
+include_recipe "megam_gulp"

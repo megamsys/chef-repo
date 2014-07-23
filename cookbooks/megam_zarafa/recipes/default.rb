@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 case node['platform_family']
   when "debian"
    include_recipe "apt"
@@ -26,8 +27,8 @@ include_recipe "megam_route53"
 
 include_recipe "megam_ganglia::apache"
 
-#node.set["deps"]["node_key"] = "#{node.name}"
-#include_recipe "megam_deps"
+node.set["deps"]["node_key"] = "#{node.name}"
+include_recipe "megam_deps"
 
 node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['redis_url'] = "redis1.megam.co.in"
@@ -40,8 +41,9 @@ node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
 node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/access.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::rsyslog"
 
+
 #Temporary assignment
-node.set["megam_deps"]["predefs"]["scm"] = "#{node['zarafa']['url']}"
+#node.set["megam_deps"]["predefs"]["scm"] = "#{node['zarafa']['url']}"
 
 scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
 file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
@@ -50,11 +52,12 @@ if scm_ext.empty?
   scm_ext = ".git"
 end
 node.set["gulp"]["project_name"] = "#{dir}"
-#node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"
-#node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
+node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"
+node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
 
 node.set['megam_app']['home'] = "/tmp/#{dir}"
 include_recipe "megam_app_env"
+
 
 
 
@@ -222,9 +225,10 @@ os = "debian"
 os_version = "7.0"
 arch = "x86_64"
 
-#url = "#{host}/#{major}/#{minor}/zcp-#{minor}-#{os}-#{os_version}-#{arch}-#{type}.tar.gz"
+url = "#{host}/#{major}/#{minor}/zcp-#{minor}-#{os}-#{os_version}-#{arch}-#{type}.tar.gz"
 =end
-url = "#{node['zarafa']['url']}"
+
+url = "#{node["megam_deps"]["predefs"]["scm"]}"
 
 ark "zarafa" do
   url url
@@ -305,5 +309,3 @@ template "/etc/apache2/httpd.conf" do
 end
 
 include_recipe "megam_gulp"
-
-

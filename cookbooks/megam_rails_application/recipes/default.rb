@@ -235,7 +235,7 @@ end
   cwd "#{node[:rails][:app][:path]}/current"  
   user "root"
   group "root"
-  command "sudo rake assets:precompile"
+  command "sudo bundle exec rake assets:precompile"
   end
 
   execute "Execute change owner" do

@@ -7,6 +7,11 @@
 # All rights reserved - Do Not Redistribute
 #
 
+keys = data_bag_item('ec2', 'keys')
+node.set['backup']['s3']['access'] = "#{keys['access_key']}" #"AWS_ACCESS_KEY"
+node.set['backup']['s3']['secret'] = "#{keys['secret_key']}" #"AWS_SECRET_KEY"
+node.set['backup']['s3']['path'] = "#{node.name}"
+
 gem_package 'backup'
 
 execute "Generate Model" do
@@ -22,7 +27,7 @@ template "#{node['backup']['root_dir']}/Backup/models/#{node['backup']['name']}.
   mode '0600'
 end
 
-execute "Generate Model" do
+execute "Execute Model" do
   user "root"
   group "root"
   command "backup perform --trigger #{node['backup']['name']}"

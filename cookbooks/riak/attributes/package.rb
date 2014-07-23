@@ -1,6 +1,6 @@
 #
 # Author:: Benjamin Black (<b@b3k.us>) and Sean Cribbs (<sean@basho.com>)
-# Cookbook Name:: megam_riak
+# Cookbook Name:: riak
 #
 # Copyright (c) 2013 Basho Technologies, Inc.
 #
@@ -16,29 +16,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+default['riak']['package']['enterprise_key'] = ""
+default['riak']['package']['name'] = "riak"
 
-name              "megam_riak"
-maintainer        "Megam Systems"
-maintainer_email  "alrin@megam.co.in"
-license           "Apache 2.0"
-description       "Installs and configures Riak distributed data store"
-version           "2.0.0"
+default['riak']['package']['url'] = "http://s3.amazonaws.com/downloads.basho.com/riak"
+default['riak']['package']['version']['major'] = "1"
+default['riak']['package']['version']['minor'] = "4"
+default['riak']['package']['version']['incremental'] = "8"
+default['riak']['package']['version']['build'] = "1"
+default['riak']['package']['config_dir'] = "/etc/riak"
+default['riak']['package']['local_package'] = false
 
-%w{apt yum build-essential erlang git ulimit }.each do |d|
-  depends d
-end
-
-depends "megam_ganglia"
-depends "megam_route53"
-depends "megam_logstash"
-depends "megam_gulp"
-depends "megam_app_env"
-depends "megam_deps"
-
-
-#depends megam_route53 megam_ganglia megam_ciakka megam_deps
-
-
-%w{ubuntu debian centos redhat fedora}.each do |os|
-  supports os
-end
+default['riak']['package']['checksum']['local'] = nil
