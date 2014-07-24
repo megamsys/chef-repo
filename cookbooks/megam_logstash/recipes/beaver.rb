@@ -87,7 +87,7 @@ end
   end
 end
 
-=begin
+=begin			#MY_CHANGE
 python_pip node['logstash']['beaver']['pika']['pip_package'] do
   action :install
 end

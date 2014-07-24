@@ -1,6 +1,6 @@
 #
-# Author:: Benjamin Black (<b@b3k.us>) and Sean Cribbs (<sean@basho.com>)
-# Cookbook Name:: megam_riak
+# Author:: Benjamin Black (<b@b3k.us>), Sean Cribbs (<sean@basho.com>), Seth Thomas (<sthomas@basho.com>)
+# Cookbook Name:: riak
 #
 # Copyright (c) 2013 Basho Technologies, Inc.
 #
@@ -17,27 +17,24 @@
 # limitations under the License.
 #
 
-name              "megam_riak"
-maintainer        "Megam Systems"
-maintainer_email  "alrin@megam.co.in"
+name              "riak"
+maintainer        "Basho Technologies, Inc."
+maintainer_email  "riak@basho.com"
 license           "Apache 2.0"
 description       "Installs and configures Riak distributed data store"
-version           "2.0.0"
+version           "2.4.9"
 
-%w{apt yum build-essential erlang git ulimit }.each do |d|
-  depends d
-end
+recipe            "riak", "Installs Riak from a package"
+recipe            "riak::source", "Installs Erlang and Riak from source"
 
-depends "megam_ganglia"
-depends "megam_route53"
-depends "megam_logstash"
-depends "megam_gulp"
-depends "megam_app_env"
-depends "megam_deps"
-
-
-#depends megam_route53 megam_ganglia megam_ciakka megam_deps
-
+depends "apt", "~> 2.3.8"
+depends "build-essential", "~> 1.4.2"
+depends "erlang", "~> 1.5.0"
+depends "git", "~> 3.0"
+depends "sysctl", "~> 0.3.5"
+depends "ulimit", "~> 0.3.2"
+depends "yum", "~> 3.0"
+depends "yum-epel", "~> 0.3"
 
 %w{ubuntu debian centos redhat fedora}.each do |os|
   supports os

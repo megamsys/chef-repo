@@ -14,7 +14,7 @@ package "unzip" do
 end
 
 remote_file "#{node['sandbox']['home']}/bin/gulpd.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/zip/gulpd.zip"
+  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.4/zip/gulpd.zip"
     owner node["sandbox"]["user"]
   group node["sandbox"]["user"]
 end

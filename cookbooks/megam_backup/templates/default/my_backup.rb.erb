@@ -31,7 +31,7 @@ Model.new(:<%= node['backup']['name'] %>, 'Description for <%= node['backup']['n
   #   archive.root '/path/to/archive/root'
   #
   archive :my_archive do |archive|
-	<% node['backup']['archive'].each do |dir| %>
+	<% node['backup']['locations'].each do |dir| %>
     	archive.add "<%= dir %>"
 	<% end %>
   end

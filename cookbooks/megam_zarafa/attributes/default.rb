@@ -21,7 +21,7 @@ default['zarafa']['mysql_user'] = "zarafa"
 default['zarafa']['mysql_database'] = "zarafa"
 default['zarafa']['mysql_password'] = nil
 
-default['zarafa']['catchall'] = "alrin@megam.co.in"
+default['zarafa']['catchall'] = nil
 
 default['zarafa']['additional_domains'] = Array.new
 
@@ -31,4 +31,4 @@ default['zarafa']['vmail_user'] = nil
 
 default['zarafa']['timezone'] = nil
 
-default['zarafa']['url'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/zarafa/zcp-7.1.9-44333-debian-7.0-x86_64.tar.gz"
+
