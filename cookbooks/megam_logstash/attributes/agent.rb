@@ -32,7 +32,7 @@ default['logstash']['agent']['logrotate']['stopstartprepost'] = false
 default['logstash']['agent']['server_role'] = 'logstash_server'
 
 # for use in case recipe used w/ chef-solo, default to self
-default['logstash']['agent']['server_ipaddress'] = "#{node['logstash']['redis_url']}"
+default['logstash']['agent']['server_ipaddress'] = "#{node['logstash']['output']['url']}"
 
 default['logstash']['agent']['inputs'] = []
 default['logstash']['agent']['filters'] = []

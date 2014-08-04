@@ -29,4 +29,4 @@ end
 
 
 default['logstash']['key'] = "logstash_key"
-default['logstash']['redis_url'] = "redis1.megam.co.in"
+default['logstash']['output']['url'] = "www.megam.co"
