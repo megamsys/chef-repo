@@ -40,7 +40,7 @@ node.set["gulp"]["project_name"] = "test"
 
 
 node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['redis_url'] = "redis1.megam.co.in"
+node.set['logstash']['output']['url'] = "www.megam.co"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/postgresql/*.log", "/var/log/upstart/gulpd.log" ]
 include_recipe "megam_logstash::beaver"
 

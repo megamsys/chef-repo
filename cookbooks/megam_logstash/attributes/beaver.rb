@@ -15,7 +15,7 @@ default['logstash']['beaver']['git_cmd'] = "sudo pip install git+git://github.co
 end
 
 default['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log" ]
-default['logstash']['beaver']['output'] = "redis"
+default['logstash']['beaver']['output'] = "rabbitmq"
 default['logstash']['beaver']['format'] = "json"
 
 default['logstash']['beaver']['logrotate']['options'] = [ 'missingok', 'notifempty', 'compress', 'copytruncate' ]
