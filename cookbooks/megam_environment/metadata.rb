@@ -1,12 +1,9 @@
-name             'megam_tomcat'
+name             'megam_environment'
 maintainer       'Megam Systems'
-maintainer_email 'subash.avc@gmail.com'
+maintainer_email 'alrin@megam.co.in'
 license          'Apache 2.0'
 version          '0.5.0'
-description      'Installs/Configures a tomcat'
+description      'Sets environment variables'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 
-
-
 depends "megam_preinstall"
-

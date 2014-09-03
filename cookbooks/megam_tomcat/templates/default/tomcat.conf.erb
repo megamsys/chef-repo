@@ -9,13 +9,13 @@ respawn limit 10 5
 # add user with this command:
 ## adduser --system --ingroup www-data --home /opt/apache-tomcat apache-tomcat
 # Ubuntu 12.04: (use 'exec sudo -u apache-tomcat' when using 10.04)
-setuid <%= node["tomcat-nginx"]["user"] %>
+setuid <%= node['megam']['tomcat']['user'] %>
 setgid root
 
 
 # adapt paths:
 env JAVA_HOME=/usr/bin/java
-env CATALINA_HOME=<%= node["tomcat-nginx"]["tomcat-home"] %>
+env CATALINA_HOME=<%= node['megam']['tomcat']['home']  %>
  
 # adapt java options to suit your needs:
 env JAVA_OPTS="-Djava.awt.headless=true -Xms512M -Xmx1024M -server -XX:+UseParallelGC"

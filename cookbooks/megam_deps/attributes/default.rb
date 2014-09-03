@@ -1,2 +1,2 @@
-default["megam_deps"] = "test"
-default["deps"]["node_key"] = "megam"
+default['megam']['deps'] = "test"
+default['megam']['deps']['node_key'] = "#{node.name}"

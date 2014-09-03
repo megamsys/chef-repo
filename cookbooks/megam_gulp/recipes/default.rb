@@ -7,21 +7,20 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "megam_sandbox"
 
 package "unzip" do
         action :install
 end
 
-remote_file "#{node['sandbox']['home']}/bin/gulpd.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.4/zip/gulpd.zip"
-    owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+remote_file "#{node['megam']['user']['home']}/bin/gulpd.zip" do
+  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.5/zip/gulpd.zip"
+    owner node['megam']['user']
+    group node['megam']['user']
 end
 
 bash "Unzip gulpd" do
-cwd "#{node['sandbox']['home']}/bin"
-  user node["sandbox"]["user"]
+cwd "#{node['megam']['user']['home']}/bin"
+  user node['megam']['user']
    code <<-EOH
   unzip gulpd.zip
   chmod 0755 gulpd
@@ -29,10 +28,10 @@ cwd "#{node['sandbox']['home']}/bin"
   EOH
 end
 
-template "#{node['sandbox']['home']}/bin/conf/gulpd.conf" do
+template "#{node['megam']['user']['home']}/bin/conf/gulpd.conf" do
   source "gulpd.conf.erb"
-  owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+  owner node['megam']['user']
+  group node['megam']['user']
   mode "0755"
 end
 
@@ -57,7 +56,7 @@ else
   template "/etc/init.d/gulpd" do
   source "gulpd.erb"
   variables(
-              :sandbox_home => node['sandbox']['home']
+              :sandbox_home => node['megam']['user']['home']
               )
   owner "root"
   group "root"
@@ -67,7 +66,7 @@ end
 
 
 execute "Update gulp Demon" do
-  cwd "#{node['sandbox']['home']}/bin"
+  cwd "#{node['megam']['user']['home']}/bin"
   user "root"
   group "root"
   command "./gulpd update -n #{node.name} -s running"
