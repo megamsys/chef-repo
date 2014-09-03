@@ -9,7 +9,7 @@ script
     export HOME="/root"
 
     echo $$ > /var/run/gulpd.pid
-    cd <%= node['sandbox']['home'] %>/bin
+    cd <%= node['megam']['user']['home'] %>/bin
     exec ./gulpd start >> <%= node['gulp']['log'] %> 2>&1
 end script
 

@@ -12,7 +12,7 @@
 #=begin
 riak_node = remote_file "/tmp/riak_node.json" do
   #source "http://riak1.megam.co.in:8098/riak/nodes/#{node["deps"]["node_key"]}"
-  source "http://api.megam.co:8098/riak/nodes/#{node["deps"]["node_key"]}"
+  source "http://api.megam.co:8098/riak/nodes/#{node['megam']['deps']['node_key']}"
   mode "0755"
   owner "root"
   group "root"
@@ -25,7 +25,7 @@ riak_node.run_action(:create)
 #s3_deps = JSON.parse(str)
 
     deps = JSON.parse(File.read('/tmp/riak_node.json'))
-    node.set["megam_deps"] = deps
+    node.set['megam']['deps'] = deps
     
 if deps['node_type'] == "APP"
 ad = remote_file "/tmp/app_defns.json" do
@@ -39,7 +39,7 @@ end
 ad.run_action(:create)
 
 app_deps = JSON.parse(File.read('/tmp/app_defns.json'))
-    node.set["megam_deps"]["defns"] = app_deps
+    node.set['megam']['deps']["defns"] = app_deps
 else
 bd = remote_file "/tmp/bolt_defns.json" do
   #source "http://riak1.megam.co.in:8098/riak/nodes/#{node["deps"]["node_key"]}"
@@ -52,7 +52,7 @@ end
 bd.run_action(:create)
 
 bolt_deps = JSON.parse(File.read('/tmp/bolt_defns.json'))
-    node.set["megam_deps"]["defns"] = bolt_deps
+    node.set['megam']['deps']["defns"] = bolt_deps
 end
 
 email_key = remote_file "/tmp/email.json" do
@@ -78,7 +78,7 @@ end
 ac.run_action(:create)
 
 account = JSON.parse(File.read('/tmp/account.json'))
-    node.set["megam_deps"]["account"] = account
+    node.set['megam']['deps']["account"] = account
 
 
 

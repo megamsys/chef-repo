@@ -4,6 +4,6 @@ maintainer_email 'alrin@megam.co.in'
 license          'All rights reserved'
 description      'Installs/Configures megam_gulp'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.0'
+version          '0.5.0'
 
-depends "megam_sandbox"
+depends "megam_preinstall"

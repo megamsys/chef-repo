@@ -45,8 +45,8 @@ fi
 # The following variables can be overwritten in $DEFAULT
 
 # Run Tomcat 7 as this user ID and group ID
-TOMCAT_USER=<%= node["tomcat-nginx"]["user"] %>
-TOMCAT_GROUP=<%= node["tomcat-nginx"]["user"] %>
+TOMCAT_USER=<%= node['megam']['tomcat']['user'] %>
+TOMCAT_GROUP=<%= node['megam']['tomcat']['user'] %>
 
 # this is a work-around until there is a suitable runtime replacement 
 # for dpkg-architecture for arch:all packages
@@ -84,10 +84,10 @@ done
 export JAVA_HOME
 
 # Directory where the Tomcat 6 binary distribution resides
-CATALINA_HOME=<%= node["tomcat-nginx"]["tomcat-home"] %>
+CATALINA_HOME=<%= node['megam']['tomcat']['home'] %>
 
 # Directory for per-instance configuration files and webapps
-CATALINA_BASE=<%= node["tomcat-nginx"]["tomcat-home"] %>
+CATALINA_BASE=<%= node['megam']['tomcat']['home'] %>
 
 # Use the Java security manager? (yes/no)
 TOMCAT_SECURITY=no
