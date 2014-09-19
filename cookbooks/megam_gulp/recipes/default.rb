@@ -14,13 +14,13 @@ end
 
 remote_file "#{node['megam']['user']['home']}/bin/gulpd.zip" do
   source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.5/zip/gulpd.zip"
-    owner node['megam']['user']
-    group node['megam']['user']
+    owner node['megam']['default']['user']
+    group node['megam']['default']['user']
 end
 
 bash "Unzip gulpd" do
 cwd "#{node['megam']['user']['home']}/bin"
-  user node['megam']['user']
+  user node['megam']['default']['user']
    code <<-EOH
   unzip gulpd.zip
   chmod 0755 gulpd
@@ -30,8 +30,8 @@ end
 
 template "#{node['megam']['user']['home']}/bin/conf/gulpd.conf" do
   source "gulpd.conf.erb"
-  owner node['megam']['user']
-  group node['megam']['user']
+  owner node['megam']['default']['user']
+  group node['megam']['default']['user']
   mode "0755"
 end
 

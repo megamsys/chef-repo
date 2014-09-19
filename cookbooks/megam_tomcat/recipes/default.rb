@@ -21,14 +21,19 @@
 remote_file node['megam']['tomcat']['remote-location']['tar'] do
   source node['megam']['tomcat']['source']['tomcat']
   mode "0755"
-   owner node['megam']['user']
-  group node['megam']['user']
+   owner node['megam']['default']['user']
+  group node['megam']['default']['user']
 end
 
 execute "unzip tomcat-nginx" do
   cwd node['megam']['user']['home']  
   command node['megam']['tomcat']['cmd'] ['unzip']
+  user node['megam']['default']['user']
+  group node['megam']['default']['user']
 end
+
+execute "cp #{node['megam']['app']['location']} #{node['megam']['tomcat']['home']}/webapps/"
+node.set["gulp"]["local_repo"] = "#{node['megam']['tomcat']['home']}/webapps"
 
 template node['megam']['tomcat']['remote-location']['tomcat-init'] do
   source node['megam']['tomcat']['template']['tomcat_init']
@@ -37,6 +42,26 @@ template node['megam']['tomcat']['remote-location']['tomcat-init'] do
   mode "0755"
 end
 
+# use upstart when supported to get nice things like automatic respawns
+use_upstart = false
+case node['platform_family']
+when "debian"  
+  if node['platform_version'].to_f >= 12.04
+    use_upstart = true  
+  end
+end
+
+if use_upstart
+=begin
+  bash "update tomcat defaults" do
+  user "root"
+   code <<-EOH
+  update-rc.d tomcat defaults
+  EOH
+  end
+=end
+else
+
 template node['megam']['tomcat']['remote-location']['tomcat-initd'] do
   source node['megam']['tomcat']['template']['tomcat_initd']
   owner "root"
@@ -44,33 +69,15 @@ template node['megam']['tomcat']['remote-location']['tomcat-initd'] do
   mode "0755"
 end
 
-
-# use upstart when supported to get nice things like automatic respawns
-use_upstart = false
-supports_setuid = false
-case node['platform_family']
-when "debian"  
-  if node['platform_version'].to_f >= 12.04
-    supports_setuid = true
-    use_upstart = true  
-  end
-end
-
-if use_upstart
-  bash "update tomcat defaults" do
-  user "root"
-   code <<-EOH
-  update-rc.d tomcat defaults
-  start tomcat
-  EOH
-end
-else
   bash "update service tomcat defaults" do
   user "root"
    code <<-EOH
    /etc/init.d/tomcat start
+   start tomcat
   EOH
 end
 end
+
+execute "start tomcat"
 
 

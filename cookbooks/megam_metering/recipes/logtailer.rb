@@ -8,6 +8,6 @@
 
 # we need all the packgages installed and so on.  also, this node should have
 # its own ganglia client.
-include_recipe "ganglia::default"
+include_recipe "megam_metering::ganglia"
 
 package "ganglia-logtailer"

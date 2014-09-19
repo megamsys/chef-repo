@@ -10,11 +10,7 @@
 case node[:platform]
 when "ubuntu", "debian"
 
-execute "Apt get update " do
-  user "root"
-  group "root"
-  command "apt-get update"
-end
+include_recipe "apt"
 
 when "ubuntu"
 execute "Build Essentials " do
@@ -27,6 +23,12 @@ when "redhat", "centos", "fedora"
 execute "yum -y groupinstall 'Development tools'"
 
 directory "/var/log/upstart" do
+  owner "root"
+  group "root"
+  action :create
+end
+
+directory "/var/log/megam" do
   owner "root"
   group "root"
   action :create

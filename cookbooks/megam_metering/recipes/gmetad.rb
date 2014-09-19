@@ -2,7 +2,7 @@ case node[:platform]
 when "ubuntu", "debian"
   package "gmetad"
 when "redhat", "centos", "fedora"
-  include_recipe "megam_ganglia::source"
+  include_recipe "megam_metering::source"
   execute "copy gmetad init script" do
     command "cp " +
       "/usr/src/ganglia-#{node[:ganglia][:version]}/gmetad/gmetad.init " +
@@ -73,7 +73,7 @@ when true
     end
   end
   if node[:recipes].include? "iptables"
-    include_recipe "megam_ganglia::iptables"
+    include_recipe "megam_metering::iptables"
   end
 when false
   ips = search(:node, "*:*").map {|node| node.ipaddress}
