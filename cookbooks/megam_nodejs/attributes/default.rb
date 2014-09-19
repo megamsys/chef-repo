@@ -46,8 +46,6 @@ default['nodejs']['template']['conf'] = "nodejs.conf.erb"
 #Shell Commands
 default['nodejs']['start'] = "start nodejs"
 
-default['nodejs']['cmd']['npm-install'] = "npm install"
-
 
 
 

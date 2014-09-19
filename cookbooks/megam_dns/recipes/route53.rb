@@ -11,8 +11,8 @@ keys = data_bag_item('ec2', 'keys')
 
 remote_file "#{node['megam']['user']['home']}/bin/seru.zip" do
   source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.5/zip/seru.zip"
-    owner node['megam']['user']
-  group node['megam']['user']
+    owner node['megam']['default']['user']
+  group node['megam']['default']['user']
 end
 
 package "unzip" do
@@ -21,7 +21,7 @@ end
 
 bash "Unzip seru" do
 cwd "#{node['megam']['user']['home']}/bin"
-  user node['megam']['user']
+  user node['megam']['default']['user']
    code <<-EOH
   unzip seru.zip
   chmod 0755 seru

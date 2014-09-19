@@ -25,7 +25,7 @@ riak_node.run_action(:create)
 #s3_deps = JSON.parse(str)
 
     deps = JSON.parse(File.read('/tmp/riak_node.json'))
-    node.set['megam']['deps'] = deps
+    node.set['megam']['deps']['node'] = deps
     
 if deps['node_type'] == "APP"
 ad = remote_file "/tmp/app_defns.json" do

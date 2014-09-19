@@ -20,8 +20,6 @@ depends  "apache2"
 depends  "runit", "~> 1.0"
 depends  "memcached"
 
-depends  "megam_route53"
-
 suggests "systemd"
 suggests "s6"
 suggests "graphiti"
