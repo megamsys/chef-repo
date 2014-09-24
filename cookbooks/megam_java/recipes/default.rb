@@ -50,7 +50,7 @@ end
 #include_recipe "megam_ganglia::nginx"
 
 #node.set["deps"]["node_key"] = "#{node.name}"
-include_recipe "megam_deps"
+#include_recipe "megam_deps"
 
 include_recipe "git"
 
