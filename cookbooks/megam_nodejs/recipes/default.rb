@@ -24,27 +24,27 @@ end
 
 include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
 
-include_recipe "nginx"
+#include_recipe "nginx"
 
-node.set["myroute53"]["name"] = "#{node.name}"
-include_recipe "megam_route53"
+#node.set["myroute53"]["name"] = "#{node.name}"
+#include_recipe "megam_route53"
 
 #node.set[:ganglia][:server_gmond] = "162.248.165.65"
-include_recipe "megam_ganglia::nginx"
+#include_recipe "megam_ganglia::nginx"
 
-node.set["deps"]["node_key"] = "#{node.name}"
-include_recipe "megam_deps"
+#node.set["deps"]["node_key"] = "#{node.name}"
+#include_recipe "megam_deps"
 
 node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['output']['url'] = "www.megam.co"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::beaver"
+#include_recipe "megam_logstash::beaver"
 
 
 node.set['rsyslog']['index'] = "#{node.name}"
 node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
 node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::rsyslog"
+#include_recipe "megam_logstash::rsyslog"
 
 
 scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
@@ -54,8 +54,8 @@ if scm_ext.empty?
   scm_ext = ".git"
 end
 
-node.set['megam_app']['home'] = "#{node["sandbox"]["home"]}/#{dir}"
-include_recipe "megam_app_env"
+node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
+include_recipe "megam_environment"
 
 js_file = "#{node["megam_deps"]["defns"]["appdefns"]["runtime_exec"]}".split.last
 
@@ -189,5 +189,5 @@ bash "restart nginx" do
 end
 
 node.set["gulp"]["builder"] = "megam_nodejs_builder"
-include_recipe "megam_gulp"
+#include_recipe "megam_gulp"
 

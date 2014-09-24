@@ -8,7 +8,7 @@
 #
 
 
-include_recipe "megam_sandbox"
+#include_recipe "megam_sandbox"
 
 package "zip unzip" do
         action :install
@@ -18,9 +18,9 @@ package "tar" do
         action :install
 end
 
-include_recipe "megam_sandbox"
+#include_recipe "megam_sandbox"
 include_recipe "apt"
-include_recipe "nginx"
+#include_recipe "nginx"
 #ONLY FOR THIS COOKBOOK JDK
 #USES JAVA IMAGE
 #=begin
@@ -39,26 +39,26 @@ end
 =end
 
 
-node.set["myroute53"]["name"] = "#{node.name}"
-include_recipe "megam_route53"
+#node.set["myroute53"]["name"] = "#{node.name}"
+#include_recipe "megam_route53"
 
 #node.set[:ganglia][:server_gmond] = "162.248.165.65"
-include_recipe "megam_ganglia"
+#include_recipe "megam_ganglia"
 
 node.set["deps"]["node_key"] = "#{node.name}"
-include_recipe "megam_deps"
+#include_recipe "megam_deps"
 
 
 node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['output']['url'] = "www.megam.co"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::beaver"
+#include_recipe "megam_logstash::beaver"
 
 
 node.set['rsyslog']['index'] = "#{node.name}"
 node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
 node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::rsyslog"
+#include_recipe "megam_logstash::rsyslog"
 
 
 
@@ -279,7 +279,7 @@ template "/etc/init/akka.conf" do
   mode "0755"
 end
 
-include_recipe "megam_gulp"
+#include_recipe "megam_gulp"
 
 execute "Start Akka" do
   user "root"
