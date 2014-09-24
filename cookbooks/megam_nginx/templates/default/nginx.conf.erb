@@ -1,5 +1,5 @@
 upstream nginx {
-        server 127.0.0.1:2368;
+        server 127.0.0.1:<%= node['megam']['nginx']['port'] %>;
 }
 
 
@@ -26,3 +26,4 @@ server {
            # deny all;
         }
 }
+

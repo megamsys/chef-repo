@@ -1,3 +1,5 @@
-default['megam']['user']="megam"
+default['megam']['default']['user']="megam"
 default['megam']['user']['home']="/home/megam"
-default['megam']['user']['conf']="#{node['megam']['user']['home']}/bin/conf"
+default['megam']['user']['conf']="/home/megam/bin/conf"
+
+default['megam']['app']['location'] = "/home/megam/app"

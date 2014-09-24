@@ -5,22 +5,23 @@ node_name                "megam"
 client_key               "#{current_dir}/megam.pem"
 validation_client_name   'chef-validator'
 validation_key           "#{current_dir}/chef-validator.pem"
-chef_server_url          "https://chef.megam.co.in"
+#chef_server_url          "https://chef.megam.co.in"
+chef_server_url		"http://chef.megam.co.in:4545"
 syntax_check_cache_path  '~/chef-repo/.chef/syntax_check_cache'
 cache_type               'BasicFile'
 cache_options( :path => '~/chef-repo/.chef/checksums')
 cookbook_path ['~/chef-repo/cookbooks']
 
 
-knife[:image_name] = "Ubuntu-12.04-LTS-server-amd64-06.21.13.img"
+#knife[:image_name] = "Ubuntu-12.04-LTS-server-amd64-06.21.13.img"
 
 #ec2
 knife[:availability_zone] = "#{ENV['AWS_AVAILABILITY_ZONE']}"
 knife[:aws_access_key_id] = "#{ENV['MEGAM_AWS_ACCESS_KEY']}"
 knife[:aws_secret_access_key] = "#{ENV['MEGAM_AWS_SECRET_ID']}"
 
-knife[:image] = "#{ENV['AWS_IMAGE']}"
-knife[:flavor] = "#{ENV['AWS_FLAVOR']}"
+#knife[:image] = "#{ENV['AWS_IMAGE']}"
+#knife[:flavor] = "#{ENV['AWS_FLAVOR']}"
 
 knife[:aws_ssh_key_id] = "#{ENV['AWS_SSH_KEY_ID']}"
 knife[:region] = "#{ENV['AWS_REGION']}"

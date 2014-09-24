@@ -9,4 +9,4 @@ recipe            "megam_preinstall::default", "Installs essential packages."
 recipe            "megam_preinstall::account", "Creates megam user and necessary directories."
 
 
-
+depends "apt"

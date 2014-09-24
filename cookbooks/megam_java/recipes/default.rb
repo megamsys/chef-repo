@@ -47,14 +47,14 @@ end
 #include_recipe "megam_route53"
 
 #node.set[:ganglia][:server_gmond] = "162.248.165.65"
-#include_recipe "megam_ganglia::nginx"
+#include_recipe "megam_metering::nginx"
 
 #node.set["deps"]["node_key"] = "#{node.name}"
 #include_recipe "megam_deps"
 
 include_recipe "git"
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['predefs']['scm']
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['node']['predefs']['scm']
 node.set["gulp"]["builder"] = "megam_java_builder"
 
 
@@ -64,6 +64,9 @@ node.set['logstash']['output']['url'] = "www.megam.co"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "#{node['megam']['tomcat']['home']}/logs/*.log", "/var/log/upstart/gulpd.log" ]
 #include_recipe "megam_logstash::beaver"
 
+#From Where can we set this, here or megam_tomcat?
+node.set['megam']['nginx']['port'] = "8080"
+
 
 node.set['rsyslog']['index'] = "#{node.name}"
 node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
@@ -71,8 +74,8 @@ node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/access.log", "#{node['
 #include_recipe "megam_logstash::rsyslog"
 
 
-scm_ext = File.extname(node['megam']['deps']['predefs']['scm'])
-file_name = File.basename(node['megam']['deps']['predefs']['scm'])
+scm_ext = File.extname(node['megam']['deps']['node']['predefs']['scm'])
+file_name = File.basename(node['megam']['deps']['node']['predefs']['scm'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
@@ -89,61 +92,57 @@ case scm_ext
 when ".git"
 execute "Clone git " do
   cwd node['megam']['user']['home']
-  user "root"
-  group "root"
-  command "git clone #{node['megam']['deps']['predefs']['scm']}"
+  command "git clone #{node['megam']['deps']['node']['predefs']['scm']}"
 end
 
 execute "Change mod cloned git" do
   cwd node['megam']['user']['home']
-  user "root"
-  group "root"
-  command "chown -R #{node['megam']['user']}:#{node['megam']['user']} #{dir}"
+  command "chown -R #{node['megam']['default']['user']}:#{node['megam']['default']['user']} #{dir}"
 end
 
-node.set["gulp"]["local_repo"] = "#{node['megam']['user']}/#{dir}"
+node.set["gulp"]["local_repo"] = "#{node['megam']['default']['user']}/#{dir}"
 
 when ".zip"
 
 remote_file "#{node['megam']['user']['home']}/#{file_name}" do
-  source node['megam']['deps']['predefs']['scm']
+  source node['megam']['deps']['node']['predefs']['scm']
   mode "0755"
-  owner node['megam']['user']
-  group node['megam']['user']
+  owner node['megam']['default']['user']
+  group node['megam']['default']['user']
 end
 
 execute "Unzip scm " do
   cwd node['megam']['user']['home'] 
-  user node['megam']['user']
-  group node['megam']['user']
+  user node['megam']['default']['user']
+  group node['megam']['default']['user']
   command "unzip #{file_name}"
 end
 
 when ".gz" || ".tar"
 
 remote_file "#{node['megam']['user']['home']}/#{file_name}" do
-  source node['megam']['deps']['predefs']['scm']
+  source node['megam']['deps']['node']['predefs']['scm']
   mode "0755"
-  owner node['megam']['user']
-  group node['megam']['user']
+  owner node['megam']['default']['user']
+  group node['megam']['default']['user']
 end
 
 execute "Untar tar file " do
   cwd node['megam']['user']['home']
-  user node['megam']['user']
-  group node['megam']['user']
+  user node['megam']['default']['user']
+  group node['megam']['default']['user']
   command "tar -xvzf #{file_name}"
 end
 
 when ".war"
 
-node.set["gulp"]["local_repo"] = "#{node['megam']['user']['home']}/webapps"
 
-remote_file "#{node['megam']['user']['home']}/webapps/#{file_name}" do
-  source node['megam']['deps']['predefs']['scm']
+
+remote_file "#{node['megam']['user']['home']}/#{file_name}" do
+  source node['megam']['deps']['node']['predefs']['scm']
   mode "0755"
-  owner node['megam']['user']
-  group node['megam']['user']
+  owner node['megam']['default']['user']
+  group node['megam']['default']['user']
 end
 
 else
@@ -170,15 +169,16 @@ cwd "#{node['megam']['user']['home']}/#{dir}"
    code <<-EOH
 mvn clean
 mvn package
-cp #{node['megam']['user']['home']}/#{dir}/target/*.war #{node['megam']['user']['home']}/webapps/
   EOH
 end
-
 end
 
-template "/etc/nginx/sites-available/default" do
-  source "nginx.conf.erb"
+if scm_ext == ".war"
+        node.set['megam']['app']['location'] = "#{node['megam']['user']['home']}/#{file_name}"
+else
+        node.set['megam']['app']['location'] = "#{node['megam']['user']['home']}/#{dir}/target/*.war"
 end
+
 
 
 execute "Clone Java builder" do
@@ -201,22 +201,20 @@ end
 
 #include_recipe "megam_gulp"
 
-bash "restart nginx" do
-  user "root"
-   code <<-EOH
-  service nginx restart
-  EOH
+
+# use upstart when supported to get nice things like automatic respawns
+=begin
+use_upstart = false
+supports_setuid = false
+case node['platform_family']
+when "debian"  
+  if node['platform_version'].to_f >= 12.04
+    supports_setuid = true
+    use_upstart = true  
+  end
 end
 
-if use_upstart
-  bash "Restart tomcat" do
-  "root"
-   code <<-EOH
-  stop tomcat
-  start tomcat
-  EOH
-  end
-else
+
 bash "Restart service tomcat" do
   "root"
    code <<-EOH
@@ -224,7 +222,7 @@ bash "Restart service tomcat" do
   /etc/init.d/tomcat start
   EOH
 end 
-end
+=end
 
 
 
