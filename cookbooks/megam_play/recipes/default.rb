@@ -12,36 +12,36 @@
 
 #node.set["megam"]["instanceid"] = "#{`curl http://169.254.169.254/latest/meta-data/instance-id`}"
 
-include_recipe "megam_sandbox"
+#include_recipe "megam_sandbox"
 include_recipe "apt"
 
 package "openjdk-7-jdk" do
         action :install
 end
 
-node.set["myroute53"]["name"] = "#{node.name}"
-include_recipe "megam_route53"
+#node.set["myroute53"]["name"] = "#{node.name}"
+#include_recipe "megam_route53"
 
 
-node.set["deps"]["node_key"] = "#{node.name}"
-include_recipe "megam_deps"
+#node.set["deps"]["node_key"] = "#{node.name}"
+#include_recipe "megam_deps"
 
 node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['output']['url'] = "www.megam.co"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::beaver"
+#include_recipe "megam_logstash::beaver"
 
 
 node.set['rsyslog']['index'] = "#{node.name}"
 node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
 node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/access.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::rsyslog"
+#include_recipe "megam_logstash::rsyslog"
 
 
-include_recipe "nginx"
+#include_recipe "nginx"
 
 #node.set[:ganglia][:server_gmond] = "162.248.165.65"
-include_recipe "megam_ganglia::nginx"
+#include_recipe "megam_ganglia::nginx"
 
 
 package "zip unzip" do
@@ -73,7 +73,7 @@ end
 
 
 node.set["gulp"]["builder"] = "megam_play_builder"
-include_recipe "megam_gulp"
+#include_recipe "megam_gulp"
 
 directory "/usr/share/#{dir}" do
   owner "root"
