@@ -38,16 +38,16 @@ node.set[:rails][:database][:username] = node[:rails][:app][:name]
 node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
 include_recipe "megam_environment"
 
-node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
+node.set["gulp"]["remote_repo"] = node["megam"]["deps"]["node"]["predefs"]["scm"]
 node.set["gulp"]["local_repo"] = "#{node[:rails][:app][:path]}/current"
 node.set["gulp"]["builder"] = "megam_ruby_builder"
 node.set["gulp"]["project_name"] = node[:rails][:app][:name]
 
 
 bash "Clone ruby builder" do
-cwd "#{node['sandbox']['home']}/bin"
-  user node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+cwd "#{node['megam']['user']['home']}/bin"
+  user node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
    code <<-EOH
   git clone https://github.com/indykish/megam_ruby_builder.git
   EOH
@@ -113,7 +113,7 @@ application node[:rails][:app][:name] do
   end
   #repository        node[:rails][:deploy][:repository]
 #Repository value is getting from s3 json
-  repository        "#{node["megam_deps"]["predefs"]["scm"]}"
+  repository        "#{node["megam"]["deps"]["node"]["predefs"]["scm"]}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]
