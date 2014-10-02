@@ -24,7 +24,7 @@ end
 #node.set["deps"]["node_key"] = "#{node.name}"
 #include_recipe "megam_deps"
 
-file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+file_name = File.basename(node["megam"]["deps"]["node"]["predefs"]["scm"])
 dir = File.basename(file_name, '.*')
 node.set[:rails][:app][:name] = "#{dir}"
 #=end

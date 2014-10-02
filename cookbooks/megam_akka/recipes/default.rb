@@ -45,7 +45,7 @@ end
 #node.set[:ganglia][:server_gmond] = "162.248.165.65"
 #include_recipe "megam_ganglia"
 
-node.set["deps"]["node_key"] = "#{node.name}"
+#node.set["deps"]["node_key"] = "#{node.name}"
 #include_recipe "megam_deps"
 
 
@@ -69,8 +69,8 @@ gem_package "knife-ec2" do
 end
 =end
 
-scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
-file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+scm_ext = File.extname(node["megam" ]["deps"]["node"]["predefs"]["scm"])
+file_name = File.basename(node["megam"]["deps"]["node"]["predefs"]["scm"])
 dir = File.basename(file_name, '.*')
 
 if scm_ext.empty?
@@ -78,7 +78,7 @@ if scm_ext.empty?
 end
 
 
-node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['node']['predefs']['scm']
 node.set["gulp"]["project_name"] = "#{dir}"
 
 
@@ -93,63 +93,62 @@ case scm_ext
 when ".git"
 include_recipe "git"
 execute "Clone git " do
-  cwd node["sandbox"]["home"]  
-  user node["sandbox"]["user"]
-  group node["sandbox"]["user"]
-  command "git clone #{node["megam_deps"]["predefs"]["scm"]}"
+  cwd node["megam"]["user"]["home"]  
+  
+  command "git clone #{node['megam']['deps']['node']['predefs']['scm']}"
 end
 
 
-directory "#{node["sandbox"]["home"]}/bin" do
-  owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+directory "#{node["megam"]["user"]["home"]}/bin" do
+  owner node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
   mode "0755"
   action :create
 end
 
 execute "add PATH for bin sbt" do
-  cwd node["sandbox"]["home"]  
-  user node["sandbox"]["user"]
-  group node["sandbox"]["user"]
-  command "echo \"PATH=$PATH:$HOME/bin\" >> #{node["sandbox"]["home"]}/.bashrc"
+  cwd node["megam"]["user"]["home"]  
+  user node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
+  command "echo \"PATH=$PATH:$HOME/bin\" >> #{node["megam"]["user"]["home"]}/.bashrc"
 end
 
 execute "Refresh bashrc" do
-  cwd node["sandbox"]["home"]  
-  user node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+  cwd node["megam"]["user"]["home"]  
+  user node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
   command "source .bashrc"
 end
 
-remote_file "#{node["sandbox"]["home"]}/bin/sbt-launch.jar" do
+remote_file "#{node["megam"]["user"]["home"]}/bin/sbt-launch.jar" do
   source node["akka"]["sbt"]["jar"]
   mode "0755"
-   owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+   owner node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
   checksum "08da002l" 
 end
 
-template "#{node["sandbox"]["home"]}/bin/sbt" do
+template "#{node["megam"]["user"]["home"]}/bin/sbt" do
   source "sbt.erb"
-  owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+  owner node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
   mode "0755"
 end
 
 
 execute "Stage play project" do
-  cwd "#{node["sandbox"]["home"]}/#{dir}"  
-  user node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+  cwd "#{node["megam"]["user"]["home"]}/#{dir}"  
+  user node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
   command "sbt clean compile stage dist"
 end
 
 
 execute "Copy zip to /usr/local/share" do
-  cwd "#{node["sandbox"]["home"]}/#{dir}"  
+  cwd "#{node["megam"]["user"]["home"]}/#{dir}"  
   user "root"
   group "root"
-  command "cp #{node["sandbox"]["home"]}/#{dir}/dist/*.zip /usr/local/share/#{dir} "
+  command "cp #{node["megam"]["user"]["home"]}/#{dir}/dist/*.zip /usr/local/share/#{dir} "
 end
 
 execute "Unzip dist content " do
@@ -196,7 +195,7 @@ end
 when ".tar"
 
 remote_file "/usr/local/share/#{dir}/#{file_name}" do
-  source node["megam_deps"]["predefs"]["scm"]
+  source node["megam"]["deps"]["node"]["predefs"]["scm"]
   mode "0755"
   owner "root"
   group "root"
@@ -224,7 +223,7 @@ directory "/usr/local/share/#{dir}" do
 end
 
 remote_file "/usr/local/share/#{dir}/#{file_name}" do
-  source node["megam_deps"]["predefs"]["scm"]
+  source node["megam"]["deps"]["node"]["predefs"]["scm"]
   mode "0755"
   owner "root"
   group "root"
@@ -242,30 +241,30 @@ node.set['akka']['script']['cmd'] = "/usr/local/share/#{dir}/#{dir}/bin/start or
 
 when ".deb"
 
-remote_file "#{node["sandbox"]["home"]}/#{file_name}" do
-  source node["megam_deps"]["predefs"]["scm"]
+remote_file "#{node["megam"]["user"]["home"]}/#{file_name}" do
+  source node["megam"]["deps"]["node"]["predefs"]["scm"]
   mode "0755"
-  owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+  owner node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
 end
 
 execute "Depackage deb file" do
-  cwd node["sandbox"]["home"]  
+  cwd node["megam"]["user"]["home"]  
   user "root"
   group "root"
   command "dpkg -i #{file_name}"
 end
 
 else
-remote_file "#{node["sandbox"]["home"]}/megamherk.deb" do
+remote_file "#{node["megam"]["user"]["home"]}/megamherk.deb" do
   source node['akka']['deb']
-  owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+  owner node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
   mode "0755"
 end
 
 execute "Depackage megam akka" do
-  cwd node["sandbox"]["home"]  
+  cwd node["megam"]["user"]["home"]  
   user "root"
   group "root"
   command node['akka']['dpkg']
