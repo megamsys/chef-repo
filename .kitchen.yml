@@ -10,7 +10,7 @@ platforms:
     driver:
       hostname: 144.76.244.46
       username: root
-      password: Team4megam
+      password: $KITCHEN_PASSWORD
 
 suites:
   - name: megam_java
