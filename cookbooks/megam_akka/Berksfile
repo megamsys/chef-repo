@@ -1,0 +1,18 @@
+source "https://supermarket.getchef.com"
+
+metadata
+
+
+group :integration do
+  cookbook "megam_deps", :path => '~/chef/chef-repo/cookbooks/megam_deps'
+  cookbook "megam_sandbox", :path => '~/chef/chef-repo/cookbooks/megam_sandbox'
+  cookbook "git" , path => '~/chef/chef-repo/cookbooks/git'
+  cookbook "megam_route53", path => '~/chef/chef-repo/cookbooks/megam_route53'
+  cookbook  "apt", path => '~/chef/chef-repo/cookbooks/apt'
+  cookbook "megam_logstash", path => '~/chef/chef-repo/cookbooks/megam_logstash'
+  cookbook "megam_ganglia", path => '~/chef/chef-repo/cookbooks/megam_ganglia'
+  cookbook "megam_gulp", path => '~/chef/chef-repo/cookbooks/megam_gulp'
+  cookbook "megam_app_env", path => '~/chef/chef-repo/cookbooks/megam_app_env'
+end
+
+

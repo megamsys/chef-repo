@@ -14,6 +14,6 @@ depends "apt"
 depends "megam_logstash"
 depends "megam_ganglia"
 depends "megam_gulp"
-depends "megam_app_env"
+#depends "megam_app_env"
 
 

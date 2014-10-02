@@ -32,3 +32,5 @@ tmp
 .yardoc
 _yardoc
 doc/
+.kitchen/
+.kitchen.local.yml

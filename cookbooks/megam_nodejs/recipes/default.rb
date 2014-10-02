@@ -60,8 +60,8 @@ node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/nodejs.log", "/var/l
 #include_recipe "megam_logstash::rsyslog"
 
 
-scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
-file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+scm_ext = File.extname(node["megam"]["deps"]["node"]["predefs"]["scm"])
+file_name = File.basename(node["megam"]["deps"]["node"]["predefs"]["scm"])
 =======
 scm_ext = File.extname(node['megam']['deps']['node']['predefs']['scm'])
 file_name = File.basename(node['megam']['deps']['node']['predefs']['scm'])
@@ -79,7 +79,7 @@ js_file = "#{node['megam']['deps']['defns']['appdefns']['runtime_exec']}".split.
 #SET JS FILE TO BE RUN
 node.set['nodejs']['js-file'] = "#{js_file}"
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['predefs']['scm']
+node.set["gulp"]["remote_repo"] = node['megam']['deps']["node"]['predefs']['scm']
 node.set["gulp"]["project_name"] = "#{dir}"
 node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
 node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
