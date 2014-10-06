@@ -6,11 +6,11 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-include_recipe "megam_sandbox"
+#include_recipe "megam_sandbox"
 include_recipe "apt"
 #include_recipe "megam_ruby"
 #=begin
-node.set["myroute53"]["name"] = "#{node.name}"
+#node.set["myroute53"]["name"] = "#{node.name}"
 
 if node['megam_domain']
 node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
@@ -18,13 +18,13 @@ else
 node.set["myroute53"]["zone"] = "megam.co"
 end
 
-include_recipe "megam_route53"
+#include_recipe "megam_route53"
 
 #=end
-node.set["deps"]["node_key"] = "#{node.name}"
-include_recipe "megam_deps"
+#node.set["deps"]["node_key"] = "#{node.name}"
+#include_recipe "megam_deps"
 
-file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+file_name = File.basename(node["megam"]["deps"]["node"]["predefs"]["scm"])
 dir = File.basename(file_name, '.*')
 node.set[:rails][:app][:name] = "#{dir}"
 #=end
@@ -33,22 +33,21 @@ node.set[:rails][:app][:name] = "#{dir}"
 node.set[:rails][:app][:path] = "/var/www/projects/#{node[:rails][:app][:name]}"
 node.set[:rails][:database][:name] = node[:rails][:app][:name]
 node.set[:rails][:database][:username] = node[:rails][:app][:name]
-include_recipe "git"
+#include_recipe "git"
 
-node.set['megam_app']['home'] = "#{node[:rails][:app][:path]}/current"
-include_recipe "megam_app_env"
+node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
+include_recipe "megam_environment"
 
-
-node.set["gulp"]["remote_repo"] = node["megam_deps"]["predefs"]["scm"]
+node.set["gulp"]["remote_repo"] = node["megam"]["deps"]["node"]["predefs"]["scm"]
 node.set["gulp"]["local_repo"] = "#{node[:rails][:app][:path]}/current"
 node.set["gulp"]["builder"] = "megam_ruby_builder"
 node.set["gulp"]["project_name"] = node[:rails][:app][:name]
 
 
 bash "Clone ruby builder" do
-cwd "#{node['sandbox']['home']}/bin"
-  user node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+cwd "#{node['megam']['user']['home']}/bin"
+  user node["megam"]["default"]["user"]
+  group node["megam"]["default"]["user"]
    code <<-EOH
   git clone https://github.com/indykish/megam_ruby_builder.git
   EOH
@@ -58,7 +57,7 @@ end
 node.set['logstash']['key'] = "#{node.name}"
 node.set['logstash']['output']['url'] = "www.megam.co"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::beaver"
+#include_recipe "megam_logstash::beaver"
 
 
 if node[:rails][:app][:name].split(" ").count > 1
@@ -70,12 +69,12 @@ end
 #include_recipe "megam_deps"
 
 node.set[:ganglia][:hostname] = "#{node.name}"
-include_recipe "megam_ganglia::default"
+#include_recipe "megam_ganglia::default"
 
 node.set['rsyslog']['index'] = "#{node.name}"
 node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
 node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::rsyslog"
+#include_recipe "megam_logstash::rsyslog"
 
 # create deploy user & group
 user node[:rails][:owner] do
@@ -114,7 +113,7 @@ application node[:rails][:app][:name] do
   end
   #repository        node[:rails][:deploy][:repository]
 #Repository value is getting from s3 json
-  repository        "#{node["megam_deps"]["predefs"]["scm"]}"
+  repository        "#{node["megam"]["deps"]["node"]["predefs"]["scm"]}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]
@@ -259,5 +258,5 @@ end
   command "sudo ./start unicorn_#{node[:rails][:app][:name]}"
   end
 
-include_recipe "megam_gulp"
+#include_recipe "megam_gulp"
 
