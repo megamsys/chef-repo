@@ -19,7 +19,7 @@
 
 
 #include_recipe "megam_sandbox"
-include_recipe "apt"
+#include_recipe "apt"
 #include_recipe "nginx"
 #ONLY FOR THIS COOKBOOK JDK
 #USES JAVA IMAGE
@@ -60,7 +60,8 @@ node.set["gulp"]["builder"] = "megam_java_builder"
 
 
 node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
+#node.set['logstash']['output']['url'] = "www.megam.co"
+node.set['logstash']['output']['url'] = "localhost"
 node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "#{node['megam']['tomcat']['home']}/logs/*.log", "/var/log/upstart/gulpd.log" ]
 #include_recipe "megam_logstash::beaver"
 

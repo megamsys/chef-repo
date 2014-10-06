@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-#include_recipe "megam_sandbox"
+
 include_recipe "apt"
 node.set["myroute53"]["name"] = "#{node.name}"
 if node['megam_domain']
