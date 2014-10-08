@@ -7,9 +7,19 @@ version          "1.3.0"
 name             "megam_nodejs"
 provides         "nodejs"
 
-%w{ megam_route53 build-essential yum apt git megam_deps nginx megam_logstash megam_ganglia megam_sandbox megam_gulp megam_app_env}.each do |cookbooks|
+%w{ build-essential yum apt git nginx }.each do |cookbooks|
   depends cookbooks
 end
+
+depends "megam_metering"
+depends "megam_nginx"
+depends "git"
+depends "megam_deps"
+depends "megam_logging"
+depends "megam_gulp"
+depends "megam_environment"
+depends "megam_preinstall"
+depends "megam_start"
 
 %w{ debian ubuntu centos redhat smartos }.each do |os|
     supports os

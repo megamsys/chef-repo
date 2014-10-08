@@ -1,52 +1,389 @@
-## The enabled Yokozuna set this 'on'.
-yokozuna = off
+## Where to emit the default log messages (typically at 'info'
+## severity):
+## off: disabled
+## file: the file specified by log.console.file
+## console: to standard output (seen when using `riak attach-direct`)
+## both: log.console.file and standard out.
+## 
+## Default: file
+## 
+## Acceptable values:
+##   - one of: off, file, console, both
+log.console = file
 
-## The port number which Solr binds to.
-yokozuna.solr_port = 8093
+## The severity level of the console log, default is 'info'.
+## 
+## Default: info
+## 
+## Acceptable values:
+##   - one of: debug, info, notice, warning, error, critical, alert, emergency, none
+log.console.level = info
 
-## The port number which Solr JMX binds to.
-yokozuna.solr_jmx_port = 8985
+## When 'log.console' is set to 'file' or 'both', the file where
+## console messages will be logged.
+## 
+## Default: $(platform_log_dir)/console.log
+## 
+## Acceptable values:
+##   - the path to a file
+log.console.file = $(platform_log_dir)/console.log
 
-## The arguments to pass to the Solr JVM.  Non-standard
-## arguments, i.e. -XX, may not be portable across JVM
-## implementations.  E.g. -XX:+UseCompressedStrings.
-yokozuna.solr_jvm_args = -Xms1g -Xmx1g -XX:+UseStringCache -XX:+UseCompressedOops
+## The file where error messages will be logged.
+## 
+## Default: $(platform_log_dir)/error.log
+## 
+## Acceptable values:
+##   - the path to a file
+log.error.file = $(platform_log_dir)/error.log
 
-## The data under which to store all Yokozuna related data.
-## Including the Solr index data.
-yokozuna.data_dir = /var/lib/riak/yz
+## When set to 'on', enables log output to syslog.
+## 
+## Default: off
+## 
+## Acceptable values:
+##   - on or off
+log.syslog = off
 
-## leveldb data_root
-leveldb.data_root = /var/lib/riak/leveldb
+## Whether to enable the crash log.
+## 
+## Default: on
+## 
+## Acceptable values:
+##   - on or off
+log.crash = on
 
-## This parameter defines the percentage, 1 to 100, of total
-## server memory to assign to leveldb.  leveldb will dynamically
-## adjust it internal cache sizes as Riak activates / inactivates
-## vnodes on this server to stay within this size.  The memory size
-## can alternately be assigned as a byte count via total_leveldb_mem instead.
-leveldb.total_leveldb_mem_percent = 90
+## If the crash log is enabled, the file where its messages will
+## be written.
+## 
+## Default: $(platform_log_dir)/crash.log
+## 
+## Acceptable values:
+##   - the path to a file
+log.crash.file = $(platform_log_dir)/crash.log
 
-## Each database .sst table file can include an optional "bloom filter"
-## that is highly effective in shortcutting data queries that are destined
-## to not find the requested key. The bloom_filter typically increases the
-## size of an .sst table file by about 2%. This option must be set to true
-## in the riak.conf to take effect.
-leveldb.bloomfilter = on
+## Maximum size in bytes of individual messages in the crash log
+## 
+## Default: 64KB
+## 
+## Acceptable values:
+##   - a byte size with units, e.g. 10GB
+log.crash.maximum_message_size = 64KB
 
-## Set to 'off' to disable the admin panel.
-riak_control = off
+## Maximum size of the crash log in bytes, before it is rotated
+## 
+## Default: 10MB
+## 
+## Acceptable values:
+##   - a byte size with units, e.g. 10GB
+log.crash.size = 10MB
 
-## Authentication style used for access to the admin
-## panel. Valid styles are: off, userlist
-riak_control.auth = userlist
+## The schedule on which to rotate the crash log.  For more
+## information see:
+## https://github.com/basho/lager/blob/master/README.md#internal-log-rotation
+## 
+## Default: $D0
+## 
+## Acceptable values:
+##   - text
+log.crash.rotation = $D0
 
-## If auth is set to 'userlist' then this is the
-## list of usernames and passwords for access to the
-## admin panel.
-riak_control.user.user.password = pass
+## The number of rotated crash logs to keep. When set to
+## 'current', only the current open log file is kept.
+## 
+## Default: 5
+## 
+## Acceptable values:
+##   - an integer
+##   - the text "current"
+log.crash.rotation.keep = 5
 
-## bitcask data root
-bitcask.data_root = /var/lib/riak/bitcask
+## Name of the Erlang node
+## 
+## Default: riak@127.0.0.1
+## 
+## Acceptable values:
+##   - text
+nodename = riak@127.0.0.1
+
+## Cookie for distributed node communication.  All nodes in the
+## same cluster should use the same cookie or they will not be able to
+## communicate.
+## 
+## Default: riak
+## 
+## Acceptable values:
+##   - text
+distributed_cookie = riak
+
+## Sets the number of threads in async thread pool, valid range
+## is 0-1024. If thread support is available, the default is 64.
+## More information at: http://erlang.org/doc/man/erl.html
+## 
+## Default: 64
+## 
+## Acceptable values:
+##   - an integer
+erlang.async_threads = 64
+
+## The number of concurrent ports/sockets
+## Valid range is 1024-134217727
+## 
+## Default: 65536
+## 
+## Acceptable values:
+##   - an integer
+erlang.max_ports = 65536
+
+## Set scheduler forced wakeup interval. All run queues will be
+## scanned each Interval milliseconds. While there are sleeping
+## schedulers in the system, one scheduler will be woken for each
+## non-empty run queue found. An Interval of zero disables this
+## feature, which also is the default.
+## This feature is a workaround for lengthy executing native code, and
+## native code that do not bump reductions properly.
+## More information: http://www.erlang.org/doc/man/erl.html#+sfwi
+## 
+## Acceptable values:
+##   - an integer
+## erlang.schedulers.force_wakeup_interval = 500
+
+## Enable or disable scheduler compaction of load. By default
+## scheduler compaction of load is enabled. When enabled, load
+## balancing will strive for a load distribution which causes as many
+## scheduler threads as possible to be fully loaded (i.e., not run out
+## of work). This is accomplished by migrating load (e.g. runnable
+## processes) into a smaller set of schedulers when schedulers
+## frequently run out of work. When disabled, the frequency with which
+## schedulers run out of work will not be taken into account by the
+## load balancing logic.
+## More information: http://www.erlang.org/doc/man/erl.html#+scl
+## 
+## Acceptable values:
+##   - one of: true, false
+## erlang.schedulers.compaction_of_load = false
+
+## Enable or disable scheduler utilization balancing of load. By
+## default scheduler utilization balancing is disabled and instead
+## scheduler compaction of load is enabled which will strive for a
+## load distribution which causes as many scheduler threads as
+## possible to be fully loaded (i.e., not run out of work). When
+## scheduler utilization balancing is enabled the system will instead
+## try to balance scheduler utilization between schedulers. That is,
+## strive for equal scheduler utilization on all schedulers.
+## More information: http://www.erlang.org/doc/man/erl.html#+sub
+## 
+## Acceptable values:
+##   - one of: true, false
+## erlang.schedulers.utilization_balancing = true
+
+## Number of partitions in the cluster (only valid when first
+## creating the cluster). Must be a power of 2, minimum 8 and maximum
+## 1024.
+## 
+## Default: 64
+## 
+## Acceptable values:
+##   - an integer
+## ring_size = 64
+
+## Number of concurrent node-to-node transfers allowed.
+## 
+## Default: 2
+## 
+## Acceptable values:
+##   - an integer
+## transfer_limit = 2
+
+## Default cert location for https can be overridden
+## with the ssl config variable, for example:
+## 
+## Acceptable values:
+##   - the path to a file
+## ssl.certfile = $(platform_etc_dir)/cert.pem
+
+## Default key location for https can be overridden with the ssl
+## config variable, for example:
+## 
+## Acceptable values:
+##   - the path to a file
+## ssl.keyfile = $(platform_etc_dir)/key.pem
+
+## Default signing authority location for https can be overridden
+## with the ssl config variable, for example:
+## 
+## Acceptable values:
+##   - the path to a file
+## ssl.cacertfile = $(platform_etc_dir)/cacertfile.pem
+
+## DTrace support Do not enable 'dtrace' unless your Erlang/OTP
+## runtime is compiled to support DTrace.  DTrace is available in
+## R15B01 (supported by the Erlang/OTP official source package) and in
+## R14B04 via a custom source repository & branch.
+## 
+## Default: off
+## 
+## Acceptable values:
+##   - on or off
+dtrace = off
+
+## Platform-specific installation paths (substituted by rebar)
+## 
+## Default: /usr/sbin
+## 
+## Acceptable values:
+##   - the path to a directory
+platform_bin_dir = /usr/sbin
+
+## 
+## Default: /var/lib/riak
+## 
+## Acceptable values:
+##   - the path to a directory
+platform_data_dir = /var/lib/riak
+
+## 
+## Default: /etc/riak
+## 
+## Acceptable values:
+##   - the path to a directory
+platform_etc_dir = /etc/riak
+
+## 
+## Default: /usr/lib/riak/lib
+## 
+## Acceptable values:
+##   - the path to a directory
+platform_lib_dir = /usr/lib/riak/lib
+
+## 
+## Default: /var/log/riak
+## 
+## Acceptable values:
+##   - the path to a directory
+platform_log_dir = /var/log/riak
+
+## Enable consensus subsystem. Set to 'on' to enable the
+## consensus subsystem used for strongly consistent Riak operations.
+## 
+## Default: off
+## 
+## Acceptable values:
+##   - on or off
+## strong_consistency = on
+
+## listener.http.<name> is an IP address and TCP port that the Riak
+## HTTP interface will bind.
+## 
+## Default: 127.0.0.1:8098
+## 
+## Acceptable values:
+##   - an IP/port pair, e.g. 127.0.0.1:10011
+listener.http.internal = <%= `curl icanhazip.com` %>:8098
+
+## listener.protobuf.<name> is an IP address and TCP port that the Riak
+## Protocol Buffers interface will bind.
+## 
+## Default: 127.0.0.1:8087
+## 
+## Acceptable values:
+##   - an IP/port pair, e.g. 127.0.0.1:10011
+listener.protobuf.internal = 127.0.0.1:8087
+
+## The maximum length to which the queue of pending connections
+## may grow. If set, it must be an integer > 0. If you anticipate a
+## huge number of connections being initialized *simultaneously*, set
+## this number higher.
+## 
+## Default: 128
+## 
+## Acceptable values:
+##   - an integer
+## protobuf.backlog = 128
+
+## listener.https.<name> is an IP address and TCP port that the Riak
+## HTTPS interface will bind.
+## 
+## Acceptable values:
+##   - an IP/port pair, e.g. 127.0.0.1:10011
+## listener.https.internal = 127.0.0.1:8098
+
+## How Riak will repair out-of-sync keys. Some features require
+## this to be set to 'active', including search.
+## * active: out-of-sync keys will be repaired in the background
+## * passive: out-of-sync keys are only repaired on read
+## * active-debug: like active, but outputs verbose debugging
+## information
+## 
+## Default: active
+## 
+## Acceptable values:
+##   - one of: active, passive, active-debug
+anti_entropy = active
+
+## Specifies the storage engine used for Riak's key-value data
+## and secondary indexes (if supported).
+## 
+## Default: bitcask
+## 
+## Acceptable values:
+##   - one of: bitcask, leveldb, memory, multi
+storage_backend = 
+
+## Controls which binary representation of a riak value is stored
+## on disk.
+## * 0: Original erlang:term_to_binary format. Higher space overhead.
+## * 1: New format for more compact storage of small values.
+## 
+## Default: 1
+## 
+## Acceptable values:
+##   - the integer 1
+##   - the integer 0
+object.format = 1
+
+## Reading or writing objects bigger than this size will write a
+## warning in the logs.
+## 
+## Default: 5MB
+## 
+## Acceptable values:
+##   - a byte size with units, e.g. 10GB
+object.size.warning_threshold = 5MB
+
+## Writing an object bigger than this will send a failure to the
+## client.
+## 
+## Default: 50MB
+## 
+## Acceptable values:
+##   - a byte size with units, e.g. 10GB
+object.size.maximum = 50MB
+
+## Writing an object with more than this number of siblings will
+## generate a warning in the logs.
+## 
+## Default: 25
+## 
+## Acceptable values:
+##   - an integer
+object.siblings.warning_threshold = 25
+
+## Writing an object with more than this number of siblings will
+## send a failure to the client.
+## 
+## Default: 100
+## 
+## Acceptable values:
+##   - an integer
+object.siblings.maximum = 100
+
+## A path under which bitcask data files will be stored.
+## 
+## Default: $(platform_data_dir)/bitcask
+## 
+## Acceptable values:
+##   - the path to a directory
+bitcask.data_root = $(platform_data_dir)/bitcask
 
 ## Configure how Bitcask writes data to disk.
 ## erlang: Erlang's built-in file API
@@ -55,298 +392,98 @@ bitcask.data_root = /var/lib/riak/bitcask
 ## workloads, but has the potential to negatively impact
 ## the Erlang VM, leading to higher worst-case latencies
 ## and possible throughput collapse.
+## 
+## Default: erlang
+## 
+## Acceptable values:
+##   - one of: erlang, nif
 bitcask.io_mode = erlang
 
-## enable active anti-entropy subsystem
-anti_entropy = on
-
-## Storage_backend specifies the Erlang module defining the storage
-## mechanism that will be used on this node.
-#storage_backend = bitcask
-storage_backend = leveldb
-
-## raw_name is the first part of all URLS used by the Riak raw HTTP
-## interface.  See riak_web.erl and raw_http_resource.erl for
-## details.
-## raw_name = riak
-
-## Restrict how fast AAE can build hash trees. Building the tree
-## for a given partition requires a full scan over that partition's
-## data. Once built, trees stay built until they are expired.
-## Config is of the form:
-## {num-builds, per-timespan}
-## Default is 1 build per hour.
-anti_entropy.build_limit.number = 1
-
-anti_entropy.build_limit.per_timespan = 1h
-
-## Determine how often hash trees are expired after being built.
-## Periodically expiring a hash tree ensures the on-disk hash tree
-## data stays consistent with the actual k/v backend data. It also
-## helps Riak identify silent disk failures and bit rot. However,
-## expiration is not needed for normal AAE operation and should be
-## infrequent for performance reasons. The time is specified in
-## milliseconds. The default is 1 week.
-anti_entropy.expire = 1w
-
-## Limit how many AAE exchanges/builds can happen concurrently.
-anti_entropy.concurrency = 2
-
-## The tick determines how often the AAE manager looks for work
-## to do (building/expiring trees, triggering exchanges, etc).
-## The default is every 15 seconds. Lowering this value will
-## speedup the rate that all replicas are synced across the cluster.
-## Increasing the value is not recommended.
-anti_entropy.tick = 15s
-
-## The directory where AAE hash trees are stored.
-anti_entropy.data_dir = /var/lib/riak/anti_entropy
-
-## The LevelDB options used by AAE to generate the LevelDB-backed
-## on-disk hashtrees.
-anti_entropy.write_buffer_size = 4MB
-
-anti_entropy.max_open_files = 20
-
-## mapred_name is URL used to submit map/reduce requests to Riak.
-mapred_name = mapred
-
-## mapred_2i_pipe indicates whether secondary-index
-## MapReduce inputs are queued in parallel via their own
-## pipe ('true'), or serially via a helper process
-## ('false' or undefined).  Set to 'false' or leave
-## undefined during a rolling upgrade from 1.0.
-mapred_2i_pipe = on
-
-## Each of the following entries control how many Javascript
-## virtual machines are available for executing map, reduce,
-## pre- and post-commit hook functions.
-javascript_vm.map_count = 8
-
-javascript_vm.reduce_count = 6
-
-javascript_vm.hook_count = 2
-
-## js_max_vm_mem is the maximum amount of memory, in megabytes,
-## allocated to the Javascript VMs. If unset, the default is
-## 8MB.
-javascript_vm.max_vm_mem = 8
-
-## js_thread_stack is the maximum amount of thread stack, in megabyes,
-## allocate to the Javascript VMs. If unset, the default is 16MB.
-## NOTE: This is not the same as the C thread stack.
-javascript_vm.thread_stack = 16
-
-## js_source_dir should point to a directory containing Javascript
-## source files which will be loaded by Riak when it initializes
-## Javascript VMs.
-## javascript_vm.source_dir = /tmp/js_source
-
-## http_url_encoding determines how Riak treats URL encoded
-## buckets, keys, and links over the REST API. When set to 'on'
-## Riak always decodes encoded values sent as URLs and Headers.
-## Otherwise, Riak defaults to compatibility mode where links
-## are decoded, but buckets and keys are not. The compatibility
-## mode will be removed in a future release.
-http_url_encoding = on
-
-## Switch to vnode-based vclocks rather than client ids.  This
-## significantly reduces the number of vclock entries.
-## Only set on if *all* nodes in the cluster are upgraded to 1.0
-vnode_vclocks = on
-
-## This option toggles compatibility of keylisting with 1.0
-## and earlier versions.  Once a rolling upgrade to a version
-## > 1.0 is completed for a cluster, this should be set to
-## true for better control of memory usage during key listing
-## operations
-listkeys_backpressure = on
-
-## This option specifies how many of each type of fsm may exist
-## concurrently.  This is for overload protection and is a new
-## mechanism that obsoletes 1.3's health checks. Note that this number
-## represents two potential processes, so +P in vm.args should be at
-## least 3X the fsm_limit.
-fsm_limit = 50000
-
-## retry_put_coordinator_failure will enable/disable the
-## 'retry_put_coordinator_failure' per-operation option of the
-## put FSM.
-## on = Riak 2.0 behavior (strongly recommended)
-## off = Riak 1.x behavior
-retry_put_coordinator_failure = on
-
-## object_format controls which binary representation of a riak_object
-## is stored on disk.
-## Current options are: v0, v1.
-## v0: Original erlang:term_to_binary format. Higher space overhead.
-## v1: New format for more compact storage of small values.
-object_format = v1
-
-## listener.http.<name> is an IP address and TCP port that the Riak
-## HTTP interface will bind.
-listener.http.internal = 127.0.0.1:8098
-
-## listener.protobuf.<name> is an IP address and TCP port that the Riak
-## Protocol Buffers interface will bind.
-listener.protobuf.internal = 127.0.0.1:8087
-
-## pb_backlog is the maximum length to which the queue of pending
-## connections may grow. If set, it must be an integer >= 0.
-## By default the value is 5. If you anticipate a huge number of
-## connections being initialised *simultaneously*, set this number
-## higher.
-## protobuf.backlog = 64
-
-## listener.https.<name> is an IP address and TCP port that the Riak
-## HTTPS interface will bind.
-## listener.https.internal = 127.0.0.1:8098
-
-## Default ring creation size.  Make sure it is a power of 2,
-## e.g. 16, 32, 64, 128, 256, 512 etc
-## ring_size = 64
-
-## Default location of ringstate
-ring.state_dir = /var/lib/riak/ring
-
-## Default cert location for https can be overridden
-## with the ssl config variable, for example:
-## ssl.certfile = /etc/riak/cert.pem
-
-## Default key location for https can be overridden
-## with the ssl config variable, for example:
-## ssl.keyfile = /etc/riak/key.pem
-
-## Default signing authority location for https can be overridden
-## with the ssl config variable, for example:
-## ssl.cacertfile = /etc/riak/cacertfile.pem
-
-## handoff.port is the TCP port that Riak uses for
-## intra-cluster data handoff.
-handoff.port = 8099
-
-## To encrypt riak_core intra-cluster data handoff traffic,
-## uncomment the following line and edit its path to an
-## appropriate certfile and keyfile.  (This example uses a
-## single file with both items concatenated together.)
-## handoff.ssl.certfile = /tmp/erlserver.pem
-
-## DTrace support
-## Do not enable 'dtrace' unless your Erlang/OTP
-## runtime is compiled to support DTrace.  DTrace is
-## available in R15B01 (supported by the Erlang/OTP
-## official source package) and in R14B04 via a custom
-## source repository & branch.
-dtrace = off
-
-platform_bin_dir = /usr/sbin
-
-platform_data_dir = /var/lib/riak
-
-platform_etc_dir = /etc/riak
-
-platform_lib_dir = /usr/lib/riak/lib
-
-platform_log_dir = /var/log/riak
-
-## Enable consensus subsystem (tech preview feature)
-## Set to true to enable the consensus subsystem used for strongly
-## consistent Riak operations.
-## enable_consensus = true
-
-## where do you want the console.log output:
-## off : nowhere
-## file: the file specified by log.console.file
-## console : standard out
-## both : log.console.file and standard out.
-log.console = file
-
-## the log level of the console log
-log.console.level = info
-
-## location of the console log
-log.console.file = /var/log/riak/console.log
-
-## location of the error log
-log.error.file = /var/log/riak/error.log
-
-## turn on syslog
-log.syslog = off
-
-## Whether to write a crash log, and where.
-## Commented/omitted/undefined means no crash logger.
-log.crash.file = ./log/crash.log
-
-## Maximum size in bytes of events in the crash log - defaults to 65536
-log.crash.msg_size = 64KB
-
-## Maximum size of the crash log in bytes, before its rotated, set
-## to 0 to disable rotation - default is 0
-log.crash.size = 10MB
-
-## What time to rotate the crash log - default is no time
-## rotation. See the lager README for a description of this format:
-## https://github.com/basho/lager/blob/master/README.org
-log.crash.date = $D0
-
-## Number of rotated crash logs to keep, 0 means keep only the
-## current one - default is 0
-log.crash.count = 5
-
-## Whether to redirect error_logger messages into lager - defaults to true
-log.error.redirect = on
-
-## maximum number of error_logger messages to handle in a second
-## lager 2.0.0 shipped with a limit of 50, which is a little low for riak's startup
-log.error.messages_per_second = 100
-
-## Name of the riak node
-nodename = riak@127.0.0.1
-
-## Cookie for distributed node communication.  All nodes in the same cluster
-## should use the same cookie or they will not be able to communicate.
-distributed_cookie = riak
-
-erlang.async_threads = 64
-
-## Increase number of concurrent ports/sockets
-erlang.max_ports = 64000
-
-## Set the location of crash dumps
-erlang.crash_dump = /var/log/riak/erl_crash.dump
-
-## Raise the ETS table limit
-erlang.max_ets_tables = 256000
-
-## Raise the default erlang process limit
-erlang.process_limit = 256000
-
-## For nodes with many busy_dist_port events, Basho recommends
-## raising the sender-side network distribution buffer size.
-## 32MB may not be sufficient for some workloads and is a suggested
-## starting point.
-## The Erlang/OTP default is 1024 (1 megabyte).
-## See: http://www.erlang.org/doc/man/erl.html#%2bzdbbl
-## erlang.zdbbl = 32768
-
-## Erlang VM scheduler tuning.
-## Prerequisite: a patched VM from Basho, or a VM compiled separately
-## with this patch applied:
-## https://gist.github.com/evanmcc/a599f4c6374338ed672e
-## erlang.sfwi = 500
-
-## Reading or writing objects bigger than this size will write
-## a warning in the logs.
-warn_object_size = 5MB
-
-## Writing an object bigger than this will fail.
-max_object_size = 50MB
-
-## Writing an object with more than this number of siblings
-## will generate a warning in the logs.
-warn_siblings = 25
-
-## Writing an object with more than this number of siblings
-## will fail.
-max_siblings = 100
+## Set to 'off' to disable the admin panel.
+## 
+## Default: off
+## 
+## Acceptable values:
+##   - on or off
+riak_control = off
+
+## Authentication mode used for access to the admin panel.
+## 
+## Default: off
+## 
+## Acceptable values:
+##   - one of: off, userlist
+riak_control.auth.mode = off
+
+## If riak control's authentication mode (riak_control.auth.mode)
+## is set to 'userlist' then this is the list of usernames and
+## passwords for access to the admin panel.
+## To create users with given names, add entries of the format:
+## riak_control.auth.user.USERNAME.password = PASSWORD
+## replacing USERNAME with the desired username and PASSWORD with the
+## desired password for that user.
+## 
+## Acceptable values:
+##   - text
+## riak_control.auth.user.admin.password = pass
+
+## This parameter defines the percentage of total server memory
+## to assign to LevelDB. LevelDB will dynamically adjust its internal
+## cache sizes to stay within this size.  The memory size can
+## alternately be assigned as a byte count via leveldb.maximum_memory
+## instead.
+## 
+## Default: 70
+## 
+## Acceptable values:
+##   - an integer
+leveldb.maximum_memory.percent = 70
+
+## To enable Search set this 'on'.
+## 
+## Default: off
+## 
+## Acceptable values:
+##   - on or off
+search = off
+
+## How long Riak will wait for Solr to start. The start sequence
+## will be tried twice. If both attempts timeout, then the Riak node
+## will be shutdown. This may need to be increased as more data is
+## indexed and Solr takes longer to start. Values lower than 1s will
+## be rounded up to the minimum 1s.
+## 
+## Default: 30s
+## 
+## Acceptable values:
+##   - a time duration with units, e.g. '10s' for 10 seconds
+search.solr.start_timeout = 30s
+
+## The port number which Solr binds to.
+## NOTE: Binds on every interface.
+## 
+## Default: 8093
+## 
+## Acceptable values:
+##   - an integer
+search.solr.port = 8093
+
+## The port number which Solr JMX binds to.
+## NOTE: Binds on every interface.
+## 
+## Default: 8985
+## 
+## Acceptable values:
+##   - an integer
+search.solr.jmx_port = 8985
+
+## The options to pass to the Solr JVM.  Non-standard options,
+## i.e. -XX, may not be portable across JVM implementations.
+## E.g. -XX:+UseCompressedStrings
+## 
+## Default: -d64 -Xms1g -Xmx1g -XX:+UseStringCache -XX:+UseCompressedOops
+## 
+## Acceptable values:
+##   - text
+search.solr.jvm_options = -d64 -Xms1g -Xmx1g -XX:+UseStringCache -XX:+UseCompressedOops
 

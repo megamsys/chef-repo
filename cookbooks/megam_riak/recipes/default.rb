@@ -18,54 +18,27 @@
 # limitations under the License.
 #
 
-#normal["megam"]["instanceid"] = "#{`curl http://169.254.169.254/latest/meta-data/instance-id`}"
-#node.set["megam"]["test"] = node
-#"#{node['ec2']['instance_id']}"	#Instance_id
-#curl http://169.254.169.254/latest/meta-data/instance-id
+
+node.set["gulp"]["remote_repo"] = "basho.com/riak"
+node.set["gulp"]["local_repo"] = "/var/lib/riak"
+node.set["gulp"]["project_name"] = "riak"
+
+log_inputs = node.default['logstash']['beaver']['inputs']
+log_inputs.push("/var/log/riak/*.log", "/var/log/upstart/gulpd.log")
+node.override['logstash']['beaver']['inputs'] = log_inputs
 
 
+node.set['logstash']['beaver']['inputs'] = log_inputs
 
-node.set["myroute53"]["name"] = "#{node.name}"
-include_recipe "megam_route53"
+node.set['rsyslog']['input']['files'] = log_inputs
 
-
-node.set["gulp"]["remote_repo"] = "test_riak"
-node.set["gulp"]["local_repo"] = "test_riak"
-node.set["gulp"]["builder"] = "megam_ruby_builder"
-node.set["gulp"]["project_name"] = "test"
-
-node.set["deps"]["node_key"] = "#{node.name}"
-include_recipe "megam_deps"
-
-
-#node.set[:ganglia][:server_gmond] = "162.248.165.65"
-include_recipe "megam_ganglia::riak"
-
-node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/riak/*.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::beaver"
-
-
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/riak/*.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::rsyslog"
-
-
-scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
-file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
+file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
 dir = File.basename(file_name, '.*')
-if scm_ext.empty?
-  scm_ext = ".git"
-end
+
 node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"
-node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
-
-node.set['megam_app']['home'] = "/tmp/#{dir}"
-include_recipe "megam_app_env"
-
+node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
+node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
 include_recipe "ulimit"
 
@@ -77,7 +50,7 @@ bash "install riak" do
   user "root"
   cwd "/tmp"
   code <<-EOH
-  wget #{node["megam_deps"]["predefs"]["scm"]}
+  wget #{node['megam']['deps']['component']['inputs']['source']}
   dpkg -i #{file_name}
   EOH
 end
@@ -118,7 +91,7 @@ end
   end
 
 
-if node["megam_deps"]["predefs"]["scm"] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_1.4.2-1_amd64.deb"
+if node['megam']['deps']['component']['inputs']['source'] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_1.4.2-1_amd64.deb"
 file "#{node['riak']['package']['config_dir']}/app.config" do
   content Eth::Config.new(node['riak']['config'].to_hash).pp
   owner "root"
@@ -133,7 +106,7 @@ file "#{node['riak']['package']['config_dir']}/vm.args" do
   notifies :restart, "service[riak]"
 end
 
-elsif node["megam_deps"]["predefs"]["scm"] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_2.0.0beta1-1_amd64.deb"
+elsif node['megam']['deps']['component']['inputs']['source'] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_2.0.0beta1-1_amd64.deb"
 
 template "/etc/riak/riak.conf" do
   source "riak2.conf.erb"
@@ -154,4 +127,3 @@ service "riak" do
 end
 
 
-include_recipe "megam_gulp"

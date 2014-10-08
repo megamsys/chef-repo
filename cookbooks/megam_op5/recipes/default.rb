@@ -7,22 +7,16 @@
 # All rights reserved - Do Not Redistribute
 #
 
-node.set['logstash']['key'] = "#{node.name}"
-#node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['output']['url'] = "localhost"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/upstart/gulpd.log" ]
+log_inputs = node['logstash']['beaver']['inputs']
+log_inputs.push("/var/log/upstart/gulpd.log")
 
 
-#=begin
-node.set['rsyslog']['index'] = "#{node.name}"
-#node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['elastic_ip'] = "localhost"
-node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/gulpd.log" ]
+node.set['logstash']['beaver']['inputs'] = log_inputs
 
-#=end
+node.set['rsyslog']['input']['files'] = log_inputs
 
-scm_ext = File.extname(node['megam']['deps']['node']['predefs']['scm'])
-file_name = File.basename(node['megam']['deps']['node']['predefs']['scm'])
+scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
+file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
 dir = File.basename(file_name, '.*')
 
 node.set["gulp"]["project_name"] = "#{dir}"
@@ -36,7 +30,7 @@ include_recipe "megam_environment"
 directory "#{node['megam']['user']['home']}/op5"
 
 remote_file "#{node['megam']['user']['home']}/op5/#{file_name}" do
-  source node['megam']['deps']['node']['predefs']['scm']
+  source node['megam']['deps']['component']['inputs']['source']
   mode "0755"
    owner node['megam']['default']['user']
   group node['megam']['default']['user']

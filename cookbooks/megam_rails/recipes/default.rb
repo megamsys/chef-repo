@@ -6,25 +6,12 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-#include_recipe "megam_sandbox"
-include_recipe "apt"
+
 #include_recipe "megam_ruby"
-#=begin
-#node.set["myroute53"]["name"] = "#{node.name}"
 
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co"
-end
+include_recipe "git"
 
-#include_recipe "megam_route53"
-
-#=end
-#node.set["deps"]["node_key"] = "#{node.name}"
-#include_recipe "megam_deps"
-
-file_name = File.basename(node["megam"]["deps"]["node"]["predefs"]["scm"])
+file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
 dir = File.basename(file_name, '.*')
 node.set[:rails][:app][:name] = "#{dir}"
 #=end
@@ -33,15 +20,18 @@ node.set[:rails][:app][:name] = "#{dir}"
 node.set[:rails][:app][:path] = "/var/www/projects/#{node[:rails][:app][:name]}"
 node.set[:rails][:database][:name] = node[:rails][:app][:name]
 node.set[:rails][:database][:username] = node[:rails][:app][:name]
-#include_recipe "git"
+
 
 node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
 include_recipe "megam_environment"
 
-node.set["gulp"]["remote_repo"] = node["megam"]["deps"]["node"]["predefs"]["scm"]
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
 node.set["gulp"]["local_repo"] = "#{node[:rails][:app][:path]}/current"
 node.set["gulp"]["builder"] = "megam_ruby_builder"
 node.set["gulp"]["project_name"] = node[:rails][:app][:name]
+
+node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
+node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
 
 bash "Clone ruby builder" do
@@ -53,28 +43,20 @@ cwd "#{node['megam']['user']['home']}/bin"
   EOH
 end
 
+log_inputs = node['logstash']['beaver']['inputs']
+log_inputs.push("/var/log/nginx/*.log", "/var/log/upstart/gulpd.log")
 
-node.set['logstash']['key'] = "#{node.name}"
+
 node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::beaver"
+node.set['logstash']['beaver']['inputs'] = log_inputs
 
+node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
+node.set['rsyslog']['input']['files'] = log_inputs
 
 if node[:rails][:app][:name].split(" ").count > 1
   Chef::Application.fatal!("Application name must be one word long !")
 end
- # install git, no support for svn for now
 
-#Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
-#include_recipe "megam_deps"
-
-node.set[:ganglia][:hostname] = "#{node.name}"
-#include_recipe "megam_ganglia::default"
-
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/*.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::rsyslog"
 
 # create deploy user & group
 user node[:rails][:owner] do
@@ -113,7 +95,7 @@ application node[:rails][:app][:name] do
   end
   #repository        node[:rails][:deploy][:repository]
 #Repository value is getting from s3 json
-  repository        "#{node["megam"]["deps"]["node"]["predefs"]["scm"]}"
+  repository        "#{node['megam']['deps']['component']['inputs']['source']}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]
@@ -222,13 +204,14 @@ gem_package "rake" do
   action :install
 end
 
+=begin
   execute "Gem install Rake" do
   cwd "#{node[:rails][:app][:path]}/current"  
   user "root"
   group "root"
   command "gem install rake"
   end
-  
+=end
 
   execute "Execute assets precompile" do
   cwd "#{node[:rails][:app][:path]}/current"  
@@ -236,6 +219,16 @@ end
   group "root"
   command "sudo bundle exec rake assets:precompile"
   end
+
+#Megam change IF db
+=begin
+  execute "Execute assets precompile" do
+  cwd "#{node[:rails][:app][:path]}/current"  
+  user "root"
+  group "root"
+  command "sudo bundle exec rake db:migrate"
+  end
+=end
 
   execute "Execute change owner" do
   cwd "#{node[:rails][:app][:path]}/current/"  

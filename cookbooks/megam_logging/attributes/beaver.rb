@@ -14,7 +14,7 @@ when "redhat", "centos", "fedora"
 default['logstash']['beaver']['git_cmd'] = "sudo pip install git+git://github.com/indykish/beaver.git --allow-external argparse"
 end
 
-default['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log" ]
+node.default['logstash']['beaver']['inputs'] = []
 default['logstash']['beaver']['output'] = "rabbitmq"
 default['logstash']['beaver']['format'] = "json"
 

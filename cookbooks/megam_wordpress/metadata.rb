@@ -1,10 +1,10 @@
 name             "megam_wordpress"
-maintainer       "Barry Steinglass"
-maintainer_email "cookbooks@opscode.com"
+maintainer       'Megam Systems'
+maintainer_email 'alrin@megam.co.in'
 license          "Apache 2.0"
+version          '0.5.0'
 description      "Installs/Configures WordPress"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "1.3.0"
 
 
 %w{ php openssl }.each do |cb|
@@ -16,11 +16,12 @@ depends "mysql", ">= 1.0.5"
 depends "build-essential"
 depends "iis"
 depends "apt"
-depends "megam_route53"
-depends "megam_ganglia"
-depends "megam_logstash"
+
+depends "megam_metering"
+depends "megam_logging"
 depends "megam_gulp"
 depends "megam_deps"
+depends "megam_environment"
 
 %w{ debian ubuntu windows centos redhat scientific oracle }.each do |os|
   supports os

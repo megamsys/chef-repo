@@ -1,4 +1,4 @@
-include_recipe "megam_metering::ganglia"
+#include_recipe "megam_metering::ganglia"
 
 execute "create apache conf file" do
   cwd "/etc/ganglia/conf.d"  

@@ -7,41 +7,19 @@
 # All rights reserved - Do Not Redistribute
 #
 
-#=begin
-
-
-#node.set["megam"]["instanceid"] = "#{`curl http://169.254.169.254/latest/meta-data/instance-id`}"
-
-#include_recipe "megam_sandbox"
-include_recipe "apt"
 
 package "openjdk-7-jdk" do
         action :install
 end
 
-#node.set["myroute53"]["name"] = "#{node.name}"
-#include_recipe "megam_route53"
+
+log_inputs = node['logstash']['beaver']['inputs']
+log_inputs.push("/var/log/nginx/*.log", "/var/log/upstart/gulpd.log")
+
+node.set['logstash']['beaver']['inputs'] = log_inputs
 
 
-#node.set["deps"]["node_key"] = "#{node.name}"
-#include_recipe "megam_deps"
-
-node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::beaver"
-
-
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/access.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::rsyslog"
-
-
-#include_recipe "nginx"
-
-#node.set[:ganglia][:server_gmond] = "162.248.165.65"
-#include_recipe "megam_ganglia::nginx"
+node.set['rsyslog']['input']['files'] = log_inputs
 
 
 package "zip unzip" do
@@ -52,17 +30,17 @@ package "tar" do
         action :install
 end
 
-scm_ext = File.extname(node["megam"]["deps"]["node"]["predefs"]["scm"])
-file_name = File.basename(node["megam"]["deps"]["node"]["predefs"]["scm"])
+scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
+file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
 
-node.set["gulp"]["remote_repo"] = node["megam"]["deps"]["node"]["predefs"]["scm"]
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
 node.set["gulp"]["project_name"] = "#{dir}"
 node.set["gulp"]["email"] = "#{node["megam"]["deps"]["account"]["email"]}"
-node.set["gulp"]["api_key"] = "#{node["megam"]["deps"]["api_key"]}"
+node.set["gulp"]["api_key"] = "#{node["megam"]["deps"]["account"]["api_key"]}"
 
 execute "Clone play builder" do
 cwd "#{node['megam']['user']['home']}/bin"
@@ -73,7 +51,6 @@ end
 
 
 node.set["gulp"]["builder"] = "megam_play_builder"
-#include_recipe "megam_gulp"
 
 directory "/usr/share/#{dir}" do
   owner "root"
@@ -89,7 +66,7 @@ execute "Clone git " do
   cwd node["megam"]["user"]["home"]
   user "root"
   group "root"
-  command "git clone #{node["megam"]["deps"]["node"]["predefs"]["scm"]}"
+  command "git clone #{node['megam']['deps']['component']['inputs']['source']}"
 end
 
 execute "Change mod cloned git" do
@@ -189,71 +166,22 @@ end
 
 end #case
 
+node.set['megam']['nginx']['port'] = "9000"
 
-template "/etc/nginx/sites-available/default" do
-  source "play-nginx.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-end
 
 # use upstart when supported to get nice things like automatic respawns
 use_upstart = false
 case node['platform_family']
 when "debian"  
   if node['platform_version'].to_f >= 12.04
-      use_upstart = true  
+      node.set['megam']['start']['upstart'] = true  
   end
 end
 
-if use_upstart
-template "/etc/init/play.conf" do
-  source "play-init.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-end
-else
-template "/etc/init.d/play" do
-  source "play.erb"  
-  variables(
-              :script_file => "/usr/share/#{dir}/bin/#{dir}",
-              :server => "#{dir}"
-              )
-  owner "root"
-  group "root"
-  mode "0755" 
-  end
-end
+node.set['megam']['start']['name'] = "play"
+node.set['megam']['start']['cmd'] = "/usr/share/#{dir}/bin/#{dir} -Dconfig.file=../conf/application.conf"
+node.set['megam']['start']['file'] = "/usr/share/#{dir}/bin/#{dir}"
 
-=begin
-execute "Run megam-play" do
-  cwd "/usr/local/share/megamplay/bin/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo ./mp"
-end 
-=end
-
-if use_upstart
-   execute "Start Play" do
-  user "root"
-  group "root"
-  command "start play"
-end
-else
-bash "Start service play server in background" do
-  user "root"
-   code <<-EOH
-    /etc/init.d/play start
-  EOH
-end  
-end
-
-execute "Restart nginx" do
-  user "root"
-  group "root"
-  command "service nginx restart"
-end
+include_recipe "megam_start"
 
 

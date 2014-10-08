@@ -1,4 +1,4 @@
-include_recipe "megam_metering::ganglia"
+#include_recipe "megam_metering::ganglia"
 
 execute "create riak conf file" do
   cwd "/etc/ganglia/conf.d"  

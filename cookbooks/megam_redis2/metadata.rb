@@ -14,13 +14,13 @@ depends          "runit", ">= 1.0.0"
 depends          "build-essential"
 depends          "ark"
 
-depends "megam_ganglia"
+depends "megam_metering"
 depends "apt"
 depends "git"
-depends "megam_route53"
 depends "megam_deps"
-depends "megam_logstash"
+depends "megam_logging"
 depends "megam_gulp"
+depends "megam_environment"
 
 
 attribute 'redis2/source_url',

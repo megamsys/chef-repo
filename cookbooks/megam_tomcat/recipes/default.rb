@@ -78,6 +78,12 @@ end
 end
 end
 
-execute "start tomcat"
 
+  bash "Restart tomcat" do
+  user "root"
+   code <<-EOH
+   stop tomcat
+   start tomcat
+  EOH
+  end
 

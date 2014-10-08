@@ -22,41 +22,33 @@ case node['platform_family']
    include_recipe "apt"
 end
 
-node.set["myroute53"]["name"] = "#{node.name}"
-include_recipe "megam_route53"
+log_inputs = node['logstash']['beaver']['inputs']
+log_inputs.push("/var/log/apache2/*.log", "/var/log/upstart/gulpd.log")
 
-include_recipe "megam_ganglia::apache"
-
-node.set["deps"]["node_key"] = "#{node.name}"
-include_recipe "megam_deps"
-
-node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/nginx/*.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::beaver"
+#beaver sends logs to rabbitmq server. Rabbitmq-url.  Megam Change
+node.set['logstash']['beaver']['inputs'] = log_inputs
+#include_recipe "megam_logstash::beaver"
 
 
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/nginx/access.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::rsyslog"
+#rsyslog sends logs to elasticsearch server. kibana-url.  Megam Change
+node.set['rsyslog']['input']['files'] = log_inputs
 
 
 #Temporary assignment
 #node.set["megam_deps"]["predefs"]["scm"] = "#{node['zarafa']['url']}"
 
-scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
-file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
+file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
 node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"
-node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
+node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
+node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
-node.set['megam_app']['home'] = "/tmp/#{dir}"
-include_recipe "megam_app_env"
+node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
+include_recipe "megam_environment"
 
 
 
@@ -308,4 +300,3 @@ template "/etc/apache2/httpd.conf" do
   notifies :reload, "service[apache2]"
 end
 
-include_recipe "megam_gulp"
