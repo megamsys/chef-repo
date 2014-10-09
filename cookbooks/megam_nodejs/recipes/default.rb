@@ -18,68 +18,32 @@
 # limitations under the License.
 #
 
-   include_recipe "apt"
-
-
 include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
 
-#include_recipe "nginx"
-<<<<<<< HEAD
+log_inputs = node['logstash']['beaver']['inputs']
+log_inputs.push("/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log")
 
-#node.set["myroute53"]["name"] = "#{node.name}"
-#include_recipe "megam_route53"
+node.set['logstash']['beaver']['inputs'] = log_inputs
 
-#node.set[:ganglia][:server_gmond] = "162.248.165.65"
-#include_recipe "megam_ganglia::nginx"
-=======
-
-node.set['megam']['nginx']['port'] = "2368"
-
-=begin
-node.set["myroute53"]["name"] = "#{node.name}"
-include_recipe "megam_route53"
-
-#node.set[:ganglia][:server_gmond] = "162.248.165.65"
-include_recipe "megam_ganglia::nginx"
-=end
->>>>>>> origin/master
-
-#node.set["deps"]["node_key"] = "#{node.name}"
-#include_recipe "megam_deps"
-
-<<<<<<< HEAD
-node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::beaver"
+node.set['rsyslog']['input']['files'] = log_inputs
 
 
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::rsyslog"
+include_recipe "git"
 
-
-scm_ext = File.extname(node["megam"]["deps"]["node"]["predefs"]["scm"])
-file_name = File.basename(node["megam"]["deps"]["node"]["predefs"]["scm"])
-=======
-scm_ext = File.extname(node['megam']['deps']['node']['predefs']['scm'])
-file_name = File.basename(node['megam']['deps']['node']['predefs']['scm'])
->>>>>>> origin/master
+scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
+file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
 
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
-include_recipe "megam_environment"
-
-js_file = "#{node['megam']['deps']['defns']['appdefns']['runtime_exec']}".split.last
+#Megam change Get js files which should be run to start the application
+js_file = "#{node['megam']['deps']['component']['operations']['operation_type']}".split.last
 
 #SET JS FILE TO BE RUN
 node.set['nodejs']['js-file'] = "#{js_file}"
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']["node"]['predefs']['scm']
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
 node.set["gulp"]["project_name"] = "#{dir}"
 node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
 node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
@@ -97,10 +61,9 @@ end
 case scm_ext
 when ".git"
 
-include_recipe "git"
 execute "Clone git " do
   cwd node['megam']['user']['home']
-  command "git clone #{node['megam']['deps']['node']['predefs']['scm']}"
+  command "git clone #{node['megam']['deps']['component']['inputs']['source']}"
 end
 
 execute "Change mod cloned git" do
@@ -138,22 +101,16 @@ when "debian"
   end
 end
 
+#['megam']['env']['home'] and ['megam']['start']['name'] must be same
+node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
+node.set['megam']['env']['name'] = "nodejs"
+include_recipe "megam_environment"
+
 node.set['megam']['start']['name'] = "nodejs"
 node.set['megam']['start']['cmd'] = "/usr/local/bin/node #{node['megam']['env']['home']}/#{node['nodejs']['js-file']}"
 node.set['megam']['start']['file'] = node['nodejs']['js-file']
 
-node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/megam/#{node['megam']['start']['name']}.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::beaver"
-
-
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/megam/#{node['megam']['start']['name']}.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::rsyslog"
-
-
+include_recipe "megam_start"
 
 node.set["gulp"]["builder"] = "megam_nodejs_builder"
 #include_recipe "megam_gulp"

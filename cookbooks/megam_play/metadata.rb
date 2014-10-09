@@ -8,9 +8,9 @@ version          '0.1.0'
 
 depends "apt"
 depends "megam_deps"
-depends "megam_ganglia"
-depends "megam_logstash"
+depends "megam_metering"
+depends "megam_logging"
 depends "nginx"
-depends "megam_route53"
-depends "megam_sandbox"
+depends "megam_dns"
+depends "megam_preinstall"
 depends "megam_gulp"

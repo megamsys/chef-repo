@@ -1,6 +1,6 @@
 #attribute file for tomcat
 
-default['megam']['tomcat']['home'] = "#{node['megam']['user']['home']}/tomcat"
+default['megam']['tomcat']['home'] = "#{node.default['megam']['user']['home']}/tomcat"
 #source paths
 default['megam']['tomcat']['source']['tomcat'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.5/tomcat/tomcat8.tar.gz"
 

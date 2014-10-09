@@ -19,24 +19,10 @@
 # limitations under the License.
 #
 
-#include_recipe "megam_sandbox"
-include_recipe "apt"
-node.set["myroute53"]["name"] = "#{node.name}"
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co"
-end
 
-include_recipe "megam_route53"
-
-
-node.set["gulp"]["remote_repo"] = "test"
-node.set["gulp"]["local_repo"] = "test"
-node.set["gulp"]["builder"] = "megam_ruby_builder"
-node.set["gulp"]["project_name"] = "test"
-
-
+node.set["gulp"]["remote_repo"] = "www.postgresql.org"
+node.set["gulp"]["local_repo"] = "/var/lib/postgresql"
+node.set["gulp"]["project_name"] = "postgresql"
 
 
 node.set['logstash']['key'] = "#{node.name}"

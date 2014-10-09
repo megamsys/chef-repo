@@ -9,7 +9,7 @@ respawn limit 10 5
 # add user with this command:
 ## adduser --system --ingroup www-data --home /opt/apache-tomcat apache-tomcat
 # Ubuntu 12.04: (use 'exec sudo -u apache-tomcat' when using 10.04)
-setuid <%= node['megam']['default']['user'] %>
+#setuid <%= node['megam']['default']['user'] %>
 setgid root
 
 

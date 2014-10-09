@@ -1,6 +1,6 @@
 
 
-include_recipe "megam_metering::ganglia"
+#include_recipe "megam_metering::ganglia"
 
 
 template "/usr/lib/ganglia/python_modules/nginx_status.py" do

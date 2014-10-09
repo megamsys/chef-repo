@@ -20,26 +20,31 @@ include_recipe "apt"
 include_recipe "php"
 
 
-node.set["myroute53"]["name"] = "#{node.name}"
-include_recipe "megam_route53"
+log_inputs = node['logstash']['beaver']['inputs']
+log_inputs.push("/var/log/apache2/*.log", "/var/log/upstart/gulpd.log")
 
-#include_recipe "megam_deps"
+#beaver sends logs to rabbitmq server. Rabbitmq-url.  Megam Change
+node.set['logstash']['beaver']['inputs'] = log_inputs
+#include_recipe "megam_logstash::beaver"
 
-node.set[:ganglia][:hostname] = "#{node.name}"
-include_recipe "megam_ganglia::apache"
+#rsyslog sends logs to elasticsearch server. kibana-url.  Megam Change
+node.set['rsyslog']['input']['files'] = log_inputs
 
 
-node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/apache2/*.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::beaver"
+scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
+file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
+dir = File.basename(file_name, '.*')
+if scm_ext.empty?
+  scm_ext = ".git"
+end
+node.set["gulp"]["project_name"] = "#{dir}"
+node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
+node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
-=begin
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co"
-node.set['rsyslog']['input']['files'] = [ "/var/log/apache2/wordpress-access.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::rsyslog"
-=end
+node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
+include_recipe "megam_environment"
+
+
 
 # On Windows PHP comes with the MySQL Module and we use IIS on Windows
 unless platform? "windows"
@@ -148,4 +153,3 @@ cwd "/var/log/"
   EOH
 end
 
-include_recipe "megam_gulp"

@@ -7,72 +7,49 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "megam_sandbox"
+log_inputs = node['logstash']['beaver']['inputs']
+log_inputs.push("/var/log/upstart/gulpd.log")
 
 
+node.set['logstash']['beaver']['inputs'] = log_inputs
 
-include_recipe "apt"
+node.set['rsyslog']['input']['files'] = log_inputs
 
-node.set["myroute53"]["name"] = "#{node.name}"
-include_recipe "megam_route53"
-
-#node.set[:ganglia][:server_gmond] = "162.248.165.65"
-include_recipe "megam_ganglia"
-
-#=begin
-node.set["deps"]["node_key"] = "#{node.name}"
-include_recipe "megam_deps"
-#=end
-#FOR TESTING
-#node.set["megam_deps"]["predefs"]["scm"] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/op5/op5-monitor-6.3.0.tar.gz"
-
-
-node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::beaver"
-
-#=begin
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::rsyslog"
-#=end
-
-scm_ext = File.extname(node["megam_deps"]["predefs"]["scm"])
-file_name = File.basename(node["megam_deps"]["predefs"]["scm"])
+scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
+file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
 dir = File.basename(file_name, '.*')
 
 node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node["megam_deps"]["account"]["email"]}"  
-node.set["gulp"]["api_key"] = "#{node["megam_deps"]["account"]["api_key"]}"
+node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
+node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
-node.set['megam_app']['home'] = "/tmp/op5"
-include_recipe "megam_app_env"
 
-directory "/tmp/op5"
+node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/op5"
+include_recipe "megam_environment"
 
-remote_file "/tmp/op5/#{file_name}" do
-  source node["megam_deps"]["predefs"]["scm"]
+directory "#{node['megam']['user']['home']}/op5"
+
+remote_file "#{node['megam']['user']['home']}/op5/#{file_name}" do
+  source node['megam']['deps']['component']['inputs']['source']
   mode "0755"
-   owner node["sandbox"]["user"]
-  group node["sandbox"]["user"]
+   owner node['megam']['default']['user']
+  group node['megam']['default']['user']
 end
 
 execute "Untar op5-monitor" do
-cwd "/tmp/op5"
+cwd "#{node['megam']['user']['home']}/op5"
   user "root"
   group "root"
   command "tar --strip-components=1 -zxvf #{file_name}"
 end
 
 execute "Install op5" do
-cwd "/tmp/op5"
+cwd "/#{node['megam']['user']['home']}/op5"
   user "root"
   group "root"
   command "./install.sh"
 end
 
 
-include_recipe "megam_gulp"
+#include_recipe "megam_gulp"
 

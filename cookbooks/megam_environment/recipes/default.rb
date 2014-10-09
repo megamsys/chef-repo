@@ -8,7 +8,7 @@
 #
 
 platform_family = "#{node[:platform]}"
-template "#{node['megam']['user']['conf']}/env.sh" do
+template "#{node['megam']['user']['conf']}/#{node['megam']['env']['name']}.sh" do
   source "env.sh.erb"
   mode "0755"
   variables( :platform_family => "#{platform_family}" )

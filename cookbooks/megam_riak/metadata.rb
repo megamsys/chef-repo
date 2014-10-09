@@ -28,12 +28,11 @@ version           "2.0.0"
   depends d
 end
 
-depends "megam_ganglia"
-depends "megam_route53"
-depends "megam_logstash"
+depends "megam_metering"
+depends "megam_logging"
+depends "megam_environment"
 depends "megam_gulp"
-depends "megam_app_env"
-depends "megam_deps"
+#depends "megam_deps"
 
 
 #depends megam_route53 megam_ganglia megam_ciakka megam_deps

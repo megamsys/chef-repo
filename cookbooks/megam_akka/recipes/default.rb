@@ -18,59 +18,21 @@ package "tar" do
         action :install
 end
 
-#include_recipe "megam_sandbox"
-include_recipe "apt"
-#include_recipe "nginx"
-#ONLY FOR THIS COOKBOOK JDK
-#USES JAVA IMAGE
-#=begin
+
 package "openjdk-7-jdk" do
         action :install
 end
-#=end
 
-=begin
-execute "SET JAVA_HOME" do
-  cwd "/home/ubuntu/"  
-  user "ubuntu"
-  group "ubuntu"
-  command "echo \"export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\" >> /home/ubuntu/.bashrc"
-end
-=end
+log_inputs = node['logstash']['beaver']['inputs']
+log_inputs.push("/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log")
+
+node.set['logstash']['beaver']['inputs'] = log_inputs
 
 
-#node.set["myroute53"]["name"] = "#{node.name}"
-#include_recipe "megam_route53"
+node.set['rsyslog']['input']['files'] = log_inputs
 
-#node.set[:ganglia][:server_gmond] = "162.248.165.65"
-#include_recipe "megam_ganglia"
-
-#node.set["deps"]["node_key"] = "#{node.name}"
-#include_recipe "megam_deps"
-
-
-node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::beaver"
-
-
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log" ]
-#include_recipe "megam_logstash::rsyslog"
-
-
-
-
-=begin
-gem_package "knife-ec2" do
-  action :install
-end
-=end
-
-scm_ext = File.extname(node["megam" ]["deps"]["node"]["predefs"]["scm"])
-file_name = File.basename(node["megam"]["deps"]["node"]["predefs"]["scm"])
+scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
+file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
 dir = File.basename(file_name, '.*')
 
 if scm_ext.empty?
@@ -78,9 +40,11 @@ if scm_ext.empty?
 end
 
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['node']['predefs']['scm']
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
 node.set["gulp"]["project_name"] = "#{dir}"
-
+node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
+node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
+node.set["gulp"]["local_repo"] = "#{node['megam']['default']['user']}/#{dir}"
 
 directory "/usr/local/share/#{dir}" do
   owner "root"
@@ -89,13 +53,14 @@ directory "/usr/local/share/#{dir}" do
   action :create
 end
 
+node.set['megam']['start']['name'] = "akka"
+
 case scm_ext
 when ".git"
 include_recipe "git"
 execute "Clone git " do
   cwd node["megam"]["user"]["home"]  
-  
-  command "git clone #{node['megam']['deps']['node']['predefs']['scm']}"
+  command "git clone #{node['megam']['deps']['component']['inputs']['source']}"
 end
 
 
@@ -169,7 +134,7 @@ end
 when ".zip"
 
 remote_file "/usr/local/share/#{dir}/#{file_name}" do
-  source node["megam_deps"]["predefs"]["scm"]
+  source node['megam']['deps']['component']['inputs']['source']
   mode "0755"
   owner "root"
   group "root"
@@ -195,7 +160,7 @@ end
 when ".tar"
 
 remote_file "/usr/local/share/#{dir}/#{file_name}" do
-  source node["megam"]["deps"]["node"]["predefs"]["scm"]
+  source node['megam']['deps']['component']['inputs']['source']
   mode "0755"
   owner "root"
   group "root"
@@ -207,8 +172,6 @@ execute "Untar tar file " do
   group "root"
   command "tar -xvzf #{file_name}"
 end
-
-node.set['akka']['script']['cmd'] = "/usr/local/share/#{dir}/#{dir}/bin/start org.megam.akka.CloApp"
 
 when ".gz"
 
@@ -223,7 +186,7 @@ directory "/usr/local/share/#{dir}" do
 end
 
 remote_file "/usr/local/share/#{dir}/#{file_name}" do
-  source node["megam"]["deps"]["node"]["predefs"]["scm"]
+  source node['megam']['deps']['component']['inputs']['source']
   mode "0755"
   owner "root"
   group "root"
@@ -235,14 +198,15 @@ execute "Untar tar file " do
   group "root"
   command "tar -xvzf #{file_name}"
 end
+#start script and arguments for start script are not known
 
 node.set['akka']['script']['cmd'] = "/usr/local/share/#{dir}/#{dir}/bin/start org.megam.akka.CloApp"
-
+node.set['megam']['start']['cmd'] = "/usr/local/share/#{dir}/#{dir}/bin/start org.megam.akka.CloApp"
 
 when ".deb"
 
 remote_file "#{node["megam"]["user"]["home"]}/#{file_name}" do
-  source node["megam"]["deps"]["node"]["predefs"]["scm"]
+  source node['megam']['deps']['component']['inputs']['source']
   mode "0755"
   owner node["megam"]["default"]["user"]
   group node["megam"]["default"]["user"]
@@ -256,33 +220,8 @@ execute "Depackage deb file" do
 end
 
 else
-remote_file "#{node["megam"]["user"]["home"]}/megamherk.deb" do
-  source node['akka']['deb']
-  owner node["megam"]["default"]["user"]
-  group node["megam"]["default"]["user"]
-  mode "0755"
-end
-
-execute "Depackage megam akka" do
-  cwd node["megam"]["user"]["home"]  
-  user "root"
-  group "root"
-  command node['akka']['dpkg']
-end
+puts "Sorry no scm"
 end #case
 
-template "/etc/init/akka.conf" do
-  source node['akka']['template']['conf']
-  owner "root"
-  group "root"
-  mode "0755"
-end
-
-#include_recipe "megam_gulp"
-
-execute "Start Akka" do
-  user "root"
-  group "root"
-  command node['akka']['start']
-end
+node.set['megam']['start']['upstart'] = true
 
