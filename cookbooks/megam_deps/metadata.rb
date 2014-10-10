@@ -16,10 +16,10 @@ depends "megam_java"
 recommends "megam_akka"
 recommends "megam_play"
 recommends "megam_rails"
-recommends "megam_nodejs"
+depends "megam_nodejs"
 
 depends "megam_riak"
-recommends "megam_redis2"
+depends "megam_redis2"
 recommends "megam_postgresql"
 recommends "megam_rabbitmq"
 

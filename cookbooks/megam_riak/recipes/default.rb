@@ -106,7 +106,7 @@ file "#{node['riak']['package']['config_dir']}/vm.args" do
   notifies :restart, "service[riak]"
 end
 
-elsif node['megam']['deps']['component']['inputs']['source'] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_2.0.0beta1-1_amd64.deb"
+elsif node['megam']['deps']['component']['inputs']['source'] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_2.0.1-1_amd64.deb"
 
 template "/etc/riak/riak.conf" do
   source "riak2.conf.erb"
