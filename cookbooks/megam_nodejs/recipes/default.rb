@@ -20,13 +20,14 @@
 
 include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
 
-log_inputs = node['logstash']['beaver']['inputs']
+log_inputs = node.default['logstash']['beaver']['inputs']
 log_inputs.push("/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log")
 
-node.set['logstash']['beaver']['inputs'] = log_inputs
+node.override['logstash']['beaver']['inputs'] = log_inputs
 
 node.set['rsyslog']['input']['files'] = log_inputs
 
+node.set['megam']['nginx']['port'] = "2368"
 
 include_recipe "git"
 
@@ -85,11 +86,15 @@ end
 execute "npm update" do
   cwd "#{node['megam']['user']['home']}/#{dir}" 
   command "npm install -g npm"
+  user "root"
+  group "root"
 end
 
 execute "npm Install dependencies" do
   cwd "#{node['megam']['user']['home']}/#{dir}" 
   command "npm install"
+  user "root"
+  group "root"
 end
 
 # use upstart when supported to get nice things like automatic respawns

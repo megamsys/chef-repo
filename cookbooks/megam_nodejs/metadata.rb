@@ -14,7 +14,7 @@ end
 depends "megam_metering"
 depends "megam_nginx"
 depends "git"
-depends "megam_deps"
+#depends "megam_deps"
 depends "megam_logging"
 depends "megam_gulp"
 depends "megam_environment"

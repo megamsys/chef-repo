@@ -20,8 +20,7 @@ include_recipe "megam_preinstall::account"
 #Get asembly json and include recipes ased on the component json
 include_recipe "megam_deps"
 
-ruby_block "include metering" do
-  block do
+
 node['megam']['deps']['assembly'].each do |component|
 component_hash = JSON.parse(File.read("/tmp/#{component}.json"))
 node.set['megam']['deps']['component'] = component_hash
@@ -31,12 +30,9 @@ node.set['megam']['deps']['component'] = component_hash
         break
         end
 end
-end
-  action :run # see actions section below
-end
 
-ruby_block "include logging" do
-  block do
+
+
 node['megam']['deps']['assembly'].each do |component|
         if node['megam']['deps']['component']['requirements']['log']
                include_recipe "megam_logging::beaver"
@@ -44,12 +40,9 @@ node['megam']['deps']['assembly'].each do |component|
                 break
         end
 end
-end
-  action :run # see actions section below
-end
 
-ruby_block "include specific metering" do
-  block do
+
+
 node['megam']['deps']['assembly'].each do |component|
     if node['megam']['deps']['component']['requirements']['metrics']
         component_hash = JSON.parse(File.read("/tmp/#{component}.json"))
@@ -68,8 +61,6 @@ node['megam']['deps']['assembly'].each do |component|
         end
     end
 end
-end
-  action :run # see actions section below
-end
+
 include_recipe "megam_gulp"
 

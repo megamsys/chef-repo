@@ -22,11 +22,12 @@ end
 when "redhat", "centos", "fedora"
 execute "yum -y groupinstall 'Development tools'"
 
-directory "/var/log/upstart" do
+directory "/var/log/megam" do
   owner "root"
   group "root"
   action :create
 end
+
 
 directory "/var/log/megam" do
   owner "root"

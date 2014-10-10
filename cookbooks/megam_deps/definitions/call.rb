@@ -31,7 +31,7 @@ when "rabbitmq"
 when "zarafa"
         include_recipe "megam_zarafa"
 else
-        puts "Not a valid cookbook"
+        puts "Not a valid Tosca type"
 end                                                             #case cookbook end
 
 
