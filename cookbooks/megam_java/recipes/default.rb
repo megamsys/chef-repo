@@ -40,12 +40,6 @@ node.set['rsyslog']['input']['files'] = log_inputs
 
 #include_recipe "megam_logstash::rsyslog"
 
-File.open("compoo", "w") do |file|
-  file.write node['megam']['deps']['component']
-  file.write "\n=================================\n"
-  file.write node['megam']['deps']['account']
-end
-
 
 scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
 file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])

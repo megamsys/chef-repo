@@ -7,6 +7,8 @@ ckbk = "#{node['megam']['deps']['component']['tosca_type']}".split('.').last
 case ckbk                                                       #Case cookbook start
 when "java"
         include_recipe "megam_java"
+when "docker"
+        include_recipe "megam_docker"
 when "akka"
         include_recipe "megam_akka"
 when "play"

@@ -17,6 +17,7 @@ recommends "megam_akka"
 recommends "megam_play"
 recommends "megam_rails"
 depends "megam_nodejs"
+depends "megam_docker"
 
 depends "megam_riak"
 depends "megam_redis2"
