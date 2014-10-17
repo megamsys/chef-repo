@@ -91,7 +91,7 @@ end
   end
 
 
-if node['megam']['deps']['component']['inputs']['source'] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_1.4.2-1_amd64.deb"
+if node['megam']['deps']['component']['inputs']['source'] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_1.4.8-1_amd64.deb"
 file "#{node['riak']['package']['config_dir']}/app.config" do
   content Eth::Config.new(node['riak']['config'].to_hash).pp
   owner "root"
