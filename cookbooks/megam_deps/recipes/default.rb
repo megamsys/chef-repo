@@ -35,7 +35,7 @@ ac.run_action(:create)
 account = JSON.parse(File.read("/tmp/account.json"))
     node.set['megam']['deps']['account'] = account
 
-
+if !node['component_id']
 #============================================Assembly Json ====================================================
 assembly_json = remote_file "/tmp/assembly.json" do
   source "http://#{node['riak_host']}:8098/riak/assembly/#{node['assembly_id']}"
@@ -46,6 +46,10 @@ end
 
 assembly_json.run_action(:create)
 assembly = JSON.parse(File.read("/tmp/assembly.json"))
+
+else                                                    #if !compponent_id
+assembly['components'] = ["#{node['component_id']}"]
+end
 
 #============================================ DNS from assembly json ====================================================
 #case dns                                                       #Case additional cookbook start
@@ -58,11 +62,11 @@ assembly = JSON.parse(File.read("/tmp/assembly.json"))
 #============================================ Hosts for metrics and logging ================================================
 #beaver sends logs to rabbitmq server. Rabbitmq-url.  Megam Change
 #node.set['logstash']['output']['url'] = "rabbitmq1.megam.co"
-node.set['logstash']['output']['url'] = node['amqp_host']
+node.set['logstash']['output']['url'] = "#{node['amqp_host']}"
 #node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['elastic_ip'] = node['kibana_host']
+node.set['rsyslog']['elastic_ip'] = "#{node['kibana_host']}"
 #node.set[:ganglia][:server_gmond] = "162.248.165.65"
-node.set[:ganglia][:server_gmond] = node['monitor_host']
+node.set[:ganglia][:server_gmond] = "#{node['monitor_host']}"
 
 
 node.set['megam']['deps']['assembly'] = assembly['components']

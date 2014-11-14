@@ -7,6 +7,10 @@ ckbk = "#{node['megam']['deps']['component']['tosca_type']}".split('.').last
 case ckbk                                                       #Case cookbook start
 when "java"
         include_recipe "megam_java"
+        include_recipe "megam_tomcat"                           #assumption
+        include_recipe "megam_nginx"                           #assumption
+when "sqlite"
+        include_recipe "megam_sqlite3"
 when "docker"
         include_recipe "megam_docker"
 when "sqlite3"

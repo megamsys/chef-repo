@@ -21,9 +21,11 @@ include_recipe "git"
 node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
 node.set["gulp"]["builder"] = "megam_java_builder"
 
-log_inputs = node.default['logstash']['beaver']['inputs']
-log_inputs.push("/var/log/nginx/*.log", "#{node["megam"]["tomcat"]["home"]}/logs/*.log", "/var/log/upstart/gulpd.log")
-node.override['logstash']['beaver']['inputs'] = log_inputs
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/upstart/gulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
+
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/upstart/gulpd.log"]
 
 #beaver sends logs to rabbitmq server. Rabbitmq-url.  Megam Change
 #node.set['logstash']['beaver']['inputs'] = node['logstash']['beaver']['inputs']
@@ -34,7 +36,6 @@ node.set['megam']['nginx']['port'] = "8080"
 
 
 #rsyslog sends logs to elasticsearch server. kibana-url.  Megam Change
-node.set['rsyslog']['input']['files'] = log_inputs
 
 #megam metering(ganglia) sends metrics to gmetad server. monitor-url.  Megam Change
 

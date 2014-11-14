@@ -25,16 +25,11 @@ node.set["gulp"]["local_repo"] = "/var/lib/postgresql"
 node.set["gulp"]["project_name"] = "postgresql"
 
 
-node.set['logstash']['key'] = "#{node.name}"
-node.set['logstash']['output']['url'] = "www.megam.co"
-node.set['logstash']['beaver']['inputs'] = [ "/var/log/postgresql/*.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::beaver"
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/postgresql/*.log", "/var/log/upstart/gulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
 
-
-node.set['rsyslog']['index'] = "#{node.name}"
-node.set['rsyslog']['elastic_ip'] = "monitor.megam.co.in"
-node.set['rsyslog']['input']['files'] = [ "/var/log/postgresql/postgresql-9.1-main.log", "/var/log/upstart/gulpd.log" ]
-include_recipe "megam_logstash::rsyslog"
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/postgresql/*.log", "/var/log/upstart/gulpd.log"]
 
 
 node.set["deps"]["node_key"] = "#{node.name}"

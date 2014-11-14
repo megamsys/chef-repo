@@ -13,13 +13,11 @@ package "openjdk-7-jdk" do
 end
 
 
-log_inputs = node['logstash']['beaver']['inputs']
-log_inputs.push("/var/log/nginx/*.log", "/var/log/upstart/gulpd.log")
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "/var/log/upstart/gulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
 
-node.set['logstash']['beaver']['inputs'] = log_inputs
-
-
-node.set['rsyslog']['input']['files'] = log_inputs
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/nginx/access.log", "/var/log/nginx/error.log", "/var/log/upstart/gulpd.log"]
 
 
 package "zip unzip" do

@@ -26,5 +26,5 @@ attribute :url, :kind_of            => String, :required => true
 
 def file_name
   partition = self.url.partition(/.*\//)
-  "#{partition.last}"
+  partition.last
 end

@@ -68,7 +68,7 @@ $IncludeConfig /etc/rsyslog.d/*.conf
 module(load="imfile" PollingInterval="10")
 
 
-<% node['rsyslog']['input']['files'].each do |inp| %>
+<% node['rsyslog']['logs'].each do |inp| %>
 <% stat = File.basename(File.basename(inp), '.*') %>
 # File 1
 input(type="imfile" File="<%= inp %>" 

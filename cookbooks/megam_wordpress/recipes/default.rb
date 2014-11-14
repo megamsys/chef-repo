@@ -20,15 +20,12 @@ include_recipe "apt"
 include_recipe "php"
 
 
-log_inputs = node['logstash']['beaver']['inputs']
-log_inputs.push("/var/log/apache2/*.log", "/var/log/upstart/gulpd.log")
 
-#beaver sends logs to rabbitmq server. Rabbitmq-url.  Megam Change
-node.set['logstash']['beaver']['inputs'] = log_inputs
-#include_recipe "megam_logstash::beaver"
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/upstart/gulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
 
-#rsyslog sends logs to elasticsearch server. kibana-url.  Megam Change
-node.set['rsyslog']['input']['files'] = log_inputs
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/upstart/gulpd.log"]
 
 
 scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])

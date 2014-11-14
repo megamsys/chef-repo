@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: megam_docker
+# Cookbook Name:: megam_sqlite3
 # Recipe:: default
 #
 # Copyright 2014, YOUR_COMPANY_NAME
@@ -10,26 +10,12 @@
 
 node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
 
-log_inputs = node.default['logstash']['beaver']['inputs']
-log_inputs.push("/var/log/sqlite3/*.log", "/var/log/upstart/gulpd.log")
-node.override['logstash']['beaver']['inputs'] = log_inputs
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/syslog", "/var/log/upstart/gulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
 
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/syslog", "/var/log/upstart/gulpd.log"]
 
-node.set['rsyslog']['input']['files'] = log_inputs
-
-
-scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
-file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
-dir = File.basename(file_name, '.*')
-if scm_ext.empty?
-  scm_ext = ".git"
-end
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
-
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
-include_recipe "megam_environment"
 
 
 execute "apt-get install sqlite3"

@@ -23,13 +23,15 @@ package "openjdk-7-jdk" do
         action :install
 end
 
-log_inputs = node['logstash']['beaver']['inputs']
-log_inputs.push("/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log")
 
-node.set['logstash']['beaver']['inputs'] = log_inputs
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
+
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log"]
 
 
-node.set['rsyslog']['input']['files'] = log_inputs
+
 
 scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
 file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
