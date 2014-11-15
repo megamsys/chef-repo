@@ -24,7 +24,7 @@ def load_current_resource
 end
 
 action :install do
-  unless ::File.exists?("#{node[:ant][:home]}/lib/#{@current_resource.file_name}")
+  unless ::File.exists?("#{node["ant"]["home"]}/lib/#{@current_resource.file_name}")
     remote_file remote_file_path do
       source new_resource.url
       mode "0755"
@@ -35,6 +35,6 @@ end
 
 private
 
-  def remote_file_path
-    "#{node[:ant][:home]}/lib/#{new_resource.file_name}"
-  end
+def remote_file_path
+  "#{node["ant"]["home"]}/lib/#{new_resource.file_name}"
+end

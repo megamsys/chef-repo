@@ -1,0 +1,29 @@
+
+<% node['heka']['logs'].each do |queue, logs| %>
+<% logs.each do |logfile| %>
+<% path = File.dirname("#{logfile}") %>
+<% file_name = File.basename(file_name, '.*') %>
+
+<% file = File.basename("#{logfile}") %>
+
+[<%= queue %>_<% file_name %>]
+type = "LogstreamerInput"
+log_directory = <%= path %>
+file_match = <%= file %>
+differentiator = ["<%= queue %>"]
+
+<% end %>
+<% end %>
+
+
+[AMQPOutput]
+url = "amqp://guest:guest@<%= node['heka']['amqp_url'] %>/"
+exchange = "megam"
+queue = true
+exchangeType = "fanout"
+message_matcher = 'TRUE'
+encoder = "JsonEncoder"
+
+[JsonEncoder]
+fields = [ "Timestamp", "Type", "Logger", "Payload", "Hostname" ]
+

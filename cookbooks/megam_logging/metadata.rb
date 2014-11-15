@@ -15,6 +15,8 @@ end
   depends ckbk
 end
 
+depends "megam_preinstall"
+
 %w{ yumrepo apt }.each do |ckbk|
   recommends ckbk
 end

@@ -1,0 +1,21 @@
+#!upstart
+description "heka"
+author      "Megam Systems"
+
+start on startup
+stop on shutdown
+
+script
+    echo $$ > /var/run/heka.pid
+    exec sudo <%= node['heka']['start'] %> >> <%= node['heka']['log'] %> 2>&1
+end script
+
+pre-start script
+    # Date format same as (new Date()).toISOString() for consistency
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Starting" >> <%= node['heka']['log'] %>
+end script
+
+pre-stop script
+    rm /var/run/heka.pid
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> <%= node['heka']['log'] %>
+end script

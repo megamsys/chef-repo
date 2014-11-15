@@ -23,14 +23,13 @@ node.set["gulp"]["remote_repo"] = "basho.com/riak"
 node.set["gulp"]["local_repo"] = "/var/lib/riak"
 node.set["gulp"]["project_name"] = "riak"
 
-log_inputs = node.default['logstash']['beaver']['inputs']
-log_inputs.push("/var/log/riak/*.log", "/var/log/upstart/gulpd.log")
-node.override['logstash']['beaver']['inputs'] = log_inputs
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/upstart/gulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
+
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/upstart/gulpd.log"]
 
 
-node.set['logstash']['beaver']['inputs'] = log_inputs
-
-node.set['rsyslog']['input']['files'] = log_inputs
 
 scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
 file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])

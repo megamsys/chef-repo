@@ -1,0 +1,10 @@
+[Unit]
+Description=Heka Provisioning Daemon (hekad)
+Documentation=https://github.com/megamsys/heka
+
+[Service]
+Type=simple
+ExecStart=hekad -config <%= node['heka']['conf'] %>
+
+[Install]
+WantedBy=multi-user.target

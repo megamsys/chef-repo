@@ -7,83 +7,39 @@
 # All rights reserved - Do Not Redistribute
 #
 
-
-package "unzip" do
-        action :install
-end
-
-remote_file "#{node['megam']['user']['home']}/bin/gulpd.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.5/zip/gulpd.zip"
-    owner node['megam']['default']['user']
-    group node['megam']['default']['user']
-end
-
-bash "Unzip gulpd" do
-cwd "#{node['megam']['user']['home']}/bin"
-  user node['megam']['default']['user']
+=begin
+bash "Install gulpd" do
    code <<-EOH
-  unzip gulpd.zip
-  chmod 0755 gulpd
-  rm gulpd.zip
+  add-apt-repository "deb http://get.megam.co/0.5/ubuntu/ trusty testing"
+  apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7
+  apt-get update
+  apt-get -y install megamgulpd
   EOH
 end
+=end
 
-template "#{node['megam']['user']['home']}/bin/conf/gulpd.conf" do
+execute "add-apt-repository 'deb http://get.megam.co/0.5/ubuntu/ trusty testing'"
+execute "apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7"
+execute "apt-get -y update"
+execute "apt-get -y install megamgulpd"
+
+template "/usr/share/megam/megamgulpd/conf/gulpd.conf" do
   source "gulpd.conf.erb"
   owner node['megam']['default']['user']
   group node['megam']['default']['user']
   mode "0755"
 end
 
-# use upstart when supported to get nice things like automatic respawns
-use_upstart = false
-case node['platform_family']
-when "debian"  
-  if node['platform_version'].to_f >= 12.04
-      use_upstart = true  
-  end
-end
-
-if use_upstart
-  template "/etc/init/gulpd.conf" do
-  source "gulpd_init.conf.erb"
-  owner "root"
-  group "root"
-  mode "0755"
-end
-
-else
-  template "/etc/init.d/gulpd" do
-  source "gulpd.erb"
-  variables(
-              :sandbox_home => node['megam']['user']['home']
-              )
-  owner "root"
-  group "root"
-  mode "0755" 
-  end
-end
+execute "stop megamgulpd" 
+execute "start megamgulpd" 
 
 
-execute "Update gulp Demon" do
+=begin
+execute "Update gulp Deamon" do
   cwd "#{node['megam']['user']['home']}/bin"
   user "root"
   group "root"
   command "./gulpd update -n #{node.name} -s running"
 end
-
-if use_upstart
-   execute "Start gulp Demon" do
-   user "root"
-   group "root"
-   command "start gulpd"
-   end
-else
-   execute "Start service gulp Demon" do
-   user "root"
-   group "root"
-   command "/etc/init.d/gulpd start" 
-   end
-end
-
+=end
 

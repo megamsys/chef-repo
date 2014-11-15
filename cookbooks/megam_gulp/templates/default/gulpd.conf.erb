@@ -1,9 +1,16 @@
 use-tls: false
 tls-cert-file: /path/to/cert.pem
 tls-key-file: /path/to/key.pem
+MEGAM_HOME: /var/lib/megam/
+update_queue: <%= node.name.split(".").first %><
+id: <%= node["gulp"]["asm_id"] %>
 name: <%= node.name %>
+
+etcd:
+  path: http://127.0.0.1:4001
+  directory: megam 
 riak:
-  url: api.megam.co:8087
+  url: <%= node['riak_host'] %>:8087
   bucket: appreqs
 scm:
   project: <%= node["gulp"]["project_name"] %>
@@ -21,12 +28,13 @@ aws:
     location-constraint: true
     lowercase-bucket: true
 api:
-  server: https://api.megam.co
+  server: https://<%= node['riak_host'] %>
   email: <%= node["gulp"]["email"] %>
   api_key: <%= node["gulp"]["api_key"] %>
 amqp:
-  url: amqp://guest:guest@rabbitmq1.megam.co.in:5672/
+  url: amqp://guest:guest@<%= node['rabbitmq_host'] %>:5672/
   exchange: megam_<%= node.name %>_exchange
   queue: megam_<%= node.name %>_queue
   consumerTag: megam_node_consumer
   routingkey: megam_key
+

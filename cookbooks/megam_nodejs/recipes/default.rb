@@ -20,12 +20,14 @@
 
 include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
 
-log_inputs = node.default['logstash']['beaver']['inputs']
-log_inputs.push("/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log")
 
-node.override['logstash']['beaver']['inputs'] = log_inputs
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
 
-node.set['rsyslog']['input']['files'] = log_inputs
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log"]
+
+
 
 node.set['megam']['nginx']['port'] = "2368"
 

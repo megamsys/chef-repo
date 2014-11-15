@@ -20,7 +20,12 @@ include_recipe "megam_preinstall::account"
 #Get asembly json and include recipes ased on the component json
 include_recipe "megam_deps"
 
+#Temporary fix
+include_recipe "megam_logging::heka"
+include_recipe "megam_logging::rsyslog"
+include_recipe "megam_metering::ganglia"                        
 
+=begin
 node['megam']['deps']['assembly'].each do |component|
 component_hash = JSON.parse(File.read("/tmp/#{component}.json"))
 node.set['megam']['deps']['component'] = component_hash
@@ -61,6 +66,7 @@ node['megam']['deps']['assembly'].each do |component|
         end
     end
 end
+=end
 
 include_recipe "megam_gulp"
 
