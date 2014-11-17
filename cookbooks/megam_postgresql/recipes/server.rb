@@ -32,13 +32,10 @@ node.override['rsyslog']['logs']= rsyslog_inputs
 node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/postgresql/*.log", "/var/log/upstart/gulpd.log"]
 
 
-node.set["deps"]["node_key"] = "#{node.name}"
-include_recipe "megam_deps"
-
-node.set[:postgresql][:dbname] = node["megam_deps"]["defns"]["boltdefns"]["store_name"]
-node.set[:postgresql][:password] = node["megam_deps"]["defns"]["boltdefns"]["apikey"]
-node.set[:postgresql][:db_main_user] = node["megam_deps"]["defns"]["boltdefns"]["username"]
-node.set[:postgresql][:db_main_user_pass] = node["megam_deps"]["defns"]["boltdefns"]["apikey"]
+node.set[:postgresql][:dbname] = node['megam']['deps']['component']['inputs']['service_inputs']['dbname']
+node.set[:postgresql][:password] = node['megam']['deps']['component']['inputs']['service_inputs']['dbpassword']
+node.set[:postgresql][:db_main_user] = node['megam']['deps']['component']['inputs']['username']
+node.set[:postgresql][:db_main_user_pass] = node['megam']['deps']['component']['inputs']['password']
 
 
 
@@ -152,5 +149,4 @@ execute "Start postgresql" do
   action :run
 end
 
-include_recipe "megam_gulp"
 
