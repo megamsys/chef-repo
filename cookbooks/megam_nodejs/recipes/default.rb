@@ -41,7 +41,11 @@ if scm_ext.empty?
 end
 
 #Megam change Get js files which should be run to start the application
+if "#{node['megam']['deps']['component']['operations']['operation_type']}".length > 0
 js_file = "#{node['megam']['deps']['component']['operations']['operation_type']}".split.last
+else 
+js_file = "index.js"
+end
 
 #SET JS FILE TO BE RUN
 node.set['nodejs']['js-file'] = "#{js_file}"
@@ -74,7 +78,7 @@ execute "Change mod cloned git" do
   command "chown -R #{node['megam']['default']['user']}:#{node['megam']['default']['user']} #{dir}"
 end
 
-node.set["gulp"]["local_repo"] = "#{node['megam']['default']['user']}/#{dir}"
+node.set["gulp"]["local_repo"] = "#{node['megam']['user']['home']}/#{dir}"
 
 else
 	puts "TEST CASE ELSE"

@@ -69,7 +69,7 @@ execute "Change mod cloned git" do
   command "chown -R #{node['megam']['default']['user']}:#{node['megam']['default']['user']} #{dir}"
 end
 
-node.set["gulp"]["local_repo"] = "#{node['megam']['default']['user']}/#{dir}"
+node.set["gulp"]["local_repo"] = "#{node['megam']['user']['home']}/#{dir}"
 
 when ".zip"
 
