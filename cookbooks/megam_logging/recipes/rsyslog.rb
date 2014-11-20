@@ -36,6 +36,9 @@ cd /tmp/rsyslog-7.4.4
 ./configure --prefix=/usr --enable-imfile --enable-elasticsearch
 make
 make install
+
+cd /tmp
+rm -r *
   EOH
 end
 
@@ -43,7 +46,7 @@ when "ubuntu"
 
 bash "Install Rsyslog" do
   user "root"
-   code <<-EOH
+   code <<-EOF
 cd /tmp
 wget http://www.rsyslog.com/files/download/rsyslog/rsyslog-7.4.4.tar.gz
 wget http://libestr.adiscon.com/files/download/libestr-0.1.9.tar.gz
@@ -69,7 +72,11 @@ cd /tmp/rsyslog-7.4.4
 ./configure --prefix=/usr --enable-imfile --enable-elasticsearch
 sudo make
 sudo make install
-  EOH
+
+cd /tmp
+rm -r *
+  EOF
+  not_if { ::File.exists?("/etc/rsyslog.conf") }
 end
 
 #=begin

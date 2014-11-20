@@ -7,6 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
+rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/upstart/docker.log", "/var/log/upstart/gulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
@@ -37,7 +38,7 @@ execute "systemctl enable gear.service"
 execute "systemctl start gear.service"
 
 
-template "#{node['megam']['user']['home']}/bin" do
+template "#{node['megam']['user']['home']}/bin/logshipper.sh" do
   source "logheka.sh"
 end
 

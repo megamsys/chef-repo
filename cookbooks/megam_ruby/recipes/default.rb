@@ -21,9 +21,9 @@ bash "install_Ruby" do
   user "root"
   cwd "/tmp"
   code <<-EOH
-  wget -nv ftp://ftp.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.gz
-  tar zxvf ruby-2.1.1.tar.gz
-  cd ruby-2.1.1
+  wget -nv ftp://ftp.ruby-lang.org/pub/ruby/2.1/ruby-2.1.5.tar.gz
+  tar zxvf ruby-2.1.5.tar.gz
+  cd ruby-2.1.5
   ./configure --with-openssl-dir=/usr/local/openssl
   make
   make install

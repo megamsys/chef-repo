@@ -72,11 +72,9 @@ logcollect() {
     compid_pairs=("$@")   
     
     for i in "${compid_pairs[@]}" ; do          
-        logfile_ids=(${i//,/ })
-        printf -- 'setup logging for  %s %s\n' "${logfile_ids[0]}"  "${logfile_ids[1]}"
-
-        queue="${logfile_ids[0]}"
-        fullfile="${logfile_ids[1]}"
+        logfile_id=$i
+         queue="${logfile_id}"
+        fullfile="`docker inspect --format='{{ .Id }}' $logfile_id`"
 dir=$(dirname "$fullfile")
         filename=$(basename "$fullfile")
 extension="${filename##*.}"

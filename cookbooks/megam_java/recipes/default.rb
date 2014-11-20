@@ -21,6 +21,7 @@ include_recipe "git"
 node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
 node.set["gulp"]["builder"] = "megam_java_builder"
 
+rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/upstart/gulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
@@ -53,6 +54,7 @@ node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
 node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
 node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
+node.set['megam']['env']['name'] = "#{dir}"
 include_recipe "megam_environment"
 
 

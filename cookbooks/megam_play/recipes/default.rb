@@ -13,6 +13,7 @@ package "openjdk-7-jdk" do
 end
 
 
+rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "/var/log/upstart/gulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs

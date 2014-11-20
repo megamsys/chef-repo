@@ -2,14 +2,13 @@
 <% node['heka']['logs'].each do |queue, logs| %>
 <% logs.each do |logfile| %>
 <% path = File.dirname("#{logfile}") %>
-<% file_name = File.basename(file_name, '.*') %>
-
 <% file = File.basename("#{logfile}") %>
+<% file_name = File.basename(file, '.*') %>
 
-[<%= queue %>_<% file_name %>]
+[<%= queue %>_<%= file_name %>]
 type = "LogstreamerInput"
-log_directory = <%= path %>
-file_match = <%= file %>
+log_directory = "<%= path %>"
+file_match = "<%= file %>"
 differentiator = ["<%= queue %>"]
 
 <% end %>

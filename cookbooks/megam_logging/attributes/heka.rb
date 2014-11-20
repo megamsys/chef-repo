@@ -10,3 +10,5 @@ default['heka']['start'] = "#{node['megam']['user']['home']}/bin/heka"
 default['heka']['log'] = "/var/log/megam/heka.log"
 
 default['heka']['init'] = "/etc/init/heka.conf"
+
+default['heka']['service'] = "/etc/systemd/system/heka.service"

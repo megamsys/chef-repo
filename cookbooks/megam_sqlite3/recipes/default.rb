@@ -10,6 +10,7 @@
 
 node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
 
+rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/syslog", "/var/log/upstart/gulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
