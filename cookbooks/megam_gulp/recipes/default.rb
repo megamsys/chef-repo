@@ -25,8 +25,6 @@ execute "apt-get -y install megamgulpd"
 
 template "/usr/share/megam/megamgulpd/conf/gulpd.conf" do
   source "gulpd.conf.erb"
-  owner node['megam']['default']['user']
-  group node['megam']['default']['user']
   mode "0755"
 end
 

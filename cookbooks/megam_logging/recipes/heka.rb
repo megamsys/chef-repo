@@ -19,7 +19,7 @@ directory "/var/log/megam" do
 end
 
 case node[:platform]
-when "debian"
+when "ubuntu"
 
 execute "add-apt-repository 'deb http://get.megam.co/0.5/ubuntu/ trusty testing'"
 execute "apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7"
@@ -55,6 +55,8 @@ execute "Download heka demon " do
   cwd "/usr/bin/" 
   command "wget https://s3-ap-southeast-1.amazonaws.com/megampub/chef/hekad"
 end
+
+execute "chmod 755 /usr/bin/hekad"
 
 template node['heka']['service'] do
   source "heka.service.erb"

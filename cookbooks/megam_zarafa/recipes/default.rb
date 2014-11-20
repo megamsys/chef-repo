@@ -22,6 +22,7 @@ case node['platform_family']
    include_recipe "apt"
 end
 
+rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/upstart/gulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs

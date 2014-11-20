@@ -25,6 +25,7 @@ node.set["gulp"]["local_repo"] = "/var/lib/postgresql"
 node.set["gulp"]["project_name"] = "postgresql"
 
 
+rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/postgresql/*.log", "/var/log/upstart/gulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs

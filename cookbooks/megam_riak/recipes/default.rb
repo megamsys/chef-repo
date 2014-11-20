@@ -23,6 +23,7 @@ node.set["gulp"]["remote_repo"] = "basho.com/riak"
 node.set["gulp"]["local_repo"] = "/var/lib/riak"
 node.set["gulp"]["project_name"] = "riak"
 
+rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/upstart/gulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs

@@ -25,6 +25,7 @@ end
 
 include_recipe "git"
 
+rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
