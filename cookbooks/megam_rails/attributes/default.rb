@@ -3,6 +3,8 @@ require "securerandom"
 #default[:rails][:ruby][:version] = "1.9.1"  # include ruby/recipes/{ver}.rb
 #default[:languages][:ruby][:default_version] = node[:rails][:ruby][:version]
 
+default[:rails][:app][:service] = "rails" # must be one word
+
 default[:rails][:app][:name] = "aryabhata" # must be one word
 default[:rails][:app][:path] = "/var/www/projects/#{node[:rails][:app][:name]}"
 default[:rails][:app][:environment] = "production"

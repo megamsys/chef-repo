@@ -39,5 +39,8 @@ directory "#{node['megam']['user']['conf']}" do
   action :create
 end
 
+directory "/var/log/megam" do
+  action :create
+end
 
 

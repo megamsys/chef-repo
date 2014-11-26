@@ -13,17 +13,17 @@ depends "megam_tomcat"
 
 
 depends "megam_java"
-recommends "megam_akka"
-recommends "megam_play"
-recommends "megam_rails"
+depends "megam_akka"
+depends "megam_play"
+depends "megam_rails"
 depends "megam_nodejs"
 depends "megam_docker"
 depends "megam_sqlite3"
 
 depends "megam_riak"
 depends "megam_redis2"
-recommends "megam_postgresql"
-recommends "megam_rabbitmq"
+depends "megam_postgresql"
+depends "megam_rabbitmq"
 
 recommends "megam_op5"
 recommends "megam_zarafa"

@@ -143,7 +143,7 @@ application node[:rails][:app][:name] do
     end
 
     # use upstart for unicorn
-    template "/etc/init/unicorn_#{node[:rails][:app][:name]}.conf" do
+    template "/etc/init/#{node[:rails][:app][:service]}.conf" do
       mode 0644
       cookbook cookbook_name
       source "unicorn.conf.erb"
@@ -162,7 +162,7 @@ application node[:rails][:app][:name] do
       )
     end
 
-    service "unicorn_#{node[:rails][:app][:name]}" do
+    service "#{node[:rails][:app][:service]}" do
       provider Chef::Provider::Service::Upstart
       supports status: true, restart: true
       action :nothing
@@ -178,7 +178,7 @@ application node[:rails][:app][:name] do
     bundler          node[:rails][:unicorn][:bundler]
     bundle_command   node[:rails][:unicorn][:bundle_command]
     restart_command  do  # when a string is used, it will run it as owner/group not as root!
-      execute "sudo /sbin/start unicorn_#{node[:rails][:app][:name]}"
+      execute "sudo /sbin/start #{node[:rails][:app][:service]}"
     end
     forked_user      node[:rails][:owner]
     forked_group     node[:rails][:group]
@@ -239,14 +239,14 @@ end
   cwd "/sbin"  
   user "root"
   group "root"
-  command "sudo ./stop unicorn_#{node[:rails][:app][:name]}"
+  command "sudo ./stop #{node[:rails][:app][:service]}"
   end
 
   execute "Execute unicorn start" do
   cwd "/sbin"  
   user "root"
   group "root"
-  command "sudo ./start unicorn_#{node[:rails][:app][:name]}"
+  command "sudo ./start #{node[:rails][:app][:service]}"
   end
 
 #include_recipe "megam_gulp"

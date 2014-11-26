@@ -1,9 +1,6 @@
 #
-# Author:: Marius Ducea (marius@promethost.com)
-# Cookbook Name:: nodejs
-# Recipe:: npm
-#
-# Copyright 2010-2012, Promet Solutions
+# Cookbook Name:: postgresql
+# Recipe:: server
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +15,20 @@
 # limitations under the License.
 #
 
-case node['nodejs']['npm']['install_method']
-when 'embedded'
-  include_recipe 'megam_nodejs::nodejs'
-when 'source'
-  include_recipe 'megam_nodejs::npm_from_source'
-else
-  Chef::Log.error('No install method found for npm')
+change_notify = node['postgresql']['server']['config_change_notify']
+
+template "#{node['postgresql']['dir']}/postgresql.conf" do
+  source "postgresql.conf.erb"
+  owner "postgres"
+  group "postgres"
+  mode 0600
+  #notifies change_notify, 'service[postgresql]', :delayed
+end
+
+template "#{node['postgresql']['dir']}/pg_hba.conf" do
+  source "pg_hba.conf.erb"
+  owner "postgres"
+  group "postgres"
+  mode 00600
+  #notifies change_notify, 'service[postgresql]', :delayed
 end

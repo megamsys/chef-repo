@@ -4,7 +4,7 @@ Documentation=https://github.com/megamsys/heka
 
 [Service]
 Type=simple
-ExecStart=hekad -config <%= node['heka']['conf'] %>
+ExecStart=/usr/bin/hekad -config <%= node['heka']['conf'] %>
 
 [Install]
 WantedBy=multi-user.target

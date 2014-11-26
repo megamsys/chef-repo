@@ -18,11 +18,15 @@
 # limitations under the License.
 #
 
-case node['nodejs']['npm']['install_method']
-when 'embedded'
-  include_recipe 'megam_nodejs::nodejs'
-when 'source'
-  include_recipe 'megam_nodejs::npm_from_source'
-else
-  Chef::Log.error('No install method found for npm')
+Chef::Recipe.send(:include, NodeJs::Helper)
+
+include_recipe 'megam_nodejs::nodejs'
+
+dist = npm_dist
+
+ark 'npm' do
+  url dist['url']
+  checksum dist['checksum']
+  version dist['version']
+  action :install_with_make
 end

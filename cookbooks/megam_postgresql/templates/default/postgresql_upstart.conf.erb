@@ -1,4 +1,4 @@
-description "PostgreSQL 9.1 Server"
+description "PostgreSQL 9.3 Server"
 author "PostgreSQL"
  
 start on runlevel [2345]
@@ -11,4 +11,4 @@ else
 install -d -m 2775 -o postgres -g postgres /var/run/postgresql
 fi
 end script
-exec su -c "/usr/lib/postgresql/9.1/bin/postgres -D /var/lib/postgresql/9.1/main -c config_file=/etc/postgresql/9.1/main/postgresql.conf" postgres
+exec sudo -u postgres /usr/lib/postgresql/9.3/bin/postgres -d 3 -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf

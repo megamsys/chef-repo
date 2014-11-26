@@ -23,7 +23,7 @@ include_recipe "megam_deps"
 #Temporary fix
 include_recipe "megam_logging::heka"
 include_recipe "megam_logging::rsyslog"
-include_recipe "megam_metering::ganglia"                        
+#include_recipe "megam_metering::ganglia"                        
 
 =begin
 node['megam']['deps']['assembly'].each do |component|

@@ -18,7 +18,20 @@
 # limitations under the License.
 #
 
-include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
+include_recipe 'megam_nodejs::nodejs'
+include_recipe 'megam_nodejs::npm'
+
+node['nodejs']['npm_packages'].each do |pkg|
+  f = nodejs_npm pkg['name'] do
+    action :nothing
+  end
+  pkg.each do |key, value|
+    f.send(key, value) unless key == 'name' || key == 'action'
+  end
+  action = pkg.key?('action') ? pkg['action'] : :install
+  f.action(action)
+end if node['nodejs'].key?('npm_packages')
+
 
 
 rsyslog_inputs=[]
@@ -62,7 +75,7 @@ execute "Clone Nodejs builder" do
 cwd "#{node['megam']['user']['home']}/bin"
   user "root"
   group "root"
-  command "git clone https://github.com/indykish/megam_nodejs_builder.git"
+  command "git clone https://github.com/megamsys/megam_nodejs_builder.git"
 end
 
 
@@ -93,15 +106,12 @@ end
 execute "npm update" do
   cwd "#{node['megam']['user']['home']}/#{dir}" 
   command "npm install -g npm"
-  user "root"
-  group "root"
 end
 
 execute "npm Install dependencies" do
   cwd "#{node['megam']['user']['home']}/#{dir}" 
   command "npm install"
-  user "root"
-  group "root"
+  ignore_failure true
 end
 
 # use upstart when supported to get nice things like automatic respawns
@@ -126,4 +136,5 @@ include_recipe "megam_start"
 
 node.set["gulp"]["builder"] = "megam_nodejs_builder"
 #include_recipe "megam_gulp"
+
 

@@ -7,9 +7,11 @@ if platform?( "redhat", "centos", "fedora" )
 
 
 bash "install Ganglia with python" do
+ cwd "/tmp"
   user "root"
   group "root"
    code <<-EOH
+
    	wget --no-check-certificate https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/rpm/apr-1.3.9-1.x86_64.rpm
 rpm -ivh apr-1.3.9-1.x86_64.rpm
 

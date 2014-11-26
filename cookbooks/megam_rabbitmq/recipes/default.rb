@@ -19,17 +19,25 @@
 # limitations under the License.
 #
 
-=begin
-node.set["myroute53"]["name"] = "#{node.name}"
+rsyslog_inputs=[]
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/rabbitmq/rabbit@#{`hostname`}.log", "/var/log/upstart/gulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
 
-if node['megam_domain']
-node.set["myroute53"]["zone"] = "#{node['megam_domain']}"
-else
-node.set["myroute53"]["zone"] = "megam.co."
-end
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/rabbitmq/rabbit@#{`hostname`}.log", "/var/log/upstart/gulpd.log"]
 
-include_recipe "megam_route53"
-=end
+
+dir = "rabbitmq"
+
+node.set["gulp"]["project_name"] = "#{dir}"
+node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
+node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
+
+node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
+include_recipe "megam_environment"
+
+
+
 
 include_recipe "erlang"
 
@@ -127,10 +135,7 @@ end
 #RABBITMQ Admin tools
 
 execute "Enable rabbitmq-plugin for rabbitmq_management " do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo rabbitmq-plugins enable rabbitmq_management"
+  command "rabbitmq-plugins enable rabbitmq_management"
 end
 
   template "/usr/local/bin/rabbitmqadmin" do
@@ -141,10 +146,7 @@ end
   end
 
 execute "rabbitmq-server stop " do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo service rabbitmq-server stop"
+  command "service rabbitmq-server stop"
 end
 
   template node['rabbitmq']['erlang_cookie_path'] do
@@ -158,22 +160,13 @@ end
 if node['rabbitmq']['cluster']
 
 execute "rabbitmqctl stop_app" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo rabbitmqctl stop_app"
+  command "rabbitmqctl stop_app"
 end
 execute "rabbitmqctl reset" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo rabbitmqctl reset"
+  command "rabbitmqctl reset"
 end
 execute "rabbitmqctl stop" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "sudo rabbitmqctl stop"
+  command "rabbitmqctl stop"
 end
 
 end #end for if condition
@@ -195,6 +188,12 @@ service node['rabbitmq']['service_name'] do
   not_if { platform?('smartos') }
 end
 
+execute "Start rabbitmq-server" do
+  command "service rabbitmq-server start"
+end
+
+
+=begin
 unless node['rabbitmq']['cluster'] 		#####		IF Master			
 
 execute "create policy" do
@@ -212,3 +211,4 @@ execute "create mirror queue" do
 end
 
 end
+=end
