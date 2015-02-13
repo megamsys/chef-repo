@@ -12,23 +12,30 @@ bash "install Ganglia with python" do
   group "root"
    code <<-EOH
 
-   	wget --no-check-certificate https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/rpm/apr-1.3.9-1.x86_64.rpm
-rpm -ivh apr-1.3.9-1.x86_64.rpm
+   	yum -y install apr-devel apr-util check-devel cairo-devel pango-devel libxml2-devel rpmbuild glib2-devel \
+   dbus-devel freetype-devel fontconfig-devel gcc-c++ expat-devel python-devel libXrender-devel pcre-devel
+        cd /tmp
+        wget http://savannah.nongnu.org/download/confuse/confuse-2.7.tar.gz
+        tar -xzvf confuse-2.7.tar.gz
+         cd confuse-2.7
+        export CFLAGS="-g  -g -O2 -fno-strict-aliasing -Wall -D_REENTRANT -fPIC"
+        ./configure --enable-shared
+make
+make install
 
-wget --no-check-certificate https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/rpm/apr-devel-1.3.9-1.x86_64.rpm
-rpm -ivh apr-devel-1.3.9-1.x86_64.rpm
+echo "/usr/local/lib" > /etc/ld.so.conf
 
-wget --no-check-certificate https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/rpm/libconfuse-2.6-2.el6.rf.x86_64.rpm
-rpm -ivh libconfuse-2.6-2.el6.rf.x86_64.rpm
+ldconfig
 
-wget --no-check-certificate https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/rpm/libganglia-3.6.0-1.x86_64.rpm
-rpm -ivh libganglia-3.6.0-1.x86_64.rpm
+#just store it under ganglia-3.6.1, this wget stores in a long name.
+wget -O ganglia.tar.gz http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.6.1/ganglia-3.6.1.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fganglia%2Ffiles%2Fganglia%2520monitoring%2520core%2F&ts=1417064329&use_mirror=softlayer-sng 
 
-wget --no-check-certificate https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/rpm/ganglia-gmond-3.6.0-1.x86_64.rpm
-rpm -ivh ganglia-gmond-3.6.0-1.x86_64.rpm
+cd ganglia-3.6.1
+./configure --with-libconfuse=/usr/local/lib
+make
+make install
 
-wget --no-check-certificate https://s3-ap-southeast-1.amazonaws.com/megampub/0.3/rpm/ganglia-gmond-modules-python-3.6.0-1.x86_64.rpm
-rpm -ivh ganglia-gmond-modules-python-3.6.0-1.x86_64.rpm
+
   EOH
 end
 

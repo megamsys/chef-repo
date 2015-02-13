@@ -16,7 +16,7 @@ differentiator = ["<%= queue %>"]
 
 
 [AMQPOutput]
-url = "amqp://guest:guest@<%= node['heka']['amqp_url'] %>/"
+url = "amqp://guest:guest@<%= node['megam_rabbitmq'] %>/"
 exchange = "megam"
 queue = true
 exchangeType = "fanout"

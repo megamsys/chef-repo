@@ -134,7 +134,7 @@ template "/etc/init/postgresql.conf" do
   source "postgresql_upstart.conf.erb"
   owner "root"
   group "root"
-  mode 00755
+  mode "0755"
 end
 
 

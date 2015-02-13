@@ -107,9 +107,9 @@ end
 
 if !node['drbd']['master']
 
-ruby_block "Waiting For Synchronixation" do
+ruby_block "Waiting For Synchronization" do
   block do
-	puts "\nWaiting For Synchronixation"
+	puts "\nWaiting For Synchronization"
 	until `drbdadm cstate #{node['drbd']['resource']}`.strip.eql? "SyncTarget"
 	print "."
   	sleep(1)
@@ -119,7 +119,7 @@ end
 
 end
 
-ruby_block "Checking Synchronixation" do
+ruby_block "Checking Synchronization" do
   block do
   	puts "\nSynchronization in progress "
 	until `drbdadm cstate #{node['drbd']['resource']}`.strip.eql? "Connected"

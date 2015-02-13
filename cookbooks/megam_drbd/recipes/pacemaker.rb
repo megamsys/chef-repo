@@ -24,6 +24,22 @@ template "/etc/ha.d/authkeys" do
   mode "600"
 end
 
+execute "mv /usr/lib/heartbeat/lrmd{,.cluster-glue}"
+
+execute "Sysmlink pacemaker's lrmd with heartbeat'" do
+  user "root"
+  cwd "/usr/lib/heartbeat/"
+  command "ln -s ../pacemaker/lrmd"
+end
+
+execute "configurator-opendj" do
+  cwd node["opendj"]["home"]  
+  user node["opendj"]["user"]
+  group node["opendj"]["user"]
+  command node["opendj"]["cmd"]["config"]
+end 
+
+
 execute "service heartbeat reload" do
   user "root"
 end

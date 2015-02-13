@@ -19,19 +19,6 @@
 #
 
 include_recipe 'megam_nodejs::nodejs'
-include_recipe 'megam_nodejs::npm'
-
-node['nodejs']['npm_packages'].each do |pkg|
-  f = nodejs_npm pkg['name'] do
-    action :nothing
-  end
-  pkg.each do |key, value|
-    f.send(key, value) unless key == 'name' || key == 'action'
-  end
-  action = pkg.key?('action') ? pkg['action'] : :install
-  f.action(action)
-end if node['nodejs'].key?('npm_packages')
-
 
 
 rsyslog_inputs=[]
@@ -98,19 +85,27 @@ else
 	puts "TEST CASE ELSE"
 end #CASE
 
+=begin
 execute "change nodejs as executable " do
   cwd node['megam']['user']['home']
   command "chmod 755 #{node['megam']['user']['home']}/#{dir}/#{js_file}"
 end
 
+
 execute "npm update" do
   cwd "#{node['megam']['user']['home']}/#{dir}" 
   command "npm install -g npm"
 end
+=end
+
+execute "sudo -s"
 
 execute "npm Install dependencies" do
   cwd "#{node['megam']['user']['home']}/#{dir}" 
-  command "npm install"
+  command "npm install --production"
+  user "root"
+  group "root"
+  retries 1
   ignore_failure true
 end
 
@@ -123,16 +118,19 @@ when "debian"
   end
 end
 
+execute "sudo -s"
+
 #['megam']['env']['home'] and ['megam']['start']['name'] must be same
 node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
 node.set['megam']['env']['name'] = "nodejs"
 include_recipe "megam_environment"
 
 node.set['megam']['start']['name'] = "nodejs"
-node.set['megam']['start']['cmd'] = "/usr/local/bin/node #{node['megam']['env']['home']}/#{node['nodejs']['js-file']}"
-node.set['megam']['start']['file'] = node['nodejs']['js-file']
+node.set['megam']['start']['cmd'] = "node #{node['megam']['env']['home']}/#{node['nodejs']['js-file']}"
+node.set['megam']['start']['file'] = "#{node['nodejs']['js-file']}"
 
 include_recipe "megam_start"
+include_recipe "megam_nginx"
 
 node.set["gulp"]["builder"] = "megam_nodejs_builder"
 #include_recipe "megam_gulp"

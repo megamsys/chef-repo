@@ -46,7 +46,7 @@ end
 
 case node[:ganglia][:unicast]
 when true
-  gmond_collectors = ["#{node['ganglia']['server_role']}"]
+  gmond_collectors = ["#{node['megam_monitor']}"]
   template "/etc/ganglia/gmetad.conf" do
     source "gmetad.conf.erb"
     variables( :clusters => node['ganglia']['clusterport'].to_hash,

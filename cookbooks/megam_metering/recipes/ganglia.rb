@@ -54,7 +54,7 @@ end
 
 case node[:ganglia][:unicast]
 when true
-  gmond_collectors = ["#{node['ganglia']['server_role']}"]
+  gmond_collectors = ["#{node['megam_monitor']}"]
   if gmond_collectors.empty? 
      gmond_collectors = "127.0.0.1"
   end

@@ -44,6 +44,7 @@ execute "systemctl start gear.service"
 
 template "#{node['megam']['user']['home']}/bin/logshipper.sh" do
   source "logheka.sh"
+  mode "0755"
 end
 
 

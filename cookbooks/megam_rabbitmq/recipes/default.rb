@@ -178,6 +178,36 @@ end #end for if condition
 ## when called from chef. The setsid command forces the subprocess into a state
 ## where it can daemonize properly. -Kevin (thanks to Daniel DeLeo for the help)
 
+    # We start with stock init.d, remove it if we're not using init.d, otherwise leave it alone
+    service node['rabbitmq']['service_name'] do
+      action [:stop]
+      only_if { File.exist?('/etc/init.d/rabbitmq-server') }
+    end
+
+    execute 'remove rabbitmq init.d command' do
+      command 'update-rc.d -f rabbitmq-server remove'
+    end
+
+    file '/etc/init.d/rabbitmq-server' do
+      action :delete
+    end
+
+    template "/etc/init/#{node['rabbitmq']['service_name']}.conf" do
+      source 'rabbitmq.conf.erb'
+      owner 'root'
+      group 'root'
+      mode 0644
+      variables(:max_file_descriptors => node['rabbitmq']['max_file_descriptors'])
+    end
+
+    service node['rabbitmq']['service_name'] do
+      provider Chef::Provider::Service::Upstart
+      action [:enable, :start]
+      # restart_command "stop #{node['rabbitmq']['service_name']} && start #{node['rabbitmq']['service_name']}"
+    end
+  
+
+=begin
 service node['rabbitmq']['service_name'] do
   start_command "setsid /etc/init.d/rabbitmq-server start"
   stop_command "setsid /etc/init.d/rabbitmq-server stop"
@@ -192,6 +222,7 @@ execute "Start rabbitmq-server" do
   command "service rabbitmq-server start"
 end
 
+=end
 
 =begin
 unless node['rabbitmq']['cluster'] 		#####		IF Master			

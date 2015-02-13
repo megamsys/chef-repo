@@ -7,9 +7,12 @@
 # All rights reserved - Do Not Redistribute
 #
 
-platform_family = "#{node[:platform]}"
+platf_family = "#{node[:platform]}"
+
 template "#{node['megam']['user']['conf']}/#{node['megam']['env']['name']}.sh" do
   source "env.sh.erb"
   mode "0755"
-  variables( :platform_family => "#{platform_family}" )
+  user "root"
+  group "root"
+  variables( :platf_family => "#{platf_family}" )
 end

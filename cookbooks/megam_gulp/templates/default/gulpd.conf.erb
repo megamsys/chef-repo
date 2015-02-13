@@ -3,14 +3,20 @@ tls-cert-file: /path/to/cert.pem
 tls-key-file: /path/to/key.pem
 MEGAM_HOME: /var/lib/megam/
 update_queue: <%= node.name.split(".").first %>
+docker_queue: Docker.<%= node.name %>
 id: <%= node["gulp"]["asm_id"] %>
 name: <%= node.name %>
 
 etcd:
-  path: http://127.0.0.1:4001
+  path: http://<%= node['megam_etcd']%>:4001
+  networkpath: <%= node['megam_etcd']%>:4001
   directory: megam 
+
+geard:
+  host: localhost:43273
+
 riak:
-  url: <%= node['riak_host'] %>:8087
+  url: <%= node['megam_riak'] %>:8087
   bucket: appreqs
 scm:
   project: <%= node["gulp"]["project_name"] %>
@@ -18,17 +24,9 @@ scm:
   local_repo: <%= node["gulp"]["local_repo"] %>
   remote_repo: <%= node["gulp"]["remote_repo"] %>
   bucket-support: false
-aws:
-  access-key-id: funky_screwy_id
-  secret-access-key: secret-very-secret
-  s3:
-    region-name: ap-southeast-1
-    endpoint: s3-ap-southeast-1.amazonaws.com
-    bucketEndpoint: s3-ap-southeast-1.amazonaws.com
-    location-constraint: true
-    lowercase-bucket: true
+
 api:
-  server: https://<%= node['riak_host'] %>
+  server: https://<%= node['megam_riak'] %>
   email: <%= node["gulp"]["email"] %>
   api_key: <%= node["gulp"]["api_key"] %>
 amqp:

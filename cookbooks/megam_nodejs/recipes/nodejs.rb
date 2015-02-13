@@ -18,4 +18,9 @@
 # limitations under the License.
 #
 
-include_recipe "megam_nodejs::nodejs_from_#{node['nodejs']['install_method']}"
+
+execute "curl -sL https://deb.nodesource.com/setup | sudo bash -"
+execute "apt-get install -y nodejs"
+execute "apt-get install -y build-essential"
+
+
