@@ -1,4 +1,4 @@
-graphite_host = "#{node['ganglia']['server_role']}"
+graphite_host = "#{node['megam_monitor']}"
 if graphite_host.empty?
   graphite_host = "localhost"
 end

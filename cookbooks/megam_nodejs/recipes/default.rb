@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe "megam_nodejs::install_from_#{node['nodejs']['install_method']}"
+include_recipe 'megam_nodejs::nodejs'
 
 
 rsyslog_inputs=[]
@@ -62,7 +62,7 @@ execute "Clone Nodejs builder" do
 cwd "#{node['megam']['user']['home']}/bin"
   user "root"
   group "root"
-  command "git clone https://github.com/indykish/megam_nodejs_builder.git"
+  command "git clone https://github.com/megamsys/megam_nodejs_builder.git"
 end
 
 
@@ -85,23 +85,28 @@ else
 	puts "TEST CASE ELSE"
 end #CASE
 
+=begin
 execute "change nodejs as executable " do
   cwd node['megam']['user']['home']
   command "chmod 755 #{node['megam']['user']['home']}/#{dir}/#{js_file}"
 end
 
+
 execute "npm update" do
   cwd "#{node['megam']['user']['home']}/#{dir}" 
   command "npm install -g npm"
-  user "root"
-  group "root"
 end
+=end
+
+execute "sudo -s"
 
 execute "npm Install dependencies" do
   cwd "#{node['megam']['user']['home']}/#{dir}" 
-  command "npm install"
+  command "npm install --production"
   user "root"
   group "root"
+  retries 1
+  ignore_failure true
 end
 
 # use upstart when supported to get nice things like automatic respawns
@@ -113,17 +118,21 @@ when "debian"
   end
 end
 
+execute "sudo -s"
+
 #['megam']['env']['home'] and ['megam']['start']['name'] must be same
 node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
 node.set['megam']['env']['name'] = "nodejs"
 include_recipe "megam_environment"
 
 node.set['megam']['start']['name'] = "nodejs"
-node.set['megam']['start']['cmd'] = "/usr/local/bin/node #{node['megam']['env']['home']}/#{node['nodejs']['js-file']}"
-node.set['megam']['start']['file'] = node['nodejs']['js-file']
+node.set['megam']['start']['cmd'] = "node #{node['megam']['env']['home']}/#{node['nodejs']['js-file']}"
+node.set['megam']['start']['file'] = "#{node['nodejs']['js-file']}"
 
 include_recipe "megam_start"
+include_recipe "megam_nginx"
 
 node.set["gulp"]["builder"] = "megam_nodejs_builder"
 #include_recipe "megam_gulp"
+
 

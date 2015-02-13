@@ -91,7 +91,7 @@ bash "Install Libestr" do
    yum install -y pcre pcre-devel mysql-server mysql-devel gnutls gnutls-devel gnutls-utils net-snmp net-snmp-devel net-snmp-libs net-snmp-perl net-snmp-utils libnet libnet-devel libxml2-devel.x86_64
    
    cd /tmp
-wget http://sourceforge.net/projects/libestr/files/libestr-0.1.0.tar.gz/download
+wget -O libestr-0.1.0.tar.gz http://sourceforge.net/projects/libestr/files/libestr-0.1.0.tar.gz/download
 tar -xvf libestr-0.1.0.tar.gz
 cd libestr-0.1.0
 ./configure --prefix=/usr --libdir=/usr/lib64

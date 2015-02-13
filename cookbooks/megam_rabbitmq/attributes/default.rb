@@ -12,9 +12,11 @@ default['rabbitmq']['version'] = '3.1.0'
 # Override this if you have a yum repo with rabbitmq available.
 default['rabbitmq']['use_yum'] = false
 # Override this if you do not want to use an apt repo
-default['rabbitmq']['use_apt'] = false
+default['rabbitmq']['use_apt'] = true
 # The distro versions may be more stable and have back-ported patches
-default['rabbitmq']['use_distro_version'] = false
+default['rabbitmq']['use_distro_version'] = true
+
+default['rabbitmq']['max_file_descriptors'] = 1024
 
 # config file location
 # http://www.rabbitmq.com/configure.html#define-environment-variables

@@ -51,12 +51,12 @@ yum_package "wget" do
   action :install
 end
 
-execute "Download heka demon " do
-  cwd "/usr/bin/" 
-  command "wget https://s3-ap-southeast-1.amazonaws.com/megampub/chef/hekad"
+
+remote_file "/usr/bin/gulpd" do
+  source "https://s3-ap-southeast-1.amazonaws.com/megampub/chef/hekad"
+  mode '0755'
 end
 
-execute "chmod 755 /usr/bin/hekad"
 
 template node['heka']['service'] do
   source "heka.service.erb"

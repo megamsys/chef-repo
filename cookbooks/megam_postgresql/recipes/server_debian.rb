@@ -2,10 +2,6 @@
 # Cookbook Name:: postgresql
 # Recipe:: server
 #
-# Author:: Joshua Timberman (<joshua@opscode.com>)
-# Author:: Lamont Granquist (<lamont@opscode.com>)#
-# Copyright 2009-2011, Opscode, Inc.
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -26,6 +22,8 @@ node['postgresql']['server']['packages'].each do |pg_pack|
   package pg_pack
 
 end
+
+include_recipe "megam_postgresql::server_conf"
 
 =begin
 service "postgresql" do

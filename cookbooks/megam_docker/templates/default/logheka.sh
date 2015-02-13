@@ -75,6 +75,20 @@ logcollect() {
         logfile_id=$i
          queue="${logfile_id}"
         fullfile="`docker inspect --format='{{ .Id }}' $logfile_id`"
+
+RESULT=`sudo docker inspect --format='{{.NetworkSettings.Ports}}' $logfile_id`
+echo "$RESULT"
+second=$(echo $RESULT | cut -d"[" -f2)
+echo $second
+PORT=$(echo ${second} | cut -c1-4)
+echo $PORT
+IMAGE=`sudo docker inspect --format='{{.Config.Image}}' $logfile_id`
+echo $IMAGE
+stop=`sudo docker stop $logfile_id`
+rm=`sudo docker rm $logfile_id`
+CMD=`sudo docker run -d -p $PORT:$PORT --name="$logfile_id" $IMAGE`
+
+
 dir=$(dirname "$fullfile")
         filename=$(basename "$fullfile")
 extension="${filename##*.}"

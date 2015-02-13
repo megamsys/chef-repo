@@ -72,8 +72,8 @@ end
   bash "update service tomcat defaults" do
   user "root"
    code <<-EOH
-   /etc/init.d/tomcat start
-   start tomcat
+   /etc/init.d/java start
+   start java
   EOH
 end
 end
@@ -82,8 +82,8 @@ end
   bash "Restart tomcat" do
   user "root"
    code <<-EOH
-   stop tomcat
-   start tomcat
+   stop java
+   start java
   EOH
   end
 

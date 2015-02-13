@@ -1,0 +1,10 @@
+[Unit]
+Description=Gulp Provisioning Daemon (gulpd)
+Documentation=https://github.com/megamsys/gulp
+
+[Service]
+Type=simple
+ExecStart=<%= node['megam']['user']['home'] %>/bin/gulpd start
+
+[Install]
+WantedBy=multi-user.target

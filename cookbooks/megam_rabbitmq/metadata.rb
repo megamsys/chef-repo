@@ -8,11 +8,15 @@ recipe            "megam_rabbitmq", "Install and configure RabbitMQ"
 recipe            "megam_rabbitmq::mgmt_console", "Install and configure RabbitMQ"
 recipe            "megam_rabbitmq::cluster", "Set up RabbitMQ clustering."
 
-depends           "apt", ">= 1.4.4"
 depends           "yum", ">= 0.5.0"
 depends           "erlang", ">= 0.9"
-depends           "megam_route53"
-depends           "megam_ganglia"
+depends "megam_metering"
+depends "apt"
+depends "git"
+depends "megam_deps"
+depends "megam_logging"
+depends "megam_gulp"
+depends "megam_environment"
 
 %w{ubuntu debian redhat centos scientific amazon fedora oracle smartos}.each do |os|
   supports os

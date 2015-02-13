@@ -8,10 +8,16 @@
 #
 require 'json'
 
+node.set['megam_riak']="#{node['riak_host']}"
+node.set['megam_rabbitmq']="#{node['rabbitmq_host']}"
+node.set['megam_monitor']="#{node['monitor_host']}"
+node.set['megam_kibana']="#{node['kibana_host']}"
+node.set['megam_etcd']="#{node['etcd_host']}"
+
 #============================================Account Json ====================================================
 email_key = remote_file "/tmp/email.json" do
   #source "http://riak1.megam.co.in:8098/riak/nodes/#{node["deps"]["node_key"]}"
-  source "http://#{node['riak_host']}:8098/buckets/accounts/index/accountId_bin/#{node['accounts_id']}"
+  source "http://#{node['megam_riak']}:8098/buckets/accounts/index/accountId_bin/#{node['accounts_id']}"
   mode "0755"
   owner "root"
   group "root"
@@ -23,7 +29,7 @@ email = JSON.parse(File.read("/tmp/email.json"))
 
 ac = remote_file "/tmp/account.json" do
   #source "http://riak1.megam.co.in:8098/riak/nodes/#{node["deps"]["node_key"]}"
-  source "http://#{node['riak_host']}:8098/riak/accounts/#{email["keys"].first}"
+  source "http://#{node['megam_riak']}:8098/riak/accounts/#{email["keys"].first}"
   mode "0755"
   owner "root"
   group "root"
@@ -38,7 +44,7 @@ account = JSON.parse(File.read("/tmp/account.json"))
 if !node['component_id']
 #============================================Assembly Json ====================================================
 assembly_json = remote_file "/tmp/assembly.json" do
-  source "http://#{node['riak_host']}:8098/riak/assembly/#{node['assembly_id']}"
+  source "http://#{node['megam_riak']}:8098/riak/assembly/#{node['assembly_id']}"
   mode "0755"
   owner "root"
   group "root"
@@ -74,7 +80,7 @@ node.set['megam']['deps']['assembly'] = assembly['components']
 node['megam']['deps']['assembly'].each do |component|                      #For each components start
 
 component_json = remote_file "/tmp/#{component}.json" do
-  source "http://#{node['riak_host']}:8098/riak/components/#{component}"
+  source "http://#{node['megam_riak']}:8098/riak/components/#{component}"
   mode "0755"
   owner "root"
   group "root"

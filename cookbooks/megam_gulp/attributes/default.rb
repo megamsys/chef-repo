@@ -8,3 +8,5 @@ default["gulp"]["api_key"] = "IamAtlas{74}NobodyCanSeeME#07"
 default['gulp']['log'] = "/var/log/upstart/gulpd.log"
 default['gulp']['asm_id'] = "#{node['assembly_id']}"
 
+
+default['gulp']['service'] = "/etc/systemd/system/megamgulpd.service"

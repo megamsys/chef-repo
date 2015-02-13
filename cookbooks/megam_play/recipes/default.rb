@@ -69,7 +69,7 @@ execute "Clone builder script " do
 end
 
 execute "Start build script " do
-  cwd "#{node["megam"]["user"]["home"]}/megam_akka_builder/"  
+  cwd "#{node["megam"]["user"]["home"]}/#{node["gulp"]["builder"]}/"  
   command "./build remote_repo=#{node['megam']['deps']['component']['inputs']['source']}"
 end
 

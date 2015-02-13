@@ -22,9 +22,13 @@ include_recipe "megam_deps"
 
 #Temporary fix
 include_recipe "megam_logging::heka"
-include_recipe "megam_logging::rsyslog"
-include_recipe "megam_metering::ganglia"                        
 
+
+case node[:platform]
+when "debian", "ubuntu"
+include_recipe "megam_logging::rsyslog"
+include_recipe "megam_metering::ganglia" 
+end
 =begin
 node['megam']['deps']['assembly'].each do |component|
 component_hash = JSON.parse(File.read("/tmp/#{component}.json"))

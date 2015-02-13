@@ -1,4 +1,4 @@
-default['heka']['amqp_url'] = "www.megam.co"
+#default['heka']['amqp_url'] = "www.megam.co"
 #default['heka']['logs'] = {"queue1" => ["/var/log/sysog", "/var/log/auth.log"], "queue2" => ["/var/log/sysog", "/var/log/auth.log"]}
 
 default['heka']['logs'] = {}
