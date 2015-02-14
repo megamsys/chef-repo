@@ -12,7 +12,8 @@ default[:ganglia][:gmetad][:interactive_port] = 8652
 default[:gagnlia][:spoof_hostname] = true
 
 default[:ganglia][:hostname] = "#{node.name}"
-default[:ganglia][:ip] = "#{`wget http://ipecho.net/plain -O - -q ; echo`}"
+#default[:ganglia][:ip] = "#{`wget http://ipecho.net/plain -O - -q ; echo`}"
+default[:ganglia][:ip] = "localhost"
 
 # port assignments for each cluster
 # you should overwrite this with your own cluster list in a wrapper cookbook.
