@@ -31,7 +31,8 @@ platform_lib_dir = "/usr/lib/riak"
 platform_log_dir = "/var/log/riak"
 
 # vm.args
-default['riak']['args']['-name'] = "riak@#{`wget http://ipecho.net/plain -O - -q ; echo`}"
+#default['riak']['args']['-name'] = "riak@#{`wget http://ipecho.net/plain -O - -q ; echo`}"
+default['riak']['args']['-name'] = "riak@localhost"
 default['riak']['args']['-setcookie'] = "riak"
 default['riak']['args']['+K'] = true
 default['riak']['args']['+A'] = 64
