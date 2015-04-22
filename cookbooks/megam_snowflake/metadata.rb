@@ -1,6 +1,6 @@
 name             'snowflake'
 maintainer       'Megam Systems'
-maintainer_email '<nkishore@megam.co.in>'
+maintainer_email '<nkishore@megam.io>'
 license          'All rights reserved'
 description      'Installs/Configures snowflake'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))

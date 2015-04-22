@@ -90,7 +90,7 @@ Read the README file in each of the subdirectories for more information about wh
 
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
-| **Author:**          | Thomas Alrin (<alrin@megam.co.in>)
+| **Author:**          | Thomas Alrin (<thomasalrin@megam.io>)
 | **Copyright:**       | Copyright (c) 2012-2013 Megam Systems.
 | **License:**         | Apache License, Version 2.0
 

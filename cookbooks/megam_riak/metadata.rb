@@ -19,7 +19,7 @@
 
 name              "megam_riak"
 maintainer        "Megam Systems"
-maintainer_email  "alrin@megam.co.in"
+maintainer_email  "thomasalrin@megam.io"
 license           "Apache 2.0"
 description       "Installs and configures Riak distributed data store"
 version           "2.0.0"
