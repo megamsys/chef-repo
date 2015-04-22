@@ -21,8 +21,8 @@ To use this cookbook, Just include `megam_play` in your node's `run_list`:
 License and Author
 ==================
 
-Author:: Kishore Kumar (<nkishore@megam.co.in>)
-Author:: Thomas Alrin (<alrin@megam.co.in>)
+Author:: Kishore Kumar (<nkishore@megam.io>)
+Author:: Thomas Alrin (<thomasalrin@megam.io>)
 
 
 Copyright:: 2013, Megam Systems

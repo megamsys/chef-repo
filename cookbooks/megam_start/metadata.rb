@@ -1,6 +1,6 @@
 name             'megam_start'
 maintainer       'Megam Systems'
-maintainer_email 'alrin@megam.co.in'
+maintainer_email 'thomasalrin@megam.io'
 license          'Apache 2.0'
 version          '0.5.0'
 description      'Creates upstart script for apps and starts it'

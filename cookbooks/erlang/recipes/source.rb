@@ -1,11 +1,11 @@
 # Cookbook Name:: erlang
 # Recipe:: default
 # Author:: Joe Williams <joe@joetify.com>
-# Author:: Matt Ray <matt@opscode.com>
+# Author:: Matt Ray <matt@chef.io>
 # Author:: Hector Castro <hector@basho.com>
 #
 # Copyright 2008-2009, Joe Williams
-# Copyright 2011, Opscode Inc.
+# Copyright 2011, Chef Software Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,15 +20,15 @@
 # limitations under the License.
 #
 
-include_recipe "build-essential"
+include_recipe 'build-essential'
 
-erlang_deps = case node["platform_family"]
-              when "debian"
-                [ "libncurses5-dev", "openssl", "libssl-dev" ]
-              when "rhel", "fedora"
-                [ "ncurses-devel", "openssl-devel" ]
+erlang_deps = case node['platform_family']
+              when 'debian'
+                %w{ libncurses5-dev openssl libssl-dev }
+              when 'rhel', 'fedora'
+                %w{ ncurses-devel openssl-devel }
               else
-                [ ]
+                []
               end
 
 erlang_deps.each do |pkg|
@@ -37,20 +37,21 @@ erlang_deps.each do |pkg|
   end
 end
 
-bash "install-erlang" do
+bash 'install-erlang' do
   cwd Chef::Config[:file_cache_path]
   code <<-EOH
     tar -xzf otp_src_#{node['erlang']['source']['version']}.tar.gz
-    (cd otp_src_#{node['erlang']['source']['version']} && ./configure && make && make install)
+    (cd otp_src_#{node['erlang']['source']['version']} && ./configure #{node['erlang']['source']['build_flags']} && make && make install)
   EOH
+  environment({"CFLAGS" => node['erlang']['source']['cflags']})
   action :nothing
   not_if "erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().' -noshell | grep #{node['erlang']['source']['version']}"
 end
 
 remote_file File.join(Chef::Config[:file_cache_path], "otp_src_#{node['erlang']['source']['version']}.tar.gz") do
   source node['erlang']['source']['url']
-  owner "root"
+  owner 'root'
   mode 0644
   checksum node['erlang']['source']['checksum']
-  notifies :run, "bash[install-erlang]", :immediately
+  notifies :run, 'bash[install-erlang]', :immediately
 end

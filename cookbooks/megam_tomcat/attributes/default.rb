@@ -2,18 +2,18 @@
 
 default['megam']['tomcat']['home'] = "#{node.default['megam']['user']['home']}/tomcat"
 #source paths
-default['megam']['tomcat']['source']['tomcat'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.5/tomcat/tomcat8.tar.gz"
+default['megam']['tomcat']['source']['tomcat'] = "https://s3-ap-southeast-1.amazonaws.com/megampub/0.5/tomcat/tomcat.tar.gz"
 
 
 
 #Remote files location
-default['megam']['tomcat']['remote-location']['tar']="#{node['megam']['user']['home']}/tomcat8.tar.gz"
+default['megam']['tomcat']['remote-location']['tar']="#{node['megam']['user']['home']}/tomcat.tar.gz"
 default['megam']['tomcat']['remote-location']['tomcat-init'] = "/etc/init/java.conf"
 default['megam']['tomcat']['remote-location']['tomcat-initd'] = "/etc/init.d/java"
 
 
 #shell commands
-default['megam']['tomcat']['cmd'] ['unzip'] = "gunzip -c #{node['megam']['user']['home']}/tomcat8.tar.gz | tar xvf -"
+default['megam']['tomcat']['cmd'] ['unzip'] = "gunzip -c #{node['megam']['user']['home']}/tomcat.tar.gz | tar xvf -"
 default['megam']['tomcat']['cmd'] ['tomcat-update'] = "sudo update-rc.d tomcat defaults"
 default['megam']['tomcat']['cmd'] ['tomcat-start'] = "service java start"
 

@@ -1,6 +1,6 @@
 name             'megam_rails'
 maintainer       'Megam Systems'
-maintainer_email 'alrin@megam.co.in'
+maintainer_email 'thomasalrin@megam.io'
 license          'All rights reserved'
 description      'Installs/Configures rails_application'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))

@@ -12,16 +12,13 @@ template node['heka']['conf'] do
   group node['megam']['default']['user']
 end
 
-directory "/var/log/megam" do
-  owner 'root'
-  group 'root'
-  action :create
-end
-
 case node[:platform]
 when "ubuntu"
 
-execute "add-apt-repository 'deb [arch=amd64] http://get.megam.co/0.6/ubuntu/14.04/ testing megam'"
+#add-apt package support
+package "software-properties-common"
+
+execute "add-apt-repository 'deb [arch=amd64] http://get.megam.io/0.8/ubuntu/14.04/ testing megam'"
 execute "apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7"
 execute "apt-get -y update"
 execute "apt-get -y install heka"
@@ -52,7 +49,7 @@ yum_package "wget" do
 end
 
 
-remote_file "/usr/bin/gulpd" do
+remote_file "/usr/bin/hekad" do
   source "https://s3-ap-southeast-1.amazonaws.com/megampub/chef/hekad"
   mode '0755'
 end

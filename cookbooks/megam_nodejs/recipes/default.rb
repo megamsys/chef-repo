@@ -109,6 +109,14 @@ execute "npm Install dependencies" do
   ignore_failure true
 end
 
+#==================================================================================
+#GHOST NEED THESE
+#npm install merge-descriptors finalhandler content-disposition depd send etag proxy-addr qs media-typer debug path-to-regexp methods utils-merge parseurl accepts type-is fresh range-parser escape-html on-finished cookie-signature cookie vary serve-static inherits mime generic-pool-redux backbone trigger-then create-error simple-extend inflection 
+
+
+
+
+
 # use upstart when supported to get nice things like automatic respawns
 use_upstart = false
 case node['platform_family']

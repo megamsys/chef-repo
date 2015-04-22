@@ -34,8 +34,8 @@ An example for a opendj role:
 License and Author
 ==================
 
-Author:: Kishore Kumar (<nkishore@megam.co.in>)
-Author:: Thomas Alrin (<alrin@megam.co.in>)
+Author:: Kishore Kumar (<nkishore@megam.io>)
+Author:: Thomas Alrin (<thomasalrin@megam.io>)
 
 Copyright:: 2012, Megam Systems
 
