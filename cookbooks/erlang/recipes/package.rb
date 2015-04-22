@@ -1,11 +1,12 @@
+#
 # Cookbook Name:: erlang
 # Recipe:: default
 # Author:: Joe Williams <joe@joetify.com>
-# Author:: Matt Ray <matt@opscode.com>
+# Author:: Matt Ray <matt@chef.io>
 # Author:: Hector Castro <hector@basho.com>
 #
 # Copyright 2008-2009, Joe Williams
-# Copyright 2011, Opscode Inc.
+# Copyright 2011, Chef Software Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,31 +22,24 @@
 #
 
 case node['platform_family']
-when "debian"
-
-#Erlang package 15 installation
-  erlpkg = node['erlang']['gui_tools'] ? "erlang-x11" : "erlang-nox"
+when 'debian'
+  erlpkg = node['erlang']['gui_tools'] ? 'erlang-x11' : 'erlang-nox'
   package erlpkg
-  package "erlang-dev"
-#=end
+  package 'erlang-dev'
 
-
-when "rhel"
-
-  include_recipe "yum::epel"
-
-  yum_repository "erlang" do
-    name "EPELErlangrepo"
-    url "http://repos.fedorapeople.org/repos/peter/erlang/epel-5Server/$basearch"
-    description "Updated erlang yum repository for RedHat / Centos 5.x - #{node['kernel']['machine']}"
-    action :add
-    only_if { node['platform_version'].to_f >= 5.0 && node['platform_version'].to_f < 6.0 }
+when 'rhel'
+  include_recipe 'yum-epel'
+  case node['platform_version'].to_i
+  when 5
+    yum_repository 'EPELErlangrepo' do
+      description "Updated erlang yum repository for RedHat / Centos 5.x - #{node['kernel']['machine']}"
+      baseurl 'http://repos.fedorapeople.org/repos/peter/erlang/epel-5Server/$basearch'
+      gpgcheck false
+      action :create
+    end
+  else
+    include_recipe 'yum-erlang_solutions'
   end
 
-  package "erlang"
-
-else
-
-  package "erlang"
-
+  package 'erlang'
 end

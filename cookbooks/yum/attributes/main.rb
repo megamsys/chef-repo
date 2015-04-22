@@ -9,6 +9,10 @@ end
 case node['platform']
 when 'amazon'
   default['yum']['main']['distroverpkg'] = 'system-release'
+when 'scientific'
+  default['yum']['main']['distroverpkg'] = 'sl-release'
+when 'redhat'
+  default['yum']['main']['distroverpkg'] = nil
 else
   default['yum']['main']['distroverpkg'] = "#{node['platform']}-release"
 end
@@ -71,8 +75,11 @@ default['yum']['main']['protected_packages'] = nil # /.*/
 default['yum']['main']['proxy'] = nil #  /.*/
 default['yum']['main']['proxy_password'] = nil #  /.*/
 default['yum']['main']['proxy_username'] = nil #  /.*/
+default['yum']['main']['password'] = nil #  /.*/
 default['yum']['main']['recent'] = nil # /^\d+$/
+default['yum']['main']['releasever'] = nil #  /.*/
 default['yum']['main']['repo_gpgcheck'] = nil # [TrueClass, FalseClass]
+default['yum']['main']['reposdir'] = nil #  /.*/
 default['yum']['main']['reset_nice'] = nil # [TrueClass, FalseClass]
 default['yum']['main']['rpmverbosity'] = nil # %w{ info critical# emergency error warn debug }
 default['yum']['main']['showdupesfromrepos'] = nil # [TrueClass, FalseClass]

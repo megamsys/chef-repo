@@ -103,7 +103,7 @@ log.crash.rotation.keep = 5
 ## 
 ## Acceptable values:
 ##   - text
-nodename = riak@<%= `curl icanhazip.com` %>
+nodename = riak@<%= node['riak']['ipp'] %>
 
 ## Cookie for distributed node communication.  All nodes in the
 ## same cluster should use the same cookie or they will not be able to
@@ -143,6 +143,8 @@ erlang.max_ports = 65536
 ## native code that do not bump reductions properly.
 ## More information: http://www.erlang.org/doc/man/erl.html#+sfwi
 ## 
+## Default: 500
+## 
 ## Acceptable values:
 ##   - an integer
 ## erlang.schedulers.force_wakeup_interval = 500
@@ -157,6 +159,8 @@ erlang.max_ports = 65536
 ## schedulers run out of work will not be taken into account by the
 ## load balancing logic.
 ## More information: http://www.erlang.org/doc/man/erl.html#+scl
+## 
+## Default: false
 ## 
 ## Acceptable values:
 ##   - one of: true, false
@@ -199,14 +203,15 @@ erlang.max_ports = 65536
 ## 
 ## Acceptable values:
 ##   - the path to a file
-## ssl.certfile = $(platform_etc_dir)/cert.pem
+ssl.certfile = $(platform_etc_dir)/test_cert.pem
+
 
 ## Default key location for https can be overridden with the ssl
 ## config variable, for example:
 ## 
 ## Acceptable values:
 ##   - the path to a file
-## ssl.keyfile = $(platform_etc_dir)/key.pem
+ssl.keyfile = $(platform_etc_dir)/test_key.pem
 
 ## Default signing authority location for https can be overridden
 ## with the ssl config variable, for example:
@@ -278,7 +283,7 @@ platform_log_dir = /var/log/riak
 ## 
 ## Acceptable values:
 ##   - an IP/port pair, e.g. 127.0.0.1:10011
-listener.http.internal = <%= `curl icanhazip.com` %>:8098
+##listener.http.internal = <%= node['riak']['ipp'] %>:8098
 
 ## listener.protobuf.<name> is an IP address and TCP port that the Riak
 ## Protocol Buffers interface will bind.
@@ -287,7 +292,7 @@ listener.http.internal = <%= `curl icanhazip.com` %>:8098
 ## 
 ## Acceptable values:
 ##   - an IP/port pair, e.g. 127.0.0.1:10011
-listener.protobuf.internal = 127.0.0.1:8087
+listener.protobuf.internal = <%= node['riak']['ipp'] %>:8087
 
 ## The maximum length to which the queue of pending connections
 ## may grow. If set, it must be an integer > 0. If you anticipate a
@@ -305,7 +310,6 @@ listener.protobuf.internal = 127.0.0.1:8087
 ## 
 ## Acceptable values:
 ##   - an IP/port pair, e.g. 127.0.0.1:10011
-## listener.https.internal = 127.0.0.1:8098
 
 ## How Riak will repair out-of-sync keys. Some features require
 ## this to be set to 'active', including search.
@@ -327,7 +331,7 @@ anti_entropy = active
 ## 
 ## Acceptable values:
 ##   - one of: bitcask, leveldb, memory, multi
-storage_backend = 
+storage_backend = leveldb
 
 ## Controls which binary representation of a riak value is stored
 ## on disk.

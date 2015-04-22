@@ -91,8 +91,6 @@ application node[:rails][:app][:name] do
   if node[:rails][:deploy][:ssh_key]
     deploy_key node[:rails][:deploy][:ssh_key]
   end
-  #repository        node[:rails][:deploy][:repository]
-#Repository value is getting from s3 json
   repository        "#{node['megam']['deps']['component']['inputs']['source']}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]

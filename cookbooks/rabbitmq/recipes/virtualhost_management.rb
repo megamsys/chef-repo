@@ -4,7 +4,7 @@
 # Recipe:: virtualhost_management
 #
 # Copyright 2013, Grégoire Seux
-# Copyright 2013, Opscode, Inc.
+# Copyright 2013, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,13 +24,11 @@ include_recipe 'rabbitmq::default'
 node['rabbitmq']['virtualhosts'].each do |virtualhost|
   rabbitmq_vhost virtualhost do
     action :add
-    notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
   end
 end
 
 node['rabbitmq']['disabled_virtualhosts'].each do |virtualhost|
   rabbitmq_vhost virtualhost do
     action :delete
-    notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
   end
 end

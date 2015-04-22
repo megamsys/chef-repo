@@ -30,6 +30,7 @@ platform_etc_dir = "/etc/riak"
 platform_lib_dir = "/usr/lib/riak"
 platform_log_dir = "/var/log/riak"
 
+default['riak']['ipp'] = "#{node['ipaddress']}"
 # vm.args
 #default['riak']['args']['-name'] = "riak@#{`wget http://ipecho.net/plain -O - -q ; echo`}"
 default['riak']['args']['-name'] = "riak@localhost"

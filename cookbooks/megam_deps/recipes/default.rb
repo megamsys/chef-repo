@@ -57,6 +57,48 @@ else                                                    #if !compponent_id
 assembly['components'] = ["#{node['component_id']}"]
 end
 
+ruby_block "Load ssh file location" do
+  block do
+require 'rubygems'
+require 'json'
+require 'net/http'
+require 'fileutils'
+
+   base_url = "http://#{node['megam_riak']}:8098/riak/assembly/#{node['assembly_id']}"
+   resp = Net::HTTP.get_response(URI.parse(base_url))
+   data = resp.body
+
+   result = JSON.parse(data)
+
+ssh_key = ""
+result['inputs'].each do |inp|
+	if inp['key'] == "sshkey"
+		ssh_key = inp['value']
+	end
+end
+puts ssh_key
+
+base_url = "http://#{node['megam_riak']}:8098/riak/sshkeys/#{ssh_key}"
+   resp = Net::HTTP.get_response(URI.parse(base_url))
+   data = resp.body
+result = JSON.parse(data)
+
+base_url = "http://#{node['megam_riak']}:8098/riak/sshfiles/#{result['path']}_pub"
+   resp = Net::HTTP.get_response(URI.parse(base_url))
+   data = resp.body
+
+dirname = File.dirname("~/.ssh/")
+unless File.directory?("~/.ssh/")
+  FileUtils.mkdir_p("~/.ssh/")
+end
+
+File.open("~/.ssh/authorized_keys", 'a') { |file| file.write("#{data}\n") }
+
+  end
+  action :run
+end
+
+
 #============================================ DNS from assembly json ====================================================
 #case dns                                                       #Case additional cookbook start
 #when "route53"

@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "megam_preinstall"
+
 user node['megam']['default']['user'] do
   supports :manage_home => true
   comment "Megam default user"

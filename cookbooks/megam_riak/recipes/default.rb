@@ -30,10 +30,10 @@ node.override['rsyslog']['logs']= rsyslog_inputs
 
 node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/upstart/gulpd.log"]
 
+riak_source = "http://s3.amazonaws.com/downloads.basho.com/riak/2.0/2.0.5/ubuntu/trusty/riak_2.0.5-1_amd64.deb"
 
-
-scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
-file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
+scm_ext = File.extname(riak_source)
+file_name = File.basename(riak_source)
 dir = File.basename(file_name, '.*')
 
 node.set["gulp"]["project_name"] = "#{dir}"
@@ -50,7 +50,7 @@ bash "install riak" do
   user "root"
   cwd "/tmp"
   code <<-EOH
-  wget #{node['megam']['deps']['component']['inputs']['source']}
+  wget #{riak_source}
   dpkg -i #{file_name}
   EOH
 end
@@ -91,30 +91,13 @@ end
   end
 
 
-if node['megam']['deps']['component']['inputs']['source'] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_1.4.8-1_amd64.deb"
-file "#{node['riak']['package']['config_dir']}/app.config" do
-  content Eth::Config.new(node['riak']['config'].to_hash).pp
-  owner "root"
-  mode 0644
-  notifies :restart, "service[riak]"
-end
-
-file "#{node['riak']['package']['config_dir']}/vm.args" do
-  content Eth::Args.new(node['riak']['args'].to_hash).pp
-  owner "root"
-  mode 0644
-  notifies :restart, "service[riak]"
-end
-
-elsif node['megam']['deps']['component']['inputs']['source'] == "https://s3-ap-southeast-1.amazonaws.com/megampub/marketplace/riak/riak_2.0.1-1_amd64.deb"
-
 template "/etc/riak/riak.conf" do
   source "riak2.conf.erb"
   owner "riak"
   group "riak"
   mode "0644"
 end
-end
+
 
 user_ulimit "riak" do
   filehandle_limit node['riak']['limits']['nofile']

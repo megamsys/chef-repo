@@ -2,6 +2,40 @@ build-essential Cookbook CHANGELOG
 ==================================
 This file is used to list changes made in each version of the build-essential cookbook.
 
+v2.2.2 (2015-03-27)
+-------------------
+* Update Solar 10’s omnibus-build-essential to 0.0.5
+
+v2.2.1 (2015-03-23)
+-------------------
+* Install GNU Patch on Solaris 11
+
+v2.2.0 (2015-03-18)
+-------------------
+* [solaris] Differentiate between Solaris 10 and 11
+* [solaris] Add ucb compat package
+* [solaris] Solaris 10 build essential setup
+* Fix metadata to use a string instead of a bool (see #56, #57)
+
+v2.1.3 (2014-11-18)
+-------------------
+* Update metadata for supported versions of OS X (10.7+) as noted from
+  v2.0.0 previously (#38)
+* Clarify requirement to have apt package cache updated in README. (#41)
+* Fix Xcode CLI installation on OS X (#50)
+
+v2.1.2 (2014-10-14)
+-------------------
+* Mac OS X 10.10 Yosemite support
+
+v2.1.0 (2014-10-14)
+-------------------
+* Use fully-qualified names when installing FreeBSD package
+
+v2.0.6 (2014-08-11)
+-------------------
+* Use the resource form of `remote_file` to prevent context issues
+
 v2.0.4 (2014-06-06)
 -------------------
 * [COOK-4661] added patch package to _rhel recipe
@@ -37,13 +71,13 @@ v1.4.4 (2014-02-27)
 v1.4.2
 ------
 ### Bug
-- **[COOK-3318](https://tickets.opscode.com/browse/COOK-3318)** - Use Mixlib::ShellOut instead of Chef::ShellOut
+- **[COOK-3318](https://tickets.chef.io/browse/COOK-3318)** - Use Mixlib::ShellOut instead of Chef::ShellOut
 
 ### New Feature
-- **[COOK-3093](https://tickets.opscode.com/browse/COOK-3093)** - Add OmniOS support
+- **[COOK-3093](https://tickets.chef.io/browse/COOK-3093)** - Add OmniOS support
 
 ### Improvement
-- **[COOK-3024](https://tickets.opscode.com/browse/COOK-3024)** - Use newer package on SmartOS
+- **[COOK-3024](https://tickets.chef.io/browse/COOK-3024)** - Use newer package on SmartOS
 
 v1.4.0
 ------

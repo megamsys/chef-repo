@@ -1,6 +1,9 @@
 yum Cookbook
 ============
 
+[![Cookbook Version](https://img.shields.io/cookbook/v/yum.svg)](https://supermarket.chef.io/cookbooks/yum)
+[![Travis status](http://img.shields.io/travis/chef-cookbooks/yum.svg)](https://travis-ci.org/chef-cookbooks/yum)
+
 The Yum cookbook exposes the `yum_globalconfig` and `yum_repository`
 resources that allows a user to both control global behavior and make
 individual Yum repositories available for use. These resources aim to
@@ -25,16 +28,42 @@ Requirements
 
 Resources/Providers
 -------------------
-
 ### yum_repository
 This resource manages a yum repository configuration file at
 /etc/yum.repos.d/`repositoryid`.repo. When the file needs to be
 repaired, it calls yum-makecache so packages in the repo become
 available to the next resource.
 
+#### Example
+``` ruby
+# add the Zenoss repository
+yum_repository 'zenoss' do
+  description "Zenoss Stable repo"
+  baseurl "http://dev.zenoss.com/yum/stable/"
+  gpgkey 'http://dev.zenoss.com/yum/RPM-GPG-KEY-zenoss'
+  action :create
+end
+
+# add the EPEL repo
+yum_repository 'epel' do
+  description 'Extra Packages for Enterprise Linux'
+  mirrorlist 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=$basearch'
+  gpgkey 'http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6'
+  action :create
+end
+```
+
+``` ruby
+# delete CentOS-Media repo
+yum_repository 'CentOS-Media' do
+  action :delete
+end
+```
+
 #### Actions
 - `:create` - creates a repository file and builds the repository listing
 - `:delete` - deletes the repository file
+- `:makecache` - update yum cache
 
 #### Parameters
 * `baseurl` -  Must be a URL to the directory where the yum repository's
@@ -73,6 +102,8 @@ available to the next resource.
   an empty list.
 * `keepalive` - Either `true` or `false`. This tells yum whether or not
   HTTP/1.1 keepalive should be used with this repository.  
+* `make_cache` - Optional, Default is `true`, if `false` then `yum -q makecache` will not
+  be ran
 * `max_retries` - Set the number of times any attempt to retrieve a file
   should retry before returning an error. Setting this to '0' makes
   yum try forever. Default is '10'.
@@ -101,6 +132,10 @@ available to the next resource.
   find that yum is not downloading the mirrorlists as often as you
   would like lower the value of this option.
 * `mirrorlist_expire` - alias for mirror_expire
+* `mode` - Permissions mode of .repo file on disk. Useful for
+  scenarios where secrets are in the repo file. If set to '600',
+  normal users will not be able to use yum search, yum info, etc.
+  Defaults to '0644'  
 * `priority` - When the yum-priorities plug-in is enabled, you set
   priorities on repository entries, where N is an integer from 1 to 99. The
   default priority for repositories is 99.
@@ -111,6 +146,8 @@ available to the next resource.
   and repositories
 * `repositoryid` - Must be a unique name for each repository, one word.
   Defaults to name attribute.
+* `source` - Use a custom template source instead of the default one
+  in the yum cookbook
 * `sslcacert` - Path to the directory containing the databases of the
   certificate authorities yum should use to verify SSL certificates.
   Defaults to none - uses system default
@@ -123,37 +160,22 @@ available to the next resource.
   out. Defaults to 30 seconds. This may be too short of a time for
   extremely overloaded sites.
 
-#### Example
-``` ruby
-# add the Zenoss repository
-yum_repository 'zenoss' do
-  description "Zenoss Stable repo"
-  baseurl "http://dev.zenoss.com/yum/stable/"
-  gpgkey 'http://dev.zenoss.com/yum/RPM-GPG-KEY-zenoss'
-  action :create
-end
-
-# add the EPEL repo
-yum_repository 'epel' do
-  description 'Extra Packages for Enterprise Linux'
-  mirrorlist 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=$basearch'
-  gpgkey 'http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6'
-  action :create
-end
-```
-
-``` ruby
-# delete CentOS-Media repo
-yum_repository 'CentOS-Media' do
-  action :delete
-end
-```
-
 ### yum_globalconfig
 This renders a template with global yum configuration parameters. The
 default recipe uses it to render `/etc/yum.conf`. It is flexible
 enough to be used in other scenarios, such as building RPMs in
 isolation by modifying `installroot`. 
+
+#### Example
+``` ruby
+yum_globalconfig '/my/chroot/etc/yum.conf' do
+  cachedir '/my/chroot/etc/yum.conf'
+  keepcache 'yes'
+  debuglevel '2'
+  installroot '/my/chroot'
+  action :create
+end
+```
 
 #### Parameters
 `yum_globalconfig` can take most of the same parameters as a
@@ -166,7 +188,7 @@ http://linux.die.net/man/5/yum.conf
   files. The default is '/var/cache/yum'.  
 * `keepcache` - Either `true` or `false`. Determines whether or not
   yum keeps the cache of headers and packages after successful
-  installation. Default is `true` (keep files)
+  installation. Default is `false`
 * `debuglevel` - Debug message output level. Practical range is 0-10.
   Default is '2'.  
 * `exclude` - List of packages to exclude from updates or installs.
@@ -187,17 +209,6 @@ http://linux.die.net/man/5/yum.conf
   it should perform a GPG signature check on the packages gotten from
   this repository.
  
-#### Example
-``` ruby
-yum_globalconfig '/my/chroot/etc/yum.conf' do
-  cachedir '/my/chroot/etc/yum.conf'
-  keepcache 'yes'
-  debuglevel '2'
-  installroot '/my/chroot'
-  action :create
-end
-```
-
 Recipes
 -------
 * `default` - Configures `yum_globalconfig[/etc/yum.conf]` with values
@@ -245,9 +256,9 @@ yum_repository resource.
 License & Authors
 -----------------
 - Author:: Eric G. Wolfe
-- Author:: Matt Ray (<matt@getchef.com>)
-- Author:: Joshua Timberman (<joshua@getchef.com>)
-- Author:: Sean OMeara (<someara@getchef.com>)
+- Author:: Matt Ray (<matt@chef.io>)
+- Author:: Joshua Timberman (<joshua@chef.io>)
+- Author:: Sean OMeara (<someara@chef.io>)
 
 ```text
 Copyright:: 2011 Eric G. Wolfe
