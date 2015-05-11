@@ -8,14 +8,14 @@ node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/v
 
 
 =begin
-scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
-file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
+scm_ext = File.extname(node['megam']['deps']['scm'])
+file_name = File.basename(node['megam']['deps']['scm'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
 =end
-#Static assign. Change this based on node['megam']['deps']['component']['inputs']['source']
+#Static assign. Change this based on node['megam']['deps']['scm']
 dir = "redis"
 
 node.set["gulp"]["project_name"] = "#{dir}"

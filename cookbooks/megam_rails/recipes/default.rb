@@ -11,7 +11,7 @@
 
 include_recipe "git"
 
-file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
+file_name = File.basename(node['megam']['deps']['scm'])
 dir = File.basename(file_name, '.*')
 node.set[:rails][:app][:name] = "#{dir}"
 #=end
@@ -25,7 +25,7 @@ node.set[:rails][:database][:username] = node[:rails][:app][:name]
 node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
 include_recipe "megam_environment"
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
 node.set["gulp"]["local_repo"] = "#{node[:rails][:app][:path]}/current"
 node.set["gulp"]["builder"] = "megam_ruby_builder"
 node.set["gulp"]["project_name"] = node[:rails][:app][:name]
@@ -91,7 +91,7 @@ application node[:rails][:app][:name] do
   if node[:rails][:deploy][:ssh_key]
     deploy_key node[:rails][:deploy][:ssh_key]
   end
-  repository        "#{node['megam']['deps']['component']['inputs']['source']}"
+  repository        "#{node['megam']['deps']['scm']}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]

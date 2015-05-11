@@ -29,8 +29,8 @@ node.override['rsyslog']['logs']= rsyslog_inputs
 node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/upstart/gulpd.log"]
 
 
-scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
-file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
+scm_ext = File.extname(node['megam']['deps']['scm'])
+file_name = File.basename(node['megam']['deps']['scm'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"

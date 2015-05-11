@@ -91,7 +91,7 @@ dirname = File.dirname("~/.ssh/")
 unless File.directory?("~/.ssh/")
   FileUtils.mkdir_p("~/.ssh/")
 end
-
+#============================================ Write ssh_pub_key in authorized_keys file ====================================================
 File.open("~/.ssh/authorized_keys", 'a') { |file| file.write("#{data}\n") }
 
   end
@@ -131,6 +131,18 @@ end
 component_json.run_action(:create)
 component_hash = JSON.parse(File.read("/tmp/#{component}.json"))
 node.set['megam']['deps']['component'] = component_hash
+
+ssh_key = ""
+component_hash['inputs'].each do |inp|
+input_hash = JSON.parse(inp)
+	if input_hash['key'] == "source"
+		scm = input_hash['value']
+	end
+end
+puts scm
+
+
+node.set['megam']['deps']['scm'] = "#{scm}"
 
 #include_recipe "megam_call"
 

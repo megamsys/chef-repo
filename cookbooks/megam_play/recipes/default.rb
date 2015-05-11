@@ -31,14 +31,14 @@ end
 
 include_recipe "git"
 
-scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
-file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
+scm_ext = File.extname(node['megam']['deps']['scm'])
+file_name = File.basename(node['megam']['deps']['scm'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
 node.set["gulp"]["project_name"] = "#{dir}"
 node.set["gulp"]["email"] = "#{node["megam"]["deps"]["account"]["email"]}"
 node.set["gulp"]["api_key"] = "#{node["megam"]["deps"]["account"]["api_key"]}"
@@ -70,7 +70,7 @@ end
 
 execute "Start build script " do
   cwd "#{node["megam"]["user"]["home"]}/#{node["gulp"]["builder"]}/"  
-  command "./build remote_repo=#{node['megam']['deps']['component']['inputs']['source']}"
+  command "./build remote_repo=#{node['megam']['deps']['scm']}"
 end
 
 
