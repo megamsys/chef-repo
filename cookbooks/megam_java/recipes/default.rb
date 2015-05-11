@@ -18,7 +18,7 @@ end
 
 include_recipe "git"
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
 node.set["gulp"]["builder"] = "megam_java_builder"
 
 rsyslog_inputs=[]
@@ -43,8 +43,8 @@ node.set['megam']['nginx']['port'] = "8080"
 #include_recipe "megam_logstash::rsyslog"
 
 
-scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
-file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
+scm_ext = File.extname(node['megam']['deps']['scm'])
+file_name = File.basename(node['megam']['deps']['scm'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
@@ -63,7 +63,7 @@ case scm_ext
 when ".git"
 execute "Clone git " do
   cwd node['megam']['user']['home']
-  command "git clone #{node['megam']['deps']['component']['inputs']['source']}"
+  command "git clone #{node['megam']['deps']['scm']}"
 end
 
 execute "Change mod cloned git" do
@@ -76,7 +76,7 @@ node.set["gulp"]["local_repo"] = "#{node['megam']['user']['home']}/#{dir}"
 when ".zip"
 
 remote_file "#{node['megam']['user']['home']}/#{file_name}" do
-  source node['megam']['deps']['component']['inputs']['source']
+  source node['megam']['deps']['scm']
   mode "0755"
   owner node['megam']['default']['user']
   group node['megam']['default']['user']
@@ -92,7 +92,7 @@ end
 when ".gz" || ".tar"
 
 remote_file "#{node['megam']['user']['home']}/#{file_name}" do
-  source node['megam']['deps']['component']['inputs']['source']
+  source node['megam']['deps']['scm']
   mode "0755"
   owner node['megam']['default']['user']
   group node['megam']['default']['user']
@@ -110,7 +110,7 @@ when ".war"
 
 
 remote_file "#{node['megam']['user']['home']}/#{file_name}" do
-  source node['megam']['deps']['component']['inputs']['source']
+  source node['megam']['deps']['scm']
   mode "0755"
   owner node['megam']['default']['user']
   group node['megam']['default']['user']

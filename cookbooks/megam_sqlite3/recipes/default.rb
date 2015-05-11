@@ -8,7 +8,7 @@
 #
 
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['component']['inputs']['source']
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']

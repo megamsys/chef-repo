@@ -16,8 +16,8 @@ node.override['rsyslog']['logs']= rsyslog_inputs
 node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/gulpd.log"]
 
 
-scm_ext = File.extname(node['megam']['deps']['component']['inputs']['source'])
-file_name = File.basename(node['megam']['deps']['component']['inputs']['source'])
+scm_ext = File.extname(node['megam']['deps']['scm'])
+file_name = File.basename(node['megam']['deps']['scm'])
 dir = File.basename(file_name, '.*')
 
 node.set["gulp"]["project_name"] = "#{dir}"
@@ -31,7 +31,7 @@ include_recipe "megam_environment"
 directory "#{node['megam']['user']['home']}/op5"
 
 remote_file "#{node['megam']['user']['home']}/op5/#{file_name}" do
-  source node['megam']['deps']['component']['inputs']['source']
+  source node['megam']['deps']['scm']
   mode "0755"
    owner node['megam']['default']['user']
   group node['megam']['default']['user']
