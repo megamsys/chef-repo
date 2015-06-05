@@ -53,10 +53,44 @@ end
 assembly_json.run_action(:create)
 assembly = JSON.parse(File.read("/tmp/assembly.json"))
 
+
+
 else                                                    #if !compponent_id
 assembly['components'] = ["#{node['component_id']}"]
 end
 
+
+#============================================WRITE IP in assembly json ====================================================
+ruby_block "Update Riak With IPADDRESS" do
+  block do
+require 'socket'
+
+def my_first_private_ipv4
+  Socket.ip_address_list.detect{|intf| intf.ipv4_private?}
+end
+
+def my_first_public_ipv4
+  Socket.ip_address_list.detect{|intf| intf.ipv4? and !intf.ipv4_loopback? and !intf.ipv4_multicast? and !intf.ipv4_private?}
+end
+
+ip= my_first_private_ipv4.ip_address unless my_first_private_ipv4.nil?
+
+output_ip = {"key"=>"ip", "value"=>"#{ip}"}
+
+assembly["outputs"].push(output_ip)
+
+json_assembly = assembly.to_json
+
+
+`curl -d '#{json_assembly}' http://#{node['megam_riak']}:8098/riak/assembly/#{node['assembly_id']}`
+
+  end
+  action :run
+end
+
+
+#=begin
+#============================================WRITE SSH_PUB_KEY ====================================================
 ruby_block "Load ssh file location" do
   block do
 require 'rubygems'
@@ -68,6 +102,9 @@ require 'fileutils'
    resp = Net::HTTP.get_response(URI.parse(base_url))
    data = resp.body
 
+puts "===========> Data ===============> "
+puts data.class
+puts data.inspect
    result = JSON.parse(data)
 
 ssh_key = ""
@@ -76,7 +113,7 @@ result['inputs'].each do |inp|
 		ssh_key = inp['value']
 	end
 end
-puts ssh_key
+
 
 base_url = "http://#{node['megam_riak']}:8098/riak/sshkeys/#{ssh_key}"
    resp = Net::HTTP.get_response(URI.parse(base_url))
@@ -87,17 +124,16 @@ base_url = "http://#{node['megam_riak']}:8098/riak/sshfiles/#{result['path']}_pu
    resp = Net::HTTP.get_response(URI.parse(base_url))
    data = resp.body
 
-dirname = File.dirname("~/.ssh/")
-unless File.directory?("~/.ssh/")
-  FileUtils.mkdir_p("~/.ssh/")
+unless File.directory?("/root/.ssh/")
+  FileUtils.mkdir_p("/root/.ssh/")
 end
 #============================================ Write ssh_pub_key in authorized_keys file ====================================================
-File.open("~/.ssh/authorized_keys", 'a') { |file| file.write("#{data}\n") }
+File.open("/root/.ssh/authorized_keys", 'a') { |file| file.write("#{data}\n") }
 
   end
   action :run
 end
-
+#=end
 
 #============================================ DNS from assembly json ====================================================
 #case dns                                                       #Case additional cookbook start
@@ -121,6 +157,10 @@ node.set['megam']['deps']['assembly'] = assembly['components']
 #============================================Component Json ====================================================
 node['megam']['deps']['assembly'].each do |component|                      #For each components start
 
+
+
+if component != nil && component != ""
+
 component_json = remote_file "/tmp/#{component}.json" do
   source "http://#{node['megam_riak']}:8098/riak/components/#{component}"
   mode "0755"
@@ -133,22 +173,26 @@ component_hash = JSON.parse(File.read("/tmp/#{component}.json"))
 node.set['megam']['deps']['component'] = component_hash
 
 ssh_key = ""
+scm = ""
+
+
 component_hash['inputs'].each do |inp|
-input_hash = JSON.parse(inp)
-	if input_hash['key'] == "source"
-		scm = input_hash['value']
+
+	if inp['key'] == "source"
+		scm = inp['value']
 	end
 end
-puts scm
 
 
 node.set['megam']['deps']['scm'] = "#{scm}"
 
 #include_recipe "megam_call"
 
+node.set['megam']['deps']['component']['name'] = "#{node.name}"
+
 call "Call cookbook for component #{component}" do
 end
-
+end
 end                                                             #For each components end
 
 

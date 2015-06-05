@@ -23,10 +23,10 @@ include_recipe 'megam_nodejs::nodejs'
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log")
+rsyslog_inputs.push("/var/log/upstart/nodejs.log", "/var/log/megam/megamgulpd/megamgulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
 
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/nodejs.log", "/var/log/upstart/gulpd.log"]
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/nodejs.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
 
 
@@ -42,11 +42,11 @@ if scm_ext.empty?
 end
 
 #Megam change Get js files which should be run to start the application
-if "#{node['megam']['deps']['component']['operations']['operation_type']}".length > 0
-js_file = "#{node['megam']['deps']['component']['operations']['operation_type']}".split.last
-else 
+#if "#{node['megam']['deps']['component']['operations']['operation_type']}".length > 0
+#js_file = "#{node['megam']['deps']['component']['operations']['operation_type']}".split.last
+#else 
 js_file = "index.js"
-end
+#end
 
 #SET JS FILE TO BE RUN
 node.set['nodejs']['js-file'] = "#{js_file}"

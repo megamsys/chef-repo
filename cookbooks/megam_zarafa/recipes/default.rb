@@ -24,10 +24,10 @@ end
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/upstart/gulpd.log")
+rsyslog_inputs.push("/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/megam/megamgulpd/megamgulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
 
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/upstart/gulpd.log"]
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
 #Temporary assignment
 #node.set["megam_deps"]["predefs"]["scm"] = "#{node['zarafa']['url']}"
