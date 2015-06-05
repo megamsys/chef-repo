@@ -9,14 +9,14 @@
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/upstart/docker.log", "/var/log/upstart/gulpd.log")
+rsyslog_inputs.push("/var/log/upstart/docker.log", "/var/log/megam/megamgulpd/megamgulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
 
 node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
 node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 node.set["gulp"]["project_name"] = "docker"
 
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/docker.log", "/var/log/upstart/gulpd.log"]
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/docker.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
 yum_package "docker" do
   action :install

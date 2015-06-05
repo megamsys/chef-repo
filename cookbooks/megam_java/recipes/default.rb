@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-
+=begin
 package "openjdk-7-jre" do
         action :install
 end
@@ -15,6 +15,7 @@ end
 package "openjdk-7-jdk" do
         action :install
 end
+=end
 
 include_recipe "git"
 
@@ -23,10 +24,10 @@ node.set["gulp"]["builder"] = "megam_java_builder"
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/upstart/gulpd.log")
+rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/megam/megamgulpd/megamgulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
 
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/upstart/gulpd.log"]
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
 #beaver sends logs to rabbitmq server. Rabbitmq-url.  Megam Change
 #node.set['logstash']['beaver']['inputs'] = node['logstash']['beaver']['inputs']

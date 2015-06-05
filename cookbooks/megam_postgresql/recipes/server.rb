@@ -22,16 +22,16 @@ node.set["gulp"]["project_name"] = "postgresql"
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/postgresql/*.log", "/var/log/upstart/gulpd.log")
+rsyslog_inputs.push("/var/log/postgresql/*.log", "/var/log/megam/megamgulpd/megamgulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
 
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/postgresql/*.log", "/var/log/upstart/gulpd.log"]
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/postgresql/*.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
 
-node.set[:postgresql][:dbname] = node['megam']['deps']['component']['inputs']['service_inputs']['dbname']
-node.set[:postgresql][:password][:postgres] = node['megam']['deps']['component']['inputs']['service_inputs']['dbpassword']
-node.set[:postgresql][:db_main_user] = node['megam']['deps']['component']['inputs']['username']
-node.set[:postgresql][:db_main_user_pass] = node['megam']['deps']['component']['inputs']['password']
+#node.set[:postgresql][:dbname] = node['megam']['deps']['component']['inputs']['service_inputs']['dbname']
+#node.set[:postgresql][:password][:postgres] = node['megam']['deps']['component']['inputs']['service_inputs']['dbpassword']
+#node.set[:postgresql][:db_main_user] = node['megam']['deps']['component']['inputs']['username']
+#node.set[:postgresql][:db_main_user_pass] = node['megam']['deps']['component']['inputs']['password']
 
 
 

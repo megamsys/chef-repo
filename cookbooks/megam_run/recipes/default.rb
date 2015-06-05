@@ -12,7 +12,7 @@
 include_recipe "megam_preinstall"
 
 #add megam user
-#include_recipe "megam_preinstall::account"
+include_recipe "megam_preinstall::account"
 
 #Condition Which dns has to be used?
 #include_recipe "megam_dns::route53"                     #Default

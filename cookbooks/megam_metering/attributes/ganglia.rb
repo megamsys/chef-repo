@@ -1,19 +1,34 @@
 default[:ganglia][:version] = "3.1.7"
 default[:ganglia][:uri] = "http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.1.7/ganglia-3.1.7.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fganglia%2Ffiles%2Fganglia%2520monitoring%2520core%2F3.1.7%2F&ts=1397215464&use_mirror=kaz"
 default[:ganglia][:checksum] = "bb1a4953"
-default[:ganglia][:grid_name] = "megampaas"
-default[:ganglia][:cluster_name] = "megampaas"
+default[:ganglia][:grid_name] = "megamiaas"
+default[:ganglia][:cluster_name] = "megamiaas"
 default[:ganglia][:unicast] = true
-default[:ganglia][:server_role] = "162.248.141.53"
+default[:ganglia][:server_role] = "192.168.1.101"
 default[:ganglia][:user] = "nobody"
 default[:ganglia][:rrd_rootdir] = "/var/lib/ganglia/rrds"
 default[:ganglia][:gmetad][:xml_port] = 8651
 default[:ganglia][:gmetad][:interactive_port] = 8652
 default[:gagnlia][:spoof_hostname] = true
 
+
+require 'socket'
+
+def my_first_private_ipv4
+  Socket.ip_address_list.detect{|intf| intf.ipv4_private?}
+end
+
+def my_first_public_ipv4
+  Socket.ip_address_list.detect{|intf| intf.ipv4? and !intf.ipv4_loopback? and !intf.ipv4_multicast? and !intf.ipv4_private?}
+end
+
+ip= my_first_private_ipv4.ip_address unless my_first_private_ipv4.nil?
+
+
 default[:ganglia][:hostname] = "#{node.name}"
 #default[:ganglia][:ip] = "#{`wget http://ipecho.net/plain -O - -q ; echo`}"
-default[:ganglia][:ip] = "localhost"
+#default[:ganglia][:ip] = "localhost"
+default[:ganglia][:ip] = "#{ip}"
 
 # port assignments for each cluster
 # you should overwrite this with your own cluster list in a wrapper cookbook.
@@ -21,7 +36,7 @@ default[:ganglia][:ip] = "localhost"
 # * don't use port 8649
 # * don't put spaces in cluster names
 default[:ganglia][:clusterport] = {
-                                    "megampaas"       => 18649
+                                    "megamiaas"       => 8649
                                   }
 #default['ganglia']['clusterport']['default'] = 18649
 # this is set on the host to determine which cluster it should join
@@ -29,7 +44,7 @@ default[:ganglia][:clusterport] = {
 # that have a value of 1.  If a machine is part of two clusters,
 # it will show up in both. If this isn't overridden in the role,
 # it'll show up in the default cluster.
-default[:ganglia][:host_cluster] = {"megampaas" => 1}
+default[:ganglia][:host_cluster] = {"megamiaas" => 1}
 
 # attributes relevant to rrdcached
 default[:ganglia][:enable_rrdcached] = true

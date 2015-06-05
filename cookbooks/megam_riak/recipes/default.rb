@@ -25,10 +25,10 @@ node.set["gulp"]["project_name"] = "riak"
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/upstart/gulpd.log")
+rsyslog_inputs.push("/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/megam/megamgulpd/megamgulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
 
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/upstart/gulpd.log"]
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
 riak_source = "http://s3.amazonaws.com/downloads.basho.com/riak/2.0/2.0.5/ubuntu/trusty/riak_2.0.5-1_amd64.deb"
 

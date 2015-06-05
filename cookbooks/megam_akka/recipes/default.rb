@@ -27,10 +27,10 @@ include_recipe "git"
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log")
+rsyslog_inputs.push("/var/log/upstart/akka.log", "/var/log/megam/megamgulpd/megamgulpd.log")
 node.override['rsyslog']['logs']= rsyslog_inputs
 
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/akka.log", "/var/log/upstart/gulpd.log"]
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/akka.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
 scm_ext = File.extname(node['megam']['deps']['scm'])
 file_name = File.basename(node['megam']['deps']['scm'])

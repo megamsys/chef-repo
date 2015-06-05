@@ -5,7 +5,7 @@ default["gulp"]["project_name"] = "megam_project"
 default["gulp"]["email"] = "sandy@megamsandbox.com"
 default["gulp"]["api_key"] = "IamAtlas{74}NobodyCanSeeME#07"
 
-default['gulp']['log'] = "/var/log/upstart/gulpd.log"
+default['gulp']['log'] = "/var/log/megam/megamgulpd/megamgulpd.log"
 default['gulp']['asm_id'] = "#{node['assembly_id']}"
 
 
