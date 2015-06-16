@@ -7,21 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-=begin
-bash "Install gulpd" do
-   code <<-EOH
-  add-apt-repository 'deb [arch=amd64] http://get.megam.io/0.8/ubuntu/14.04/ testing megam'
-  apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7
-  apt-get update
-  apt-get -y install megamgulpd
-  EOH
-end
-=end
 
-
-template "#{node['megam']['user']['conf']}/gulpd.conf" do
-  source "gulpd.conf.erb"
-end
 
 case node[:platform]
 
@@ -29,12 +15,16 @@ case node[:platform]
 when "debian", "ubuntu"
 
 #MEGAM IAAS Image already installed with heka
-=begin
-execute "add-apt-repository 'deb [arch=amd64] http://get.megam.io/0.8/ubuntu/14.04/ testing megam'"
-execute "apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7"
+#=begin
+#execute "add-apt-repository 'deb [arch=amd64] http://get.megam.io/0.8/ubuntu/14.04/ testing megam'"
+#execute "apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7"
 execute "apt-get -y update"
 execute "apt-get -y install megamgulpd"
-=end
+#=end
+
+template "/usr/share/megam/megamgulpd/conf/gulpd.conf" do
+  source "gulpd.conf.erb"
+end
 
 when "redhat", "centos", "fedora"
 

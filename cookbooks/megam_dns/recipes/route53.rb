@@ -9,8 +9,8 @@
 
 keys = data_bag_item('ec2', 'keys')
 
-remote_file "#{node['megam']['user']['home']}/bin/seru.zip" do
-  source "https://s3-ap-southeast-1.amazonaws.com/megampub/0.5/zip/seru.zip"
+remote_file "#{node['megam']['user']['home']}/bin/seru.tar.gz" do
+  source "https://s3-ap-southeast-1.amazonaws.com/megampub/chef/seru.tar.gz"
     owner node['megam']['default']['user']
   group node['megam']['default']['user']
 end
@@ -23,9 +23,9 @@ bash "Unzip seru" do
 cwd "#{node['megam']['user']['home']}/bin"
   user node['megam']['default']['user']
    code <<-EOH
-  unzip seru.zip
+  tar -xvf seru.tar.gz
   chmod 0755 seru
-  rm seru.zip
+  rm seru.tar.gz
   EOH
 end
 
@@ -35,6 +35,6 @@ execute "route53 create record " do
   cwd "#{node['megam']['user']['home']}/bin"  
   user "root"
   group "root"
-  command "./seru create  --accesskey #{keys['access_key']} --secretid #{keys['secret_key']} --subdomain #{node['megam']['dns']['name']} --domain megam.co. --ipaddress #{node['megam']['dns']['ip']}"
+  command "./seru create  --accesskey #{keys['access_key']} --secretid #{keys['secret_key']} --subdomain #{node['megam']['dns']['name']} --domain megambox.com. --ipaddress #{node['megam']['dns']['ip']}"
 end
 

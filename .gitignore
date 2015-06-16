@@ -4,6 +4,7 @@
 
 #ignore data_bags
 data_bags/
+.chef/syntaxcache/
 
 # emacs
 *~
@@ -34,3 +35,5 @@ _yardoc
 doc/
 .kitchen/
 .kitchen.local.yml
+
+delete.sh

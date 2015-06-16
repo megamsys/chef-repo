@@ -118,7 +118,7 @@ remote_file "#{node['megam']['user']['home']}/#{file_name}" do
 end
 
 else
-	puts "ELSE"
+	puts "Not a git, war, tar or zip file"
 end #case
 
 unless scm_ext == ".war"

@@ -30,7 +30,7 @@ node.override['rsyslog']['logs']= rsyslog_inputs
 
 node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
-riak_source = "http://s3.amazonaws.com/downloads.basho.com/riak/2.0/2.0.5/ubuntu/trusty/riak_2.0.5-1_amd64.deb"
+riak_source = "http://s3.amazonaws.com/downloads.basho.com/riak/2.1/2.1.1/ubuntu/trusty/riak_2.1.1-1_amd64.deb"
 
 scm_ext = File.extname(riak_source)
 file_name = File.basename(riak_source)

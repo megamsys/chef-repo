@@ -203,15 +203,14 @@ erlang.max_ports = 65536
 ## 
 ## Acceptable values:
 ##   - the path to a file
-ssl.certfile = $(platform_etc_dir)/test_cert.pem
-
+## ssl.certfile = $(platform_etc_dir)/cert.pem
 
 ## Default key location for https can be overridden with the ssl
 ## config variable, for example:
 ## 
 ## Acceptable values:
 ##   - the path to a file
-ssl.keyfile = $(platform_etc_dir)/test_key.pem
+## ssl.keyfile = $(platform_etc_dir)/key.pem
 
 ## Default signing authority location for https can be overridden
 ## with the ssl config variable, for example:
@@ -283,7 +282,7 @@ platform_log_dir = /var/log/riak
 ## 
 ## Acceptable values:
 ##   - an IP/port pair, e.g. 127.0.0.1:10011
-##listener.http.internal = <%= node['riak']['ipp'] %>:8098
+listener.http.internal = <%= node['riak']['ipp'] %>:8098
 
 ## listener.protobuf.<name> is an IP address and TCP port that the Riak
 ## Protocol Buffers interface will bind.
@@ -310,6 +309,7 @@ listener.protobuf.internal = <%= node['riak']['ipp'] %>:8087
 ## 
 ## Acceptable values:
 ##   - an IP/port pair, e.g. 127.0.0.1:10011
+## listener.https.internal = 127.0.0.1:8098
 
 ## How Riak will repair out-of-sync keys. Some features require
 ## this to be set to 'active', including search.
@@ -330,8 +330,15 @@ anti_entropy = active
 ## Default: bitcask
 ## 
 ## Acceptable values:
-##   - one of: bitcask, leveldb, memory, multi
+##   - one of: bitcask, leveldb, memory, multi, prefix_multi
 storage_backend = leveldb
+
+## Simplify prefix_multi configuration for Riak CS. Keep this
+## commented out unless Riak is configured for Riak CS.
+## 
+## Acceptable values:
+##   - an integer
+## cs_version = 20000
 
 ## Controls which binary representation of a riak value is stored
 ## on disk.
@@ -490,4 +497,3 @@ search.solr.jmx_port = 8985
 ## Acceptable values:
 ##   - text
 search.solr.jvm_options = -d64 -Xms1g -Xmx1g -XX:+UseStringCache -XX:+UseCompressedOops
-

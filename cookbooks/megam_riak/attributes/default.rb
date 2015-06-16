@@ -166,7 +166,7 @@ default['riak']['config']['riak_control']['userlist'] = [["user".to_erl_string,"
 default['riak']['config']['riak_control']['admin'] = true
 
 # limits
-default['riak']['limits']['nofile'] = 4096
+default['riak']['limits']['nofile'] = 65536
 
 #patches
 default['riak']['patches'] = []
