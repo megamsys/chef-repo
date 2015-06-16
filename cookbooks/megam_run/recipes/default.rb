@@ -15,7 +15,7 @@ include_recipe "megam_preinstall"
 include_recipe "megam_preinstall::account"
 
 #Condition Which dns has to be used?
-#include_recipe "megam_dns::route53"                     #Default
+include_recipe "megam_dns::route53"                     #Default
 
 #Get asembly json and include recipes ased on the component json
 include_recipe "megam_deps"

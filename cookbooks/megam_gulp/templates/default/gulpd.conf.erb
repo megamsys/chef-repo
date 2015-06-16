@@ -1,38 +1,15 @@
-use-tls: false
-tls-cert-file: /path/to/cert.pem
-tls-key-file: /path/to/key.pem
-MEGAM_HOME: /var/lib/megam/
-update_queue: <%= node.name.split(".").first %>
-docker_queue: Docker.<%= node.name %>
-id: <%= node["gulp"]["asm_id"] %>
-name: <%= node.name %>
-
-etcd:
-  path: http://<%= node['megam_etcd']%>:4001
-  networkpath: <%= node['megam_etcd']%>:4001
-  directory: megam 
-
-geard:
-  host: localhost:43273
-
+megam_home: /var/lib/megam/
+account_id: <%= node['accounts_id'] %>
+name: cropping
+id: <%= node['assembly_id'] %>
 riak:
   url: <%= node['megam_riak'] %>:8087
-  bucket: appreqs
-scm:
-  project: <%= node["gulp"]["project_name"] %>
-  builder: <%= node["gulp"]["builder"] %>
-  local_repo: <%= node["gulp"]["local_repo"] %>
-  remote_repo: <%= node["gulp"]["remote_repo"] %>
-  bucket-support: false
-
+  bucket: catreqs
 api:
-  server: https://<%= node['megam_riak'] %>
-  email: <%= node["gulp"]["email"] %>
-  api_key: <%= node["gulp"]["api_key"] %>
+  host: <%= node['megam_riak'] %>
 amqp:
-  url: amqp://guest:guest@<%= node['rabbitmq_host'] %>:5672/
-  exchange: megam_<%= node.name %>_exchange
-  queue: megam_<%= node.name %>_queue
+  url: amqp://guest:guest@<%= node['megam_rabbitmq'] %>:5672/
+  exchange: megam_reapportions.megam.co_exchange
+  queue: megam_reapportions.megam.co_queue
   consumerTag: megam_node_consumer
   routingkey: megam_key
-

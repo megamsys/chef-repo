@@ -203,7 +203,7 @@ end #end for if condition
     service node['rabbitmq']['service_name'] do
       provider Chef::Provider::Service::Upstart
       action [:enable, :start]
-      # restart_command "stop #{node['rabbitmq']['service_name']} && start #{node['rabbitmq']['service_name']}"
+      restart_command "stop #{node['rabbitmq']['service_name']} && start #{node['rabbitmq']['service_name']}"
     end
   
 
