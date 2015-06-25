@@ -9,6 +9,9 @@
 
 #Here we use cokbooks common for a vm(Assembly)
 #Install dependencies (apt-get update)
+
+`sed -i -- 's/get.megam.io\\/0.8/get.megam.io\\/0.9/g' /etc/apt/sources.list`
+
 include_recipe "megam_preinstall"
 
 #add megam user
@@ -26,7 +29,7 @@ include_recipe "megam_logging::heka"
 
 case node[:platform]
 when "debian", "ubuntu"
-include_recipe "megam_logging::rsyslog"
+#include_recipe "megam_logging::rsyslog"
 include_recipe "megam_metering::ganglia" 
 end
 =begin
