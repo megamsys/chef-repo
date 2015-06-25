@@ -164,5 +164,5 @@ end
 
 
 execute "Restart Rsyslog" do
-  command "sudo service rsyslog restart"
+  command "service rsyslog restart"
 end

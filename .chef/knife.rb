@@ -9,8 +9,3 @@ chef_server_url		"https://192.168.1.101"
 cookbook_path ["#{current_dir}/../cookbooks"]
 ssl_verify_mode :verify_none
 
-knife[:opennebula_username] = "oneadmin"
-
-knife[:opennebula_password] = "yib4OquafUp1"
-
-knife[:opennebula_endpoint] = "http://192.168.1.100:2633/RPC2"
