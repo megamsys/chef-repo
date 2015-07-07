@@ -10,7 +10,12 @@
 #Here we use cokbooks common for a vm(Assembly)
 #Install dependencies (apt-get update)
 
+case node[:platform]
+when "ubuntu"
 `sed -i -- 's/get.megam.io\\/0.8/get.megam.io\\/0.9/g' /etc/apt/sources.list`
+when "debian",
+`sed -i -- 's/get.megam.io\\/0.8/get.megam.io\\/0.9/g' /etc/apt/sources.list.d/megam.list`
+end
 
 include_recipe "megam_preinstall"
 

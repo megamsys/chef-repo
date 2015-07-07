@@ -29,5 +29,7 @@ recommends "megam_op5"
 recommends "megam_zarafa"
 recommends "megam_wordpress"
 
+recommends "megam_analytics"
+
 recommends "megam_backup"
 recommends "megam_drbd"
