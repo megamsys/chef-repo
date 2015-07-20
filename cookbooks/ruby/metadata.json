@@ -1,0 +1,58 @@
+{
+  "name": "ruby",
+  "version": "0.9.3",
+  "description": "Installs Ruby and related packages",
+  "long_description": "",
+  "maintainer": "Chef Software, Inc.",
+  "maintainer_email": "cookbooks@chef.io",
+  "license": "Apache 2.0",
+  "platforms": {
+    "centos": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "arch": ">= 0.0.0",
+    "gentoo": ">= 0.0.0",
+    "oracle": ">= 0.0.0",
+    "amazon": ">= 0.0.0",
+    "scientific": ">= 0.0.0"
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "languages/ruby/default_version": {
+      "display_name": "Default Ruby version",
+      "recipes": [
+        "ruby",
+        "symlinks"
+      ],
+      "choice": [
+        "1.8",
+        "1.9",
+        "1.9.1"
+      ],
+      "default": "1.8",
+      "description": "The Ruby version to install with the ruby recipe and create symlinks for with the symlinks recipe. Unfortunately this setting only works fully on Ubuntu, Debian and Gentoo."
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "ruby": "Installs Ruby and related packages",
+    "1.8": "Installs Ruby 1.8 and related packages",
+    "1.9": "Installs Ruby 1.9 and related packages",
+    "1.9.1": "Installs Ruby 1.9.1 and related packages",
+    "symlinks": "Installs symlinks for the default Ruby version"
+  }
+}

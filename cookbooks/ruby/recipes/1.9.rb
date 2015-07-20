@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: application_ruby
-# Resource:: memcached
+# Cookbook Name:: ruby
+# Recipe:: 1.9
 #
-# Copyright:: 2012, Opscode, Inc <legal@opscode.com>
+# Copyright 2010, FindsYou Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,13 +17,4 @@
 # limitations under the License.
 #
 
-include ApplicationCookbook::ResourceBase
-
-attribute :role, :kind_of => [String, NilClass], :default => nil
-# Actually defaults to "memcached.yml.erb", but nil means it wasn't set by the user
-attribute :memcached_template, :kind_of => [String, NilClass], :default => nil
-
-def options(*args, &block)
-  @options ||= Mash.new
-  @options.update(options_block(*args, &block))
-end
+ruby_packages "1.9"

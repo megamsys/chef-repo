@@ -18,13 +18,13 @@
 # limitations under the License.
 #
 
-include Chef::DSL::IncludeRecipe
+include Chef::Mixin::LanguageIncludeRecipe
 
 action :before_compile do
 
   include_recipe 'nginx'
 
-  new_resource.application_server_role "#{new_resource.application.name}_application_server" #unless new_resource.application_server_role
+  new_resource.application_server_role "#{new_resource.application.name}_application_server" unless new_resource.application_server_role
 
   static_files = new_resource.static_files.inject({}) do |files, (url, path)|
     files[url] = ::File.expand_path(path, ::File.join(new_resource.application.path, "current"))
@@ -42,7 +42,10 @@ action :before_deploy do
     owner "root"
     group "root"
     mode "644"
-    variables :resource => new_resource, :hosts => new_resource.server_name
+    variables(:resource => new_resource,
+              :hosts => process_hosts(new_resource.hosts || new_resource.find_matching_role(new_resource.application_server_role, false)),
+              :application_socket => Array(new_resource.application_socket)
+             )
     notifies :reload, resources(:service => 'nginx')
   end
 
@@ -66,3 +69,17 @@ end
 action :after_restart do
 end
 
+
+#protected
+
+def process_hosts(nodes)
+  nodes.map do |n|
+    if n.is_a?(String)
+      n
+    elsif n.attribute?('cloud')
+      n['cloud']['local_ipv4']
+    else
+      n['ipaddress']
+    end
+  end
+end

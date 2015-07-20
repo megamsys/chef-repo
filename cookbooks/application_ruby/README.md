@@ -58,7 +58,7 @@ Bundler will be run with:
 - bundle_command: The command to execute when calling bundler commands.  Useful for specifing alternate commands such as RVM wrappers.  Defaults to `bundle`.
 - bundler_deployment: if true, Bundler will be run with the `--deployment` options. Defaults to true if a `Gemfile.lock` is present
 - bundler\_without\_groups: an Array of additional Bundler groups to skip
-- database\_master\_role: if a role name is provided, a Chef search will be run to find a node with than role in the same environment as the current role. If a node is found, its IP address will be used when rendering the `database.yml` file, but see the "Database block parameters" section below
+- database\_master\_role: if a role name is provided, a Chef search will be run to find a node with the role in the same environment as the current role. If a node is found, its IP address will be used when rendering the `database.yml` file, but see the "Database block parameters" section below
 - database\_template: the name of the template that will be rendered to create the `database.yml` file; if specified it will be looked up in the application cookbook. Defaults to "database.yml.erb" from this cookbook
 - database: a block containing additional parameters for configuring the database connection
 - precompile\_assets: if true, precompile assets for the Rails 3 asset pipeline. The default is nil, in which case we will try to autodetect whether the pipeline is in use by looking for `config/assets.yml`
@@ -88,9 +88,20 @@ The `unicorn` sub-resource LWRP configures Unicorn to run the application.
 - bundler: if true, Unicorn will be run with `bundle exec`; if false it will be installed and run from the default gem path. Defaults to inheriting this setting from the rails LWRP
 - preload_app: passed to the `unicorn_config` LWRP
 - worker_processes: passed to the `unicorn_config` LWRP
+- before_exec: passed to the `unicorn_config` LWRP
 - before_fork: passed to the `unicorn_config` LWRP
+- after_fork: passed to the `unicorn_config` LWRP
 - port: passed to the `unicorn_config` LWRP
+- listen: passed to the `unicorn_config` LWRP; overrides port
 - worker_timeout: passed to the `unicorn_config` LWRP
+- forked_user: passed to the `unicorn_config` LWRP
+- forked_group: passed to the `unicorn_config` LWRP
+- pid: passed to the `unicorn_config` LWRP
+- stderr_path: passed to the `unicorn_config` LWRP
+- stdout_path: passed to the `unicorn_config` LWRP
+- unicorn_command_line: passed to the `unicorn_config` LWRP
+- copy_on_write: passed to the `unicorn_config` LWRP
+- enable_stats: passed to the `unicorn_config` LWRP
 
 memcached
 ---------
@@ -99,7 +110,7 @@ The `memcached` sub-resource LWRP manages configuration for a Rails-compatible M
 
 # Attribute Parameters
 
-- role: a Chef search will be run to find a node with than role in the same environment as the current node. If a node is found, its IP address will be used when rendering the `memcached.yml` file.
+- role: a Chef search will be run to find a node with the role in the same environment as the current node. If a node is found, its IP address will be used when rendering the `memcached.yml` file.
 - options: a block containing additional parameters for configuring the memcached client
 
 Usage
@@ -110,7 +121,7 @@ A sample application that needs a database connection:
     application "redmine" do
       path "/usr/local/www/redmine"
 
-      rails do 
+      rails do
         database do
           database "redmine"
           username "redmine"

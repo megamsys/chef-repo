@@ -1,11 +1,12 @@
 upstream <%= @resource.application.name %> {
-  <% if @resource.application_port.match("sock$") -%>
-    server unix:<%= @resource.application_port %>;
-  <% else -%>
-  <% @hosts.each do |node| %>
-  server <%= node.attribute?('cloud') ? node['cloud']['local_ipv4'] : node['ipaddress'] %>:<%= @resource.application_port %>;
-  <% end %>
+  <% unless @application_socket.empty? -%>
+    <% @application_socket.each do |socket_name| -%>
+  server unix:<%= socket_name %>;
+    <% end -%>
   <% end -%>
+  <% @hosts.each do |node| %>
+  server <%= node %>:<%= @resource.application_port %>;
+  <% end %>
 }
 
 server {
@@ -23,5 +24,10 @@ server {
   <% end %>
   location / {
     proxy_pass http://<%= @resource.application.name %>;
+    <% if @resource.set_host_header %>
+    proxy_set_header   Host             $host;
+    proxy_set_header   X-Real-IP        $remote_addr;
+    proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+    <% end %>
   }
 }

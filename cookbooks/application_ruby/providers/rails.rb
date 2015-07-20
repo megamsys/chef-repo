@@ -9,7 +9,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,14 +30,26 @@ action :before_compile do
     new_resource.migration_command command
   end
 
-  new_resource.environment.update({
+  new_resource.environment.merge!({
     "RAILS_ENV" => new_resource.environment_name,
-    "PATH" => [Gem.default_bindir, ENV['PATH']].join(':')
-  })
+  }) { |k, v1, v2| v1 }  # user's environment settings will override
+
+  if new_resource.use_omnibus_ruby
+    Chef::Log.warn("Tying your Application to the Chef Omnibus Ruby is not recommended.")
+    new_resource.environment.merge!({
+      "PATH" => [Gem.default_bindir, ENV['PATH']].join(':')
+    }) { |k, v1, v2| v1 }  # user's environment settings will override
+  end
 
   new_resource.symlink_before_migrate.update({
     "database.yml" => "config/database.yml"
   })
+
+
+  if new_resource.symlink_logs
+    new_resource.purge_before_symlink.push("log")
+    new_resource.symlinks.update({"log" => "log"})
+  end
 
 end
 
@@ -52,6 +64,8 @@ action :before_deploy do
 end
 
 action :before_migrate do
+
+  symlink_logs if new_resource.symlink_logs
 
   if new_resource.bundler
     Chef::Log.info "Running bundle install"
@@ -166,7 +180,7 @@ def create_database_yml
 
   template "#{new_resource.path}/shared/database.yml" do
     source new_resource.database_template || "database.yml.erb"
-    cookbook new_resource.database_template ? new_resource.cookbook_name : "application_ruby"
+    cookbook new_resource.database_template ? new_resource.cookbook_name.to_s : "application_ruby"
     owner new_resource.owner
     group new_resource.group
     mode "644"
@@ -175,5 +189,22 @@ def create_database_yml
       :database => new_resource.database,
       :rails_env => new_resource.environment_name
     )
+  end
+end
+
+def symlink_logs
+  resource = new_resource
+
+  directory "#{resource.path}/shared/log" do
+    owner resource.owner
+    group resource.group
+  end
+
+  logrotate_app resource.name do
+    cookbook "logrotate"
+    path "#{resource.path}/shared/#{resource.environment_name}.log"
+    frequency "daily"
+    rotate 30
+    create "666 #{resource.owner} #{resource.group}"
   end
 end
