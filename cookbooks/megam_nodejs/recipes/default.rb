@@ -109,6 +109,15 @@ execute "npm Install dependencies" do
   ignore_failure true
 end
 
+execute "npm Install dependencies" do
+  cwd "#{node['megam']['user']['home']}/#{dir}" 
+  command "npm install"
+  user "root"
+  group "root"
+  retries 1
+  ignore_failure true
+end
+
 #==================================================================================
 #GHOST NEED THESE
 #npm install merge-descriptors finalhandler content-disposition depd send etag proxy-addr qs media-typer debug path-to-regexp methods utils-merge parseurl accepts type-is fresh range-parser escape-html on-finished cookie-signature cookie vary serve-static inherits mime generic-pool-redux backbone trigger-then create-error simple-extend inflection 

@@ -7,53 +7,29 @@
 # All rights reserved - Do Not Redistribute
 #
 
-#include_recipe "megam_ruby"
+include_recipe "apt"
 
 include_recipe "git"
+include_recipe "runit"
 
-file_name = File.basename(node['megam']['deps']['scm'])
-dir = File.basename(file_name, '.*')
-node.set[:rails][:app][:name] = "#{dir}"
+
+node.set[:rails][:app][:name] = "aryabhata"
 #=end
 
-node.set[:rails][:app][:name] = "#{dir}"
 node.set[:rails][:app][:path] = "/var/www/projects/#{node[:rails][:app][:name]}"
 node.set[:rails][:database][:name] = node[:rails][:app][:name]
 node.set[:rails][:database][:username] = node[:rails][:app][:name]
+include_recipe "git"
 
-
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
-include_recipe "megam_environment"
-
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
-node.set["gulp"]["local_repo"] = "#{node[:rails][:app][:path]}/current"
-node.set["gulp"]["builder"] = "megam_ruby_builder"
-node.set["gulp"]["project_name"] = node[:rails][:app][:name]
-
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
-
-
-bash "Clone ruby builder" do
-cwd "#{node['megam']['user']['home']}/bin"
-  user node["megam"]["default"]["user"]
-  group node["megam"]["default"]["user"]
-   code <<-EOH
-  git clone https://github.com/indykish/megam_ruby_builder.git
-  EOH
-end
-
-rsyslog_inputs=[]
-rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/megam/megamgulpd/megamgulpd.log")
-node.override['rsyslog']['logs']= rsyslog_inputs
-
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
 
 if node[:rails][:app][:name].split(" ").count > 1
   Chef::Application.fatal!("Application name must be one word long !")
 end
+ # install git, no support for svn for now
+
+#Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
+#include_recipe "megam_deps"
 
 
 # create deploy user & group
@@ -91,7 +67,9 @@ application node[:rails][:app][:name] do
   if node[:rails][:deploy][:ssh_key]
     deploy_key node[:rails][:deploy][:ssh_key]
   end
-  repository        "#{node['megam']['deps']['scm']}"
+  #repository        node[:rails][:deploy][:repository]
+#Repository value is getting from s3 json
+  repository        "#{node["megam_deps"]["predefs"]["scm"]}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]
@@ -141,7 +119,7 @@ application node[:rails][:app][:name] do
     end
 
     # use upstart for unicorn
-    template "/etc/init/#{node[:rails][:app][:service]}.conf" do
+    template "/etc/init/unicorn_#{node[:rails][:app][:name]}.conf" do
       mode 0644
       cookbook cookbook_name
       source "unicorn.conf.erb"
@@ -160,7 +138,7 @@ application node[:rails][:app][:name] do
       )
     end
 
-    service "#{node[:rails][:app][:service]}" do
+    service "unicorn_#{node[:rails][:app][:name]}" do
       provider Chef::Provider::Service::Upstart
       supports status: true, restart: true
       action :nothing
@@ -176,7 +154,7 @@ application node[:rails][:app][:name] do
     bundler          node[:rails][:unicorn][:bundler]
     bundle_command   node[:rails][:unicorn][:bundle_command]
     restart_command  do  # when a string is used, it will run it as owner/group not as root!
-      execute "sudo /sbin/start #{node[:rails][:app][:service]}"
+      execute "sudo /sbin/start unicorn_#{node[:rails][:app][:name]}"
     end
     forked_user      node[:rails][:owner]
     forked_group     node[:rails][:group]
@@ -200,14 +178,13 @@ gem_package "rake" do
   action :install
 end
 
-=begin
   execute "Gem install Rake" do
   cwd "#{node[:rails][:app][:path]}/current"  
   user "root"
   group "root"
   command "gem install rake"
   end
-=end
+  
 
   execute "Execute assets precompile" do
   cwd "#{node[:rails][:app][:path]}/current"  
@@ -215,16 +192,6 @@ end
   group "root"
   command "sudo bundle exec rake assets:precompile"
   end
-
-#Megam change IF db
-=begin
-  execute "Execute assets precompile" do
-  cwd "#{node[:rails][:app][:path]}/current"  
-  user "root"
-  group "root"
-  command "sudo bundle exec rake db:migrate"
-  end
-=end
 
   execute "Execute change owner" do
   cwd "#{node[:rails][:app][:path]}/current/"  
@@ -237,15 +204,15 @@ end
   cwd "/sbin"  
   user "root"
   group "root"
-  command "sudo ./stop #{node[:rails][:app][:service]}"
+  command "sudo ./stop unicorn_#{node[:rails][:app][:name]}"
   end
 
   execute "Execute unicorn start" do
   cwd "/sbin"  
   user "root"
   group "root"
-  command "sudo ./start #{node[:rails][:app][:service]}"
+  command "sudo ./start unicorn_#{node[:rails][:app][:name]}"
   end
 
-#include_recipe "megam_gulp"
+
 

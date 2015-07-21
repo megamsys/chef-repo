@@ -27,11 +27,11 @@ node.override['rsyslog']['logs']= rsyslog_inputs
 
 node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/postgresql/*.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
-
-#node.set[:postgresql][:dbname] = node['megam']['deps']['component']['inputs']['service_inputs']['dbname']
-#node.set[:postgresql][:password][:postgres] = node['megam']['deps']['component']['inputs']['service_inputs']['dbpassword']
-#node.set[:postgresql][:db_main_user] = node['megam']['deps']['component']['inputs']['username']
-#node.set[:postgresql][:db_main_user_pass] = node['megam']['deps']['component']['inputs']['password']
+node.set[:postgresql][:dbname] = node['megam']['deps']['component']["inputs"].select { |x| x["key"] == "dbname" }[0]['value']
+#node.set[:postgresql][:password][:postgres] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "dbpassword" }[0]['value']
+node.set[:postgresql][:password][:postgres] = "postgres1PASSWD"
+node.set[:postgresql][:db_main_user] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "username" }[0]['value']
+node.set[:postgresql][:db_main_user_pass] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "password" }[0]['value']
 
 
 
@@ -96,8 +96,8 @@ end
 #     setting the same password. This chef recipe doesn't have access to
 #     the plain text password, and testing the encrypted (md5 digest)
 #     version is not straight-forward.
-=begin
-bash "assign-postgres-password" do
+
+bash "assign-postgres-password with psql" do
   user 'postgres'
   code <<-EOH
 echo "ALTER ROLE postgres ENCRYPTED PASSWORD '#{node['postgresql']['password']['postgres']}';" | psql -p #{node['postgresql']['config']['port']}
@@ -105,9 +105,9 @@ echo "ALTER ROLE postgres ENCRYPTED PASSWORD '#{node['postgresql']['password']['
   action :run
   only_if { node['postgresql']['assign_postgres_password'] }
 end
-=end
 
-=begin
+
+
 bash "assign-postgres-password" do
   user 'postgres'
   code <<-EOH
@@ -116,19 +116,28 @@ echo "ALTER ROLE postgres WITH PASSWORD '#{node[:postgresql][:password][:postgre
   action :run
 end
 
-bash "assign-postgres-password" do
+bash "Create user and database" do
   user 'postgres'
   code <<-EOH
 psql -U postgres template1 -f - <<EOT
-CREATE USER "#{node[:postgresql][:db_main_user]}" WITH PASSWORD '#{node[:postgresql][:password][:postgres]}';
-CREATE DATABASE #{node[:postgresql][:dbname]};
-GRANT ALL PRIVILEGES ON DATABASE #{node[:postgresql][:dbname]} to "#{node[:postgresql][:db_main_user]}";
+CREATE USER "#{node[:postgresql][:db_main_user]}" WITH PASSWORD "#{node[:postgresql][:password][:postgres]}";
+CREATE DATABASE "#{node[:postgresql][:dbname]}";
+GRANT ALL PRIVILEGES ON DATABASE "#{node[:postgresql][:dbname]}" to "#{node[:postgresql][:db_main_user]}";
 EOT
   EOH
   action :run
 end
 
-=end
+execute "Stop postgresql" do
+  command "kill -9 $(lsof -i:5432 -t)"
+  action :run
+  ignore_failure true
+end
+
+execute "Disable service" do
+  command "update-rc.d -f postgresql disable"
+  action :run
+end
 
 template "/etc/init/postgresql.conf" do
   source "postgresql_upstart.conf.erb"
@@ -137,36 +146,6 @@ template "/etc/init/postgresql.conf" do
   mode "0755"
 end
 
-
-=begin
-execute "Stop postgresql" do
-  command "/etc/init.d/postgresql stop"
-  action :run
-end
-
-execute "Disable service" do
-  command "update-rc.d -f postgresql disable"
-  action :run
-end
-
-execute "Start postgresql" do
-  command "stop postgresql"
-  action :run
-  ignore_failure true
-end
-
-=end
-
-execute "Stop postgresql" do
-  command "service postgresql stop"
-  action :run
-  ignore_failure true
-end
-
-execute "Disable service" do
-  command "update-rc.d -f postgresql disable"
-  action :run
-end
 
 execute "Start postgresql" do
   command "start postgresql"

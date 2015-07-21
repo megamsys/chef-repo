@@ -65,12 +65,17 @@ end
 
 execute "Clone builder script " do
   cwd node["megam"]["user"]["home"]  
-  command "git clone https://github.com/megamsys/megam_play_builder.git"
+  command "git clone https://github.com/thomasalrin/megam_play_builder.git"
 end
 
 execute "Start build script " do
   cwd "#{node["megam"]["user"]["home"]}/#{node["gulp"]["builder"]}/"  
-  command "./build remote_repo=#{node['megam']['deps']['scm']}"
+  command "chmod 755 build"
+end
+
+execute "Start build script " do
+  cwd "#{node["megam"]["user"]["home"]}/#{node["gulp"]["builder"]}/"  
+  command "./build remote_repo=#{node['megam']['deps']['scm']} || true"
 end
 
 
@@ -90,6 +95,6 @@ node.set['megam']['start']['name'] = "play"
 node.set['megam']['start']['cmd'] = "/usr/share/#{dir}/bin/#{dir} -Dconfig.file=../conf/application.conf"
 node.set['megam']['start']['file'] = "/usr/share/#{dir}/bin/#{dir}"
 
-include_recipe "megam_start"
+#include_recipe "megam_start"
 
 

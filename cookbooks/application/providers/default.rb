@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include Chef::Provider::ApplicationBase
+include ApplicationCookbook::ProviderBase
 
 action :deploy do
 
@@ -87,8 +87,15 @@ def before_deploy
   end
 
   if new_resource.deploy_key
+    
+    if ::File.exists?(new_resource.deploy_key)
+      deploy_key = open(new_resource.deploy_key, &:read)
+    else
+      deploy_key = new_resource.deploy_key
+    end
+    
     file "#{new_resource.path}/id_deploy" do
-      content new_resource.deploy_key
+      content deploy_key
       owner new_resource.owner
       group new_resource.group
       mode '0600'
@@ -100,7 +107,7 @@ def before_deploy
       owner new_resource.owner
       group new_resource.group
       mode "0755"
-      variables :id => new_resource.name, :deploy_to => new_resource.path
+      variables :id => new_resource.name, :deploy_to => new_resource.path, :strict_ssh => new_resource.strict_ssh
     end
   end
 
@@ -117,8 +124,10 @@ end
 def run_deploy(force = false)
   # Alias to a variable so I can use in sub-resources
   new_resource = @new_resource
+  # Also alias to variable so it can be used in sub-resources
   app_provider = self
 
+puts "NEW RESOURCE USER ============================> #{@new_resource.owner}"
   @deploy_resource = send(new_resource.strategy.to_sym, new_resource.name) do
     action force ? :force_deploy : :deploy
     scm_provider new_resource.scm_provider
@@ -127,6 +136,7 @@ def run_deploy(force = false)
     enable_submodules new_resource.enable_submodules
     user new_resource.owner
     group new_resource.group
+    keep_releases new_resource.keep_releases
     deploy_to new_resource.path
     ssh_wrapper "#{new_resource.path}/deploy-ssh-wrapper" if new_resource.deploy_key
     shallow_clone new_resource.shallow_clone
@@ -140,14 +150,7 @@ def run_deploy(force = false)
       ([new_resource]+new_resource.sub_resources).each do |res|
         cmd = res.restart_command
         if cmd.is_a? Proc
-          version = Chef::Version.new(Chef::VERSION)
-          provider = if version.major > 10 || version.minor >= 14
-            Chef::Platform.provider_for_resource(res, :nothing)
-          else
-            Chef::Platform.provider_for_resource(res)
-          end
-          provider.load_current_resource
-          provider.instance_eval(&cmd)
+          app_provider.deploy_provider.instance_eval(&cmd) # @see libraries/default.rb
         elsif cmd && !cmd.empty?
           execute cmd do
             user new_resource.owner
@@ -157,9 +160,10 @@ def run_deploy(force = false)
         end
       end
     end
-    purge_before_symlink new_resource.purge_before_symlink
-    create_dirs_before_symlink new_resource.create_dirs_before_symlink
-    symlinks new_resource.symlinks
+    purge_before_symlink (new_resource.purge_before_symlink + new_resource.sub_resources.map(&:purge_before_symlink)).flatten
+    create_dirs_before_symlink (new_resource.create_dirs_before_symlink + new_resource.sub_resources.map(&:create_dirs_before_symlink)).flatten
+    all_symlinks = [new_resource.symlinks]+new_resource.sub_resources.map{|res| res.symlinks}
+    symlinks all_symlinks.inject({}){|acc, val| acc.merge(val)}
     all_symlinks_before_migrate = [new_resource.symlink_before_migrate]+new_resource.sub_resources.map{|res| res.symlink_before_migrate}
     symlink_before_migrate all_symlinks_before_migrate.inject({}){|acc, val| acc.merge(val)}
     before_migrate do

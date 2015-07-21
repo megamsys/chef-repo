@@ -17,14 +17,14 @@
 # limitations under the License.
 #
 
-include Chef::DSL::IncludeRecipe
+include Chef::Mixin::LanguageIncludeRecipe
 
 action :before_compile do
 
   include_recipe "apache2"
   include_recipe "apache2::mod_ssl"
   include_recipe "apache2::mod_rewrite"
-  include_recipe "passenger_apache2::mod_rails"
+  include_recipe "passenger_apache2"
 
   unless new_resource.server_aliases
     server_aliases = [ "#{new_resource.application.name}.#{node['domain']}", node['fqdn'] ]
@@ -34,7 +34,15 @@ action :before_compile do
     new_resource.server_aliases server_aliases
   end
 
-  new_resource.restart_command "touch #{new_resource.application.path}/current/tmp/restart.txt" unless new_resource.restart_command
+  new_resource.restart_command do
+    directory "#{new_resource.application.path}/current/tmp" do
+      recursive true
+    end
+    file "#{new_resource.application.path}/current/tmp/restart.txt" do
+      action :touch
+    end
+  end unless new_resource.restart_command
+
 end
 
 action :before_deploy do

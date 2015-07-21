@@ -1,9 +1,8 @@
 upstream <%= @resource.application.name %> {
-<% if @resource.application_port.match("sock$") -%>
-	server unix:<%= @resource.application_port %> fail_timeout=0;
-<% else -%>
+
+
 	server 127.0.0.1:<%= @resource.application_port %>;
-<% end -%>
+
 }
 
 <% if @resource.ssl -%>
