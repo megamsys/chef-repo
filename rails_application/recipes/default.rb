@@ -1,36 +1,17 @@
 #
-# Cookbook Name:: megam_rails_application
+# Cookbook Name:: rails_application
 # Recipe:: application
 #
 # Copyright 2013, Devops Israel
 #
 # All rights reserved - Do Not Redistribute
 #
-
-include_recipe "apt"
-
-include_recipe "git"
-include_recipe "runit"
-
-
-node.set[:rails][:app][:name] = "aryabhata"
-#=end
-
-node.set[:rails][:app][:path] = "/var/www/projects/#{node[:rails][:app][:name]}"
-node.set[:rails][:database][:name] = node[:rails][:app][:name]
-node.set[:rails][:database][:username] = node[:rails][:app][:name]
-include_recipe "git"
-
-
-
 if node[:rails][:app][:name].split(" ").count > 1
   Chef::Application.fatal!("Application name must be one word long !")
 end
- # install git, no support for svn for now
-
-#Cookbook to parse the json which is in s3. Json contains the cookbook dependencies.
-#include_recipe "megam_deps"
-
+include_recipe "git" # install git, no support for svn for now
+include_recipe "ruby::#{node[:rails][:ruby][:version]}" # install ruby
+include_recipe "ruby::symlinks"
 
 # create deploy user & group
 user node[:rails][:owner] do
@@ -45,20 +26,18 @@ directory File.join('/','home',node[:rails][:owner]) do
   owner node[:rails][:owner]
   group node[:rails][:group]
 end
-=begin
+
 # save generated or provided database password in the node itself
 node.set[:rails][:database][:password] = node[:rails][:database][:password]
 node.set[:rails][:database][:username] = node[:rails][:database][:username]
 node.set[:rails][:database][:name] = node[:rails][:database][:name]
 
 # can't put node[:rails][...] things inside the database block
-
 db_host     = node[:rails][:database][:host]
 db_name     = node[:rails][:database][:name]
 db_username = node[:rails][:database][:username]
 db_password = node[:rails][:database][:password]
 db_adapter  = node[:rails][:database][:adapter]
-=end
 
 application node[:rails][:app][:name] do
   action    node[:rails][:deploy][:action]
@@ -67,12 +46,11 @@ application node[:rails][:app][:name] do
   if node[:rails][:deploy][:ssh_key]
     deploy_key node[:rails][:deploy][:ssh_key]
   end
-  #repository        node[:rails][:deploy][:repository]
-#Repository value is getting from s3 json
-  repository        "#{node["megam_deps"]["predefs"]["scm"]}"
+  repository        node[:rails][:deploy][:repository]
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]
+  rollback_on_error node[:rails][:deploy][:rollback_on_error]
 
   environment_name node[:rails][:app][:environment]
 
@@ -97,11 +75,10 @@ application node[:rails][:app][:name] do
     bundler_deployment     node[:rails][:deploy][:bundler_deployment]
     bundler_without_groups node[:rails][:deploy][:bundler_without_groups]
     precompile_assets      node[:rails][:deploy][:precompile_assets]
-   # database_master_role   node[:rails][:deploy][:database_master_role]
-   # database_template      node[:rails][:deploy][:database_template]
+    database_master_role   node[:rails][:deploy][:database_master_role]
+    database_template      node[:rails][:deploy][:database_template]
     gems                   node[:rails][:gems] | [ "bundler" ]
     # can't put node[:rails][...] things inside the database block
-=begin
     database do
       adapter  db_adapter
       host     db_host
@@ -109,10 +86,9 @@ application node[:rails][:app][:name] do
       username db_username
       password db_password
     end
-=end
   end
 
-  before_restart do
+  before_deploy do
     execute "upstart-reload-configuration" do
       command "/sbin/initctl reload-configuration"
       action [:nothing]
@@ -121,7 +97,7 @@ application node[:rails][:app][:name] do
     # use upstart for unicorn
     template "/etc/init/unicorn_#{node[:rails][:app][:name]}.conf" do
       mode 0644
-      cookbook cookbook_name
+      cookbook cookbook_name.to_s
       source "unicorn.conf.erb"
       owner "root"
       group "root"
@@ -130,11 +106,15 @@ application node[:rails][:app][:name] do
         app_name:         node[:rails][:app][:name],
         app_path:         File.join(node[:rails][:app][:path], "current"),
         rails_env:        node[:rails][:app][:environment],
+        rails_user:       node[:rails][:owner],
+        rails_group:      node[:rails][:group],
         nginx_user:       node[:nginx][:user],
         nginx_group:      node[:nginx][:group],
         socket:           node[:rails][:unicorn][:port],
         bundler:          node[:rails][:unicorn][:bundler],
-        bundle_command:   node[:rails][:unicorn][:bundle_command]
+        bundle_command:   node[:rails][:unicorn][:bundle_command],
+        unicorn_bin:      node[:rails][:unicorn][:unicorn_bin],
+        unicorn_config:   node[:rails][:unicorn][:unicorn_config]
       )
     end
 
@@ -154,7 +134,10 @@ application node[:rails][:app][:name] do
     bundler          node[:rails][:unicorn][:bundler]
     bundle_command   node[:rails][:unicorn][:bundle_command]
     restart_command  do  # when a string is used, it will run it as owner/group not as root!
-      execute "sudo /sbin/start unicorn_#{node[:rails][:app][:name]}"
+      service "unicorn_#{node[:rails][:app][:name]}" do
+        provider Chef::Provider::Service::Upstart
+        action [ :restart ]
+      end
     end
     forked_user      node[:rails][:owner]
     forked_group     node[:rails][:group]
@@ -166,53 +149,12 @@ application node[:rails][:app][:name] do
     server_name         node[:rails][:nginx][:server_name]
     port                node[:rails][:nginx][:port]
     application_port    node[:rails][:nginx][:application_port]
+    application_socket  node[:rails][:nginx][:application_socket]
     static_files        node[:rails][:nginx][:static_files]   # eg. { "/img" => "images" }
     ssl                 node[:rails][:nginx][:ssl]
     ssl_certificate     node[:rails][:nginx][:ssl_certificate]
     ssl_certificate_key node[:rails][:nginx][:ssl_certificate_key]
   end
+
 end
-
-
-gem_package "rake" do
-  action :install
-end
-
-  execute "Gem install Rake" do
-  cwd "#{node[:rails][:app][:path]}/current"  
-  user "root"
-  group "root"
-  command "gem install rake"
-  end
-  
-
-  execute "Execute assets precompile" do
-  cwd "#{node[:rails][:app][:path]}/current"  
-  user "root"
-  group "root"
-  command "sudo bundle exec rake assets:precompile"
-  end
-
-  execute "Execute change owner" do
-  cwd "#{node[:rails][:app][:path]}/current/"  
-  user "root"
-  group "root"
-  command "sudo chown -R #{node[:rails][:owner]}:#{node[:rails][:group]} tmp"
-  end
-
-  execute "Execute unicorn stop" do
-  cwd "/sbin"  
-  user "root"
-  group "root"
-  command "sudo ./stop unicorn_#{node[:rails][:app][:name]}"
-  end
-
-  execute "Execute unicorn start" do
-  cwd "/sbin"  
-  user "root"
-  group "root"
-  command "sudo ./start unicorn_#{node[:rails][:app][:name]}"
-  end
-
-
 

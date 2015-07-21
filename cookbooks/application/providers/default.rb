@@ -127,6 +127,7 @@ def run_deploy(force = false)
   # Also alias to variable so it can be used in sub-resources
   app_provider = self
 
+puts "NEW RESOURCE USER ============================> #{@new_resource.owner}"
   @deploy_resource = send(new_resource.strategy.to_sym, new_resource.name) do
     action force ? :force_deploy : :deploy
     scm_provider new_resource.scm_provider
