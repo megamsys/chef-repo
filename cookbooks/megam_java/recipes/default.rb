@@ -54,8 +54,7 @@ node.set["gulp"]["project_name"] = "#{dir}"
 node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
 node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
-node.set['megam']['env']['name'] = "#{dir}"
+node.set['megam']['env']['name'] = "#{node['megam']['deps']['component']['name']}"
 include_recipe "megam_environment"
 
 

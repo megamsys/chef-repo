@@ -190,7 +190,7 @@ node.set['megam']['deps']['scm'] = "#{scm}"
 
 #include_recipe "megam_call"
 
-node.set['megam']['deps']['component']['name'] = "#{node.name}"
+#node.set['megam']['deps']['component']['name'] = "#{node.name}"
 
 call "Call cookbook for component #{component}" do
 end

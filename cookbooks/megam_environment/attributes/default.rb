@@ -1,2 +1,2 @@
-default['megam']['env']['home'] = "MEGAM_APP_SERVICE_HOME"
+default['megam']['env']['home'] = "/var/lib/megam/"
 default['megam']['env']['name'] = "env"
