@@ -10,6 +10,7 @@
 #include_recipe "megam_ruby"
 
 include_recipe "git"
+include_recipe "runit"
 
 file_name = File.basename(node['megam']['deps']['scm'])
 dir = File.basename(file_name, '.*')

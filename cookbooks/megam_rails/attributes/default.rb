@@ -49,7 +49,7 @@ default[:rails][:database][:username] = node[:rails][:app][:name]
 default[:rails][:database][:password] = node[:rails][:database][:password]  || ::SecureRandom.base64(12)
 default[:rails][:database][:root_password] = nil # set by mysql/postgresql cookbooks to securerandom
 
-default[:rails][:nginx][:application_port] = "8080"
+default[:rails][:nginx][:application_port] = "8080".to_i
 default[:rails][:nginx][:port] = 80
 default[:rails][:nginx][:template] = "load_balancer.conf.erb"
 default[:rails][:nginx][:server_name] = node['fqdn']

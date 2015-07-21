@@ -11,7 +11,7 @@ depends "unicorn"
 depends "application"
 depends "application_ruby"
 depends "application_nginx"
-
+depends "runit"
 depends "megam_metering"
 depends "megam_nginx"
 depends "git"
