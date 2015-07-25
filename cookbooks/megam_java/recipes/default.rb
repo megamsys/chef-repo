@@ -51,10 +51,11 @@ if scm_ext.empty?
   scm_ext = ".git"
 end
 node.set["gulp"]["project_name"] = "#{dir}"
+node.set["gulp"]["name"] = "#{node['megam']['deps']['component']['name']}"
 node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
 node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
-node.set['megam']['env']['name'] = "#{node['megam']['deps']['component']['name']}"
+node.set['megam']['env']['home'] = "#{node['megam']['lib']['home']}/#{node['megam']['deps']['component']['name']}"
 include_recipe "megam_environment"
 
 

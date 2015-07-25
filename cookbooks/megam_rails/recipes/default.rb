@@ -12,6 +12,31 @@ include_recipe "apt"
 include_recipe "git"
 include_recipe "runit"
 
+node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
+node.set["gulp"]["builder"] = "megam_ruby_builder"
+
+rsyslog_inputs=[]
+rsyslog_inputs = node.default['rsyslog']['logs']
+rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "/var/log/megam/megamgulpd/megamgulpd.log")
+node.override['rsyslog']['logs']= rsyslog_inputs
+
+node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/nginx/access.log", "/var/log/nginx/error.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
+
+
+scm_ext = File.extname(node['megam']['deps']['scm'])
+file_name = File.basename(node['megam']['deps']['scm'])
+dir = File.basename(file_name, '.*')
+if scm_ext.empty?
+  scm_ext = ".git"
+end
+node.set["gulp"]["project_name"] = "#{dir}"
+node.set["gulp"]["name"] = "#{node['megam']['deps']['component']['name']}"
+node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
+node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
+
+node.set['megam']['env']['home'] = "#{node['megam']['lib']['home']}/#{node['megam']['deps']['component']['name']}"
+include_recipe "megam_environment"
+
 
 node.set[:rails][:app][:name] = "aryabhata"
 #=end

@@ -187,6 +187,7 @@ end
 
 
 node.set['megam']['deps']['scm'] = "#{scm}"
+node.set["gulp"]["name"] = "#{node['megam']['deps']['component']['name']}"
 
 #include_recipe "megam_call"
 
