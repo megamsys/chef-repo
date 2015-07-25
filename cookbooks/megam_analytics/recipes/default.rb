@@ -7,7 +7,51 @@
 # All rights reserved - Do Not Redistribute
 #
 
-pkg "openjdk-7-jdk"
+#pkg "openjdk-7-jdk"
+#JAVA 8 is installed in megam-trusty image
+
+
+execute "wget the cdh5-repo" do
+    command "wget http://archive.cloudera.com/cdh5/one-click-install/trusty/amd64/cdh5-repository_1.0_all.deb"
+end
+
+execute "install cdh5-repo" do
+    command "dpkg -i cdh5-repository_1.0_all.deb"
+end
+
+execute "Update all the packages" do
+    command "apt-get -y update"
+end
+
+execute "install hadoop-yarn-resourcemanager" do
+    command "apt-get -y install hadoop-yarn-resourcemanager"
+end
+
+execute "install hadoop-hdfs-namenode" do
+    command "apt-get -y install hadoop-hdfs-namenode"
+end
+
+execute "Update all the packages" do
+    command "apt-get -y install hadoop-yarn-nodemanager hadoop-hdfs-datanode hadoop-mapreduce"
+end
+
+execute "Update all the packages" do
+    command "sudo apt-get -y update"
+end
+
+
+execute "Update all the packages" do
+    command "sudo apt-get -y update"
+end
+
+execute "Update all the packages" do
+    command "sudo apt-get -y update"
+end
+
+execute "Update all the packages" do
+    command "sudo apt-get -y update"
+end
+
 
 bash "Install hadoop" do
   user "root"
