@@ -1,16 +1,17 @@
 Overview
 ========
 
-Megam platform - Chef installation uses this Chef Repository. This is the place where cookbooks, roles, config files and other artifacts for managing systems with Chef will live. 
+Megam cloud platform: 
+Chef installation uses this Chef Repository. This is the place where cookbooks, roles, config files and other artifacts for managing systems with Chef will live. 
 
 ### Requirements
 
-> [Chef 10 +](http://opscode.com)
+> [Chef 11 +](http://opscode.com)
 
-### Tested on Ubuntu 12.04, 12.10, 13.04, AWS - EC2
+### Tested on Ubuntu 14.04 on public clouds, OpenNebula
 
 
-Once you clone the `https://github.com/indykish/chef-repo.git` You will notice a slew of directories.
+Once you clone the `https://github.com/megamsys/chef-repo.git` You will notice a slew of directories.
 
 Repository Directories
 ======================
@@ -26,11 +27,11 @@ This repository contains several directories, and each directory contains a READ
 Cookbooks
 ==========
 
-The repository contains cookbooks as customized for `megam platform`.
+The repository contains cookbooks as customized for `Megam cloud platform`.
  
 Cookbooks prefixed with `megam-` includes tasks that are customized for `megam platform`. 
 
-What is `[megam](http://www.megam.co)`, [code](https://github.com/indykish),[blog](http://blog.megam.co).
+What is `[megam](https://www.megam.io)`, [code](https://github.com/megamsys),[console](https://console.megam.io).
 
 The following cookbooks-* have manual steps to be performed.
 
@@ -91,7 +92,7 @@ Read the README file in each of the subdirectories for more information about wh
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
 | **Author:**          | Thomas Alrin (<thomasalrin@megam.io>)
-| **Copyright:**       | Copyright (c) 2012-2013 Megam Systems.
+| **Copyright:**       | Copyright (c) 2013-2015 Megam Systems.
 | **License:**         | Apache License, Version 2.0
 
 Licensed under the Apache License, Version 2.0 (the "License");
