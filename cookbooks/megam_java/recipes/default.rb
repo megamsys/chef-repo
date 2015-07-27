@@ -51,7 +51,6 @@ if scm_ext.empty?
   scm_ext = ".git"
 end
 node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["name"] = "#{node['megam']['deps']['component']['name']}"
 node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
 node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
@@ -124,6 +123,7 @@ end #case
 unless scm_ext == ".war"
 dir = File.basename(file_name, '.*')
 
+unless File.file?('/usr/bin/mvn')
 bash "Install Maven" do
   user "root"
    code <<-EOH
@@ -133,7 +133,7 @@ cp -R apache-maven-3.1.1 /usr/local
 ln -s /usr/local/apache-maven-3.1.1/bin/mvn /usr/bin/mvn
   EOH
 end
-
+end
 
 bash "Clean Maven" do
 cwd "#{node['megam']['user']['home']}/#{dir}" 

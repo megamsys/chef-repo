@@ -44,7 +44,6 @@ end
 
 node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
 node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["name"] = "#{node['megam']['deps']['component']['name']}"
 node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
 node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 

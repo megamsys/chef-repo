@@ -14,13 +14,12 @@ case node[:platform]
 
 when "debian", "ubuntu"
 
-#MEGAM IAAS Image already installed with heka
-#=begin
-#execute "add-apt-repository 'deb [arch=amd64] http://get.megam.io/0.9/ubuntu/14.04/ testing megam'"
-#execute "apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7"
+unless File.file?('/usr/share/megam/megamgulpd/bin/gulpd')
+execute "add-apt-repository 'deb [arch=amd64] http://get.megam.io/0.9/ubuntu/14.04/ testing megam'"
+execute "apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7"
 execute "apt-get -y update"
 execute "apt-get -y install megamgulpd"
-#=end
+end
 
 template "/usr/share/megam/megamgulpd/conf/gulpd.conf" do
   source "gulpd.conf.erb"

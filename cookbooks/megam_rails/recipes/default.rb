@@ -30,7 +30,6 @@ if scm_ext.empty?
   scm_ext = ".git"
 end
 node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["name"] = "#{node['megam']['deps']['component']['name']}"
 node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
 node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
@@ -94,7 +93,7 @@ application node[:rails][:app][:name] do
   end
   #repository        node[:rails][:deploy][:repository]
 #Repository value is getting from s3 json
-  repository        "#{node["megam_deps"]["predefs"]["scm"]}"
+  repository        "#{node['megam']['deps']['scm']}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]
