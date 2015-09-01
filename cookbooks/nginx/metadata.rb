@@ -1,3 +1,4 @@
+
 name              'nginx'
 maintainer        'Chef Software, Inc.'
 maintainer_email  'cookbooks@chef.io'
