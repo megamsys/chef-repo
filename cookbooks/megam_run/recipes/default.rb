@@ -17,6 +17,12 @@ when "debian",
 `sed -i -- 's/get.megam.io\\/0.8/get.megam.io\\/0.9/g' /etc/apt/sources.list.d/megam.list`
 end
 
+execute "Clean cache first" do
+  user "root"
+  group "root"
+  command "echo 3 > /proc/sys/vm/drop_caches"
+end
+
 include_recipe "megam_preinstall"
 
 #add megam user
@@ -25,8 +31,16 @@ include_recipe "megam_preinstall::account"
 #Condition Which dns has to be used?
 include_recipe "megam_dns::route53"                     #Default
 
+execute "Clean cache 2" do
+  user "root"
+  group "root"
+  command "echo 3 > /proc/sys/vm/drop_caches"
+end
+
 #Get asembly json and include recipes ased on the component json
 include_recipe "megam_deps"
+
+include_recipe "megam_gulp"
 
 #Temporary fix
 include_recipe "megam_logging::heka"
@@ -80,5 +94,14 @@ node['megam']['deps']['assembly'].each do |component|
 end
 =end
 
-include_recipe "megam_gulp"
+
+# OPENNEBULA VM contextualization
+include_recipe 'megam_run::context'
+
+execute "Clean cache last" do
+  user "root"
+  group "root"
+  command "echo 3 > /proc/sys/vm/drop_caches"
+end
+
 

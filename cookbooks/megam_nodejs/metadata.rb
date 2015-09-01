@@ -1,4 +1,4 @@
-maintainer       "Thomas Alrin(Megam Systems)"
+maintainer       "Megam Systems"
 maintainer_email "thomasalrin@megam.io"
 license          "Apache 2.0"
 description      "Installs/Configures nodejs"
@@ -11,12 +11,10 @@ provides         "nodejs"
   depends cookbooks
 end
 
-depends "megam_metering"
 depends "megam_nginx"
 depends "git"
 depends "megam_deps"
 depends "megam_logging"
-depends "megam_gulp"
 depends "megam_environment"
 depends "megam_preinstall"
 depends "megam_start"

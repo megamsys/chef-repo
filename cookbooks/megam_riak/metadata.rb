@@ -28,14 +28,8 @@ version           "2.0.0"
   depends d
 end
 
-depends "megam_metering"
+
 depends "megam_logging"
-depends "megam_environment"
-depends "megam_gulp"
-#depends "megam_deps"
-
-
-#depends megam_route53 megam_ganglia megam_ciakka megam_deps
 
 
 %w{ubuntu debian centos redhat fedora}.each do |os|

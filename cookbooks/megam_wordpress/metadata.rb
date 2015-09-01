@@ -17,11 +17,9 @@ depends "build-essential"
 depends "iis"
 depends "apt"
 
-depends "megam_metering"
 depends "megam_logging"
-depends "megam_gulp"
 depends "megam_deps"
-depends "megam_environment"
+
 
 %w{ debian ubuntu windows centos redhat scientific oracle }.each do |os|
   supports os

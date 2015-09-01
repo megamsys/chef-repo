@@ -9,7 +9,13 @@
 
 platf_family = "#{node[:platform]}"
 
-template "#{node['megam']['user']['conf']}/#{node['megam']['env']['name']}.sh" do
+directory "#{node['megam']['env']['home']}" do
+  owner "root"
+  group "root"
+  action :create
+end
+
+template "#{node['megam']['env']['home']}/env.sh" do
   source "env.sh.erb"
   mode "0755"
   user "root"

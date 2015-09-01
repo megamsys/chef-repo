@@ -19,6 +19,7 @@
 
 case node[:platform]
 when "ubuntu", "debian"
+#Image inbuilt
   package "ganglia-monitor-python"
 when "redhat", "centos", "fedora"
   include_recipe "megam_metering::source"

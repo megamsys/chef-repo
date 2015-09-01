@@ -14,10 +14,12 @@ depends "application"
 depends "application_ruby"
 depends "application_nginx"
 depends "runit"
-depends "megam_metering"
 depends "megam_nginx"
-depends "git"
 depends "megam_deps"
 
 # to use the rails_application::database_credentials recipe
 recommends "database"
+
+depends "megam_logging"
+depends "megam_environment"
+depends "megam_preinstall"

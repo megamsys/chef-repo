@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe 'megam_nodejs::nodejs'
+#include_recipe 'megam_nodejs::nodejs'
 
 
 rsyslog_inputs=[]
@@ -30,7 +30,7 @@ node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/v
 
 
 
-node.set['megam']['nginx']['port'] = "2368"
+#node.set['megam']['nginx']['port'] = "2368"
 
 include_recipe "git"
 
@@ -41,30 +41,16 @@ if scm_ext.empty?
   scm_ext = ".git"
 end
 
-#Megam change Get js files which should be run to start the application
-#if "#{node['megam']['deps']['component']['operations']['operation_type']}".length > 0
-#js_file = "#{node['megam']['deps']['component']['operations']['operation_type']}".split.last
-#else 
-js_file = "index.js"
-#end
-
-#SET JS FILE TO BE RUN
-node.set['nodejs']['js-file'] = "#{js_file}"
-
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
 
-
+=begin
 execute "Clone Nodejs builder" do
 cwd "#{node['megam']['user']['home']}/bin"
   user "root"
   group "root"
   command "git clone https://github.com/megamsys/megam_nodejs_builder.git"
 end
-
+=end
 
 case scm_ext
 when ".git"
@@ -79,24 +65,13 @@ execute "Change mod cloned git" do
   command "chown -R #{node['megam']['default']['user']}:#{node['megam']['default']['user']} #{dir}"
 end
 
-node.set["gulp"]["local_repo"] = "#{node['megam']['user']['home']}/#{dir}"
 
 else
 	puts "TEST CASE ELSE"
 end #CASE
 
-=begin
-execute "change nodejs as executable " do
-  cwd node['megam']['user']['home']
-  command "chmod 755 #{node['megam']['user']['home']}/#{dir}/#{js_file}"
-end
 
-
-execute "npm update" do
-  cwd "#{node['megam']['user']['home']}/#{dir}" 
-  command "npm install -g npm"
-end
-=end
+execute "chmod 755 #{node['megam']['user']['home']}/#{dir}/start"
 
 execute "sudo -s"
 
@@ -138,18 +113,15 @@ end
 execute "sudo -s"
 
 #['megam']['env']['home'] and ['megam']['start']['name'] must be same
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
-node.set['megam']['env']['name'] = "nodejs"
+node.set['megam']['env']['home'] = "#{node['megam']['lib']['home']}/#{node['megam']['deps']['component']['name']}"
 include_recipe "megam_environment"
 
 node.set['megam']['start']['name'] = "nodejs"
-node.set['megam']['start']['cmd'] = "node #{node['megam']['env']['home']}/#{node['nodejs']['js-file']}"
-node.set['megam']['start']['file'] = "#{node['nodejs']['js-file']}"
+node.set['megam']['component']['name'] = "#{node['megam']['deps']['component']['name']}"
+node.set['megam']['start']['pwd'] = "#{node['megam']['user']['home']}/#{dir}"
+node.set['megam']['start']['cmd'] = "./start"
 
 include_recipe "megam_start"
 include_recipe "megam_nginx"
-
-node.set["gulp"]["builder"] = "megam_nodejs_builder"
-#include_recipe "megam_gulp"
 
 

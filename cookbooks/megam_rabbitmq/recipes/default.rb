@@ -26,18 +26,7 @@ node.override['rsyslog']['logs']= rsyslog_inputs
 
 node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/rabbitmq/rabbit@#{`hostname`}.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
-
 dir = "rabbitmq"
-
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
-
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
-include_recipe "megam_environment"
-
-
-
 
 include_recipe "erlang"
 

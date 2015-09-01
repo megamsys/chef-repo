@@ -38,15 +38,6 @@ dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
-
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
-include_recipe "megam_environment"
-
-
-
 
 if node['zarafa']['backend_type'].nil?
   Chef::Application.fatal!("Set node['zarafa']['backend_type'] !")

@@ -8,7 +8,6 @@
 #
 
 
-#include_recipe "megam_sandbox"
 
 package "zip unzip" do
         action :install
@@ -40,13 +39,6 @@ if scm_ext.empty?
   scm_ext = ".git"
 end
 
-
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
-node.set["gulp"]["local_repo"] = "#{node['megam']['user']['home']}/#{dir}"
-node.set["gulp"]["builder"] = "megam_akka_builder"
 
 directory "/usr/share/#{dir}" do
   owner "root"

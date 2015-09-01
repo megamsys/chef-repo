@@ -1,6 +1,6 @@
 megam_home: /var/lib/megam/
 account_id: <%= node['accounts_id'] %>
-name: cropping
+name: <%= node["gulp"]["name"] %>
 id: <%= node['assembly_id'] %>
 riak:
   url: <%= node['megam_riak'] %>:8087
@@ -9,7 +9,7 @@ api:
   host: <%= node['megam_riak'] %>
 amqp:
   url: amqp://guest:guest@<%= node['megam_rabbitmq'] %>:5672/
-  exchange: megam_reapportions.megam.co_exchange
-  queue: megam_reapportions.megam.co_queue
+  exchange: megam_<%= node["gulp"]["name"] %>_exchange
+  queue: megam_<%= node["gulp"]["name"] %>_queue
   consumerTag: megam_node_consumer
   routingkey: megam_key

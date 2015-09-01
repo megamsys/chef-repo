@@ -38,22 +38,14 @@ if scm_ext.empty?
   scm_ext = ".git"
 end
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node["megam"]["deps"]["account"]["email"]}"
-node.set["gulp"]["api_key"] = "#{node["megam"]["deps"]["account"]["api_key"]}"
-
-node.set["gulp"]["local_repo"] = "#{node['megam']['user']['home']}/#{dir}"
 
 execute "Clone play builder" do
 cwd "#{node['megam']['user']['home']}/bin"
   user "root"
   group "root"
-  command "git clone https://github.com/megamsys/megam_play_builder.git"
+  command "git clone https://github.com/megamsys/buildpacks.git"
 end
 
-
-node.set["gulp"]["builder"] = "megam_play_builder"
 
 directory "/usr/share/#{dir}" do
   owner "root"
@@ -65,17 +57,17 @@ end
 
 execute "Clone builder script " do
   cwd node["megam"]["user"]["home"]  
-  command "git clone https://github.com/thomasalrin/megam_play_builder.git"
+  command "git clone https://github.com/megamsys/buildpacks.git"
 end
 
-execute "Start build script " do
-  cwd "#{node["megam"]["user"]["home"]}/#{node["gulp"]["builder"]}/"  
+execute "chmod to execute build " do
+  cwd "#{node["megam"]["user"]["home"]}/buildpacks/play/"  
   command "chmod 755 build"
 end
 
-execute "Start build script " do
-  cwd "#{node["megam"]["user"]["home"]}/#{node["gulp"]["builder"]}/"  
-  command "./build remote_repo=#{node['megam']['deps']['scm']} || true"
+execute "Start build script #{`pwd`}" do
+  cwd "#{node["megam"]["user"]["home"]}/buildpacks/play/" 
+  command "./build remote_repo=#{node['megam']['deps']['scm']}"
 end
 
 
@@ -95,6 +87,6 @@ node.set['megam']['start']['name'] = "play"
 node.set['megam']['start']['cmd'] = "/usr/share/#{dir}/bin/#{dir} -Dconfig.file=../conf/application.conf"
 node.set['megam']['start']['file'] = "/usr/share/#{dir}/bin/#{dir}"
 
-#include_recipe "megam_start"
+include_recipe "megam_start"
 
 
