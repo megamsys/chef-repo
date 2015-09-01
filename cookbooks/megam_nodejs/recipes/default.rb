@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe 'megam_nodejs::nodejs'
+#include_recipe 'megam_nodejs::nodejs'
 
 
 rsyslog_inputs=[]
@@ -42,20 +42,15 @@ if scm_ext.empty?
 end
 
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
-
-
+=begin
 execute "Clone Nodejs builder" do
 cwd "#{node['megam']['user']['home']}/bin"
   user "root"
   group "root"
   command "git clone https://github.com/megamsys/megam_nodejs_builder.git"
 end
-
+=end
 
 case scm_ext
 when ".git"
@@ -70,7 +65,6 @@ execute "Change mod cloned git" do
   command "chown -R #{node['megam']['default']['user']}:#{node['megam']['default']['user']} #{dir}"
 end
 
-node.set["gulp"]["local_repo"] = "#{node['megam']['user']['home']}/#{dir}"
 
 else
 	puts "TEST CASE ELSE"
@@ -129,8 +123,5 @@ node.set['megam']['start']['cmd'] = "./start"
 
 include_recipe "megam_start"
 include_recipe "megam_nginx"
-
-node.set["gulp"]["builder"] = "megam_nodejs_builder"
-#include_recipe "megam_gulp"
 
 

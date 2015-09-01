@@ -18,15 +18,11 @@ end
   supports el, "~> 6.0"
 end
 
-depends "apt", ">= 1.9.0"
+depends "apt"
 depends "build-essential"
-depends "openssl"
-
-depends "megam_metering"
+#depends "openssl"
 
 depends "git"
 depends "megam_deps"
 depends "megam_logging"
-depends "megam_gulp"
-depends "megam_environment"
-depends "megam_preinstall"
+

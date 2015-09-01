@@ -20,14 +20,6 @@ scm_ext = File.extname(node['megam']['deps']['scm'])
 file_name = File.basename(node['megam']['deps']['scm'])
 dir = File.basename(file_name, '.*')
 
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
-
-
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/op5"
-include_recipe "megam_environment"
-
 directory "#{node['megam']['user']['home']}/op5"
 
 remote_file "#{node['megam']['user']['home']}/op5/#{file_name}" do
@@ -50,7 +42,4 @@ cwd "/#{node['megam']['user']['home']}/op5"
   group "root"
   command "./install.sh"
 end
-
-
-#include_recipe "megam_gulp"
 

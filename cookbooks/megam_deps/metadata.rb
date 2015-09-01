@@ -6,7 +6,6 @@ version          '0.5.0'
 description      'Gets assembly data from riak and loads it in attributes'
 
 
-#depends "megam_call"
 
 depends "megam_gulp"
 
@@ -20,7 +19,6 @@ depends "megam_play"
 depends "megam_rails"
 depends "megam_nodejs"
 depends "megam_docker"
-depends "megam_sqlite3"
 
 depends "megam_riak"
 depends "megam_redis2"

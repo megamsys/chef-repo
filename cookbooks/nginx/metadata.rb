@@ -1,9 +1,9 @@
 name              'nginx'
-maintainer        'Opscode, Inc.'
-maintainer_email  'cookbooks@opscode.com'
+maintainer        'Chef Software, Inc.'
+maintainer_email  'cookbooks@chef.io'
 license           'Apache 2.0'
 description       'Installs and configures nginx'
-version           '2.7.4'
+version           '2.7.6'
 
 recipe 'nginx',         'Installs nginx package and sets up configuration with Debian apache style with sites-enabled/sites-available'
 recipe 'nginx::source', 'Installs nginx from source and sets up configuration with Debian apache style with sites-enabled/sites-available'
@@ -112,4 +112,14 @@ attribute 'nginx/default_site_enabled',
 attribute 'nginx/sendfile',
   :display_name => 'Nginx sendfile',
   :description => 'Whether to enable sendfile',
+  :default => 'on'
+
+attribute 'nginx/tcp_nopush',
+  :display_name => 'Nginx tcp_nopush',
+  :description => 'Whether to enable tcp_nopush',
+  :default => 'on'
+
+attribute 'nginx/tcp_nodelay',
+  :display_name => 'Nginx tcp_nodelay',
+  :description => 'Whether to enable tcp_nodelay',
   :default => 'on'

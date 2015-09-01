@@ -15,10 +15,6 @@
 # limitations under the License.
 #
 
-node.set["gulp"]["remote_repo"] = "www.postgresql.org"
-node.set["gulp"]["local_repo"] = "/var/lib/postgresql"
-node.set["gulp"]["project_name"] = "postgresql"
-
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
@@ -28,8 +24,8 @@ node.override['rsyslog']['logs']= rsyslog_inputs
 node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/postgresql/*.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
 
 node.set[:postgresql][:dbname] = node['megam']['deps']['component']["inputs"].select { |x| x["key"] == "dbname" }[0]['value']
-#node.set[:postgresql][:password][:postgres] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "dbpassword" }[0]['value']
-node.set[:postgresql][:password][:postgres] = "postgres1PASSWD"
+#node.set[:postgresql][:password][:postgres] = "postgres1PASSWD"
+node.set[:postgresql][:password][:postgres] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "dbpassword" }[0]['value']
 node.set[:postgresql][:db_main_user] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "username" }[0]['value']
 node.set[:postgresql][:db_main_user_pass] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "password" }[0]['value']
 
@@ -120,7 +116,7 @@ bash "Create user and database" do
   user 'postgres'
   code <<-EOH
 psql -U postgres template1 -f - <<EOT
-CREATE USER "#{node[:postgresql][:db_main_user]}" WITH PASSWORD "#{node[:postgresql][:password][:postgres]}";
+CREATE USER "#{node[:postgresql][:db_main_user]}" WITH PASSWORD '#{node[:postgresql][:password][:postgres]}';
 CREATE DATABASE "#{node[:postgresql][:dbname]}";
 GRANT ALL PRIVILEGES ON DATABASE "#{node[:postgresql][:dbname]}" to "#{node[:postgresql][:db_main_user]}";
 EOT

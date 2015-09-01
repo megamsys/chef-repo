@@ -18,11 +18,6 @@
 # limitations under the License.
 #
 
-
-node.set["gulp"]["remote_repo"] = "basho.com/riak"
-node.set["gulp"]["local_repo"] = "/var/lib/riak"
-node.set["gulp"]["project_name"] = "riak"
-
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/riak/console.log", "/var/log/riak/error.log", "/var/log/megam/megamgulpd/megamgulpd.log")
@@ -36,9 +31,6 @@ scm_ext = File.extname(riak_source)
 file_name = File.basename(riak_source)
 dir = File.basename(file_name, '.*')
 
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
 include_recipe "ulimit"
 

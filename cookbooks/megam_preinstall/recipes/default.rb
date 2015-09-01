@@ -25,17 +25,6 @@ echo "$ipaddr localhost `hostname`" >> /etc/hosts
   EOH
 end
 
-=begin
-template "/tmp/hosts.sh" do
-  source "hosts.sh.erb"
-  mode "0755"
-end
-
-execute "Add entry in /etc/hosts" do
-  cwd "/tmp"  
-  command "sh hosts.sh"
-end
-=end
 
 case node[:platform]
 when "ubuntu", "debian"

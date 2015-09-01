@@ -12,8 +12,6 @@ include_recipe "apt"
 include_recipe "git"
 include_recipe "runit"
 
-node.set["gulp"]["remote_repo"] = node['megam']['deps']['scm']
-node.set["gulp"]["builder"] = "megam_ruby_builder"
 
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
@@ -29,9 +27,6 @@ dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
 
 node.set['megam']['env']['home'] = "#{node['megam']['lib']['home']}/#{node['megam']['deps']['component']['name']}"
 include_recipe "megam_environment"

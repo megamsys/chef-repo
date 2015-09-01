@@ -1,6 +1,6 @@
 name              "megam_rabbitmq"
-maintainer        "Opscode, Inc."
-maintainer_email  "cookbooks@opscode.com"
+maintainer        "Megam Systems"
+maintainer_email  "thomasalrin@megam.io"
 license           "Apache 2.0"
 description       "Installs and configures RabbitMQ server"
 version           "1.8.0"
@@ -10,13 +10,10 @@ recipe            "megam_rabbitmq::cluster", "Set up RabbitMQ clustering."
 
 depends           "yum", ">= 0.5.0"
 depends           "erlang", ">= 0.9"
-depends "megam_metering"
 depends "apt"
 depends "git"
 depends "megam_deps"
 depends "megam_logging"
-depends "megam_gulp"
-depends "megam_environment"
 
 %w{ubuntu debian redhat centos scientific amazon fedora oracle smartos}.each do |os|
   supports os

@@ -36,6 +36,7 @@ execute "route53 create record " do
   cwd "#{node['megam']['user']['home']}/bin"  
   user "root"
   group "root"
+  sensitive true
   command "./seru create  --accesskey #{keys['access_key']} --secretid #{keys['secret_key']} --subdomain #{node['megam']['dns']['name']} --domain megambox.com. --ipaddress #{node['megam']['dns']['ip']}"
 end
 

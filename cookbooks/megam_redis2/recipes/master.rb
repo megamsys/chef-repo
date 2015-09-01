@@ -18,15 +18,6 @@ end
 #Static assign. Change this based on node['megam']['deps']['scm']
 dir = "redis"
 
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
-
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
-include_recipe "megam_environment"
-
-
-
 redis_instance "master" do
   data_dir "/etc/redis/datastore"
 end

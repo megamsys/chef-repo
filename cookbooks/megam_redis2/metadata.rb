@@ -14,14 +14,11 @@ depends          "runit", ">= 1.0.0"
 depends          "build-essential"
 depends          "ark"
 
-depends "megam_metering"
+
 depends "apt"
 depends "git"
 depends "megam_deps"
 depends "megam_logging"
-depends "megam_gulp"
-depends "megam_environment"
-
 
 attribute 'redis2/source_url',
   :display_name => "Redis source URL",

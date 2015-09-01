@@ -11,7 +11,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
   supports os
 end
 
-%w{ apache2 php build-essential git rbenv runit python ant logrotate yumrepo }.each do |ckbk|
+%w{ build-essential yumrepo }.each do |ckbk|
   depends ckbk
 end
 

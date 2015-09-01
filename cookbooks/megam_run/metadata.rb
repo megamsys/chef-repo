@@ -13,4 +13,4 @@ depends "megam_deps"
 depends "megam_gulp"
 depends "megam_metering"
 depends "megam_logging"
-depends "megam_environment"
+
