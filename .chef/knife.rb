@@ -5,8 +5,9 @@ node_name                "admin"
 client_key               "#{current_dir}/admin.pem"
 validation_client_name   'chef-validator'
 validation_key           "#{current_dir}/chef-validator.pem"
-#chef_server_url		"https://192.168.1.101"
-chef_server_url   "http://192.168.1.249:4545"
+chef_server_url		"https://192.168.1.101"
+#chef_server_url   "http://192.168.1.249:4545"
 cookbook_path ["#{current_dir}/../cookbooks"]
 ssl_verify_mode :verify_none
+
 

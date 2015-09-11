@@ -1,0 +1,2 @@
+ <%=[node['ipaddress']]%>    <%=[node['hostname']]%>    <%=[node['localhost']]%>
+ 127.0.0.1     hostname     localhost  
