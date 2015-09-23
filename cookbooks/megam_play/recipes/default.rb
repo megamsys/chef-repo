@@ -84,7 +84,7 @@ when "debian"
 end
 
 node.set['megam']['start']['name'] = "play"
-node.set['megam']['start']['cmd'] = "/usr/share/#{dir}/bin/#{dir} -Dconfig.file=../conf/application.conf"
+node.set['megam']['start']['cmd'] = "/usr/share/#{dir}/bin/#{dir}"
 node.set['megam']['start']['file'] = "/usr/share/#{dir}/bin/#{dir}"
 
 include_recipe "megam_start"

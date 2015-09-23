@@ -22,6 +22,7 @@ case node['platform_family']
    include_recipe "apt"
 end
 
+=begin
 rsyslog_inputs=[]
 rsyslog_inputs = node.default['rsyslog']['logs']
 rsyslog_inputs.push("/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/megam/megamgulpd/megamgulpd.log")
@@ -38,6 +39,9 @@ dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
+
+=end
+
 
 if node['zarafa']['backend_type'].nil?
   Chef::Application.fatal!("Set node['zarafa']['backend_type'] !")
@@ -206,7 +210,7 @@ arch = "x86_64"
 url = "#{host}/#{major}/#{minor}/zcp-#{minor}-#{os}-#{os_version}-#{arch}-#{type}.tar.gz"
 =end
 
-url = "#{node["megam_deps"]["predefs"]["scm"]}"
+url = "http://download.zarafa.com/community/final/7.1/7.1.9-44333/"
 
 ark "zarafa" do
   url url

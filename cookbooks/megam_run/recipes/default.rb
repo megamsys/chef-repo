@@ -10,6 +10,10 @@
 #Here we use cokbooks common for a vm(Assembly)
 #Install dependencies (apt-get update)
 
+node.set['megam_rabbitmq']="#{node['rabbitmq_host']}"
+node.set['megam_monitor']="#{node['monitor_host']}"
+node.set['fqdn']="#{node['hostname']}"
+
 case node[:platform]
 when "ubuntu"
 `sed -i -- 's/get.megam.io\\/0.8/get.megam.io\\/0.9/g' /etc/apt/sources.list`
