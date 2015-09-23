@@ -1,0 +1,22 @@
+---
+driver:
+  name: opennebula
+  opennebula_endpoint: 'http://192.168.1.100:2633/RPC2'
+  oneauth_file: /home/megam/test/read/one_auth
+  template_name: megam_trusty
+  vm_hostname: ranjitha
+  username: megam
+  memory: 2048
+  wait_for: 1000
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-14.04
+  - name: centos-7.1
+
+suites:
+  - name: default
+    run_list:
+      - recipe[spark::default]
+    attributes:

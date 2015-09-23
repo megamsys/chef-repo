@@ -10,3 +10,4 @@ chef_server_url		"https://192.168.1.101"
 cookbook_path ["#{current_dir}/../cookbooks"]
 ssl_verify_mode :verify_none
 
+
