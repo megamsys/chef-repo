@@ -13,7 +13,29 @@
 case node[:platform]
 when "Debian", "ubuntu"
 
+if File.exist?('/etc/spark/conf/spark-env.sh')
 
+template "/etc/hosts" do
+source "hosts.erb"
+end
+
+template "/etc/spark/conf/spark-default.conf" do
+source "default.conf.erb"
+end
+
+template "/etc/spark/conf/spark-env.sh" do
+source "spark-env.sh.erb"
+end
+
+execute "sudo service spark-worker start" 
+
+
+execute "sudo service spark-master start"
+
+execute "sudo service spark-history-server start" 
+
+
+else
 template "/etc/hosts" do
 source "hosts.erb"
 end
@@ -55,11 +77,11 @@ command "sudo service spark-history-server stop"
 end
 
 
-template "/etc/spark/conf/spark-default.conf.erb" do
+template "/etc/spark/conf/spark-default.conf" do
 source "default.conf.erb"
 end
 
-template "etc/spark/conf/spark-env.sh" do
+template "/etc/spark/conf/spark-env.sh" do
 source "spark-env.sh.erb"
 end
 
@@ -70,4 +92,5 @@ execute "sudo service spark-master start"
 
 execute "sudo service spark-history-server start" 
 
+end  #IF Else end
 end

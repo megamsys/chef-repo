@@ -17,6 +17,6 @@ end
 
 
 
-depends "megam_deps"
-depends "megam_logging"
+#depends "megam_deps"
+#depends "megam_logging"
 

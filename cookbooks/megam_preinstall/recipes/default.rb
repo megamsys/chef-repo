@@ -21,7 +21,9 @@
 		break
 	done < /proc/net/route
 
-echo "$ipaddr localhost `hostname`" >> /etc/hosts
+echo "$ipaddr `hostname` localhost" > /etc/hosts
+echo "127.0.0.1 `hostname` localhost" >> /etc/hosts
+echo "127.0.1.1 `hostname`" >> /etc/hosts
   EOH
 end
 
