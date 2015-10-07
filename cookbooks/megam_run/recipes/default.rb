@@ -11,7 +11,7 @@
 #Install dependencies (apt-get update)
 
 node.set['megam_rabbitmq']="#{node['rabbitmq_host']}"
-node.set['megam_monitor']="#{node['monitor_host']}"
+node.set['megam_monitor']="#{node['monitor']}"
 node.set['fqdn']="#{node['hostname']}"
 
 =begin
