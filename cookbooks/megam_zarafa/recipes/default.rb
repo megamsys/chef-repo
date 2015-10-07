@@ -201,7 +201,7 @@ end
 host = "http://download.zarafa.com/community/final"
 major = "7.1"
 minor = "7.1.7-42779"
-type = "free" #opensource
+type = "opensource"
 
 os = "debian"
 os_version = "7.0"
@@ -210,7 +210,7 @@ arch = "x86_64"
 url = "#{host}/#{major}/#{minor}/zcp-#{minor}-#{os}-#{os_version}-#{arch}-#{type}.tar.gz"
 =end
 
-url = "http://download.zarafa.com/community/final/7.1/7.1.9-44333/"
+url = "http://download.zarafa.com/community/final/7.1/7.1.9-44333/zcp-7.1.9-44333-debian-7.0-x86_64-opensource.tar.gz"
 
 ark "zarafa" do
   url url
@@ -231,6 +231,13 @@ end
 #TODO: FAIL and run install.sh
 
 #for zarafa webapp
+
+=begin
+directory "/var/lib/zarafa-webapp" do
+  mode 0755
+end
+=end
+
 directory "/var/lib/zarafa-webapp/tmp" do
   owner "www-data"
   group "www-data"

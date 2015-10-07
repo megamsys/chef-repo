@@ -14,12 +14,14 @@ node.set['megam_rabbitmq']="#{node['rabbitmq_host']}"
 node.set['megam_monitor']="#{node['monitor_host']}"
 node.set['fqdn']="#{node['hostname']}"
 
+=begin
 case node[:platform]
 when "ubuntu"
 `sed -i -- 's/get.megam.io\\/0.8/get.megam.io\\/0.9/g' /etc/apt/sources.list`
 when "debian",
 `sed -i -- 's/get.megam.io\\/0.8/get.megam.io\\/0.9/g' /etc/apt/sources.list.d/megam.list`
 end
+=end
 
 execute "Clean cache first" do
   user "root"
@@ -33,7 +35,7 @@ include_recipe "megam_preinstall"
 include_recipe "megam_preinstall::account"
 
 #Condition Which dns has to be used?
-include_recipe "megam_dns::route53"                     #Default
+#include_recipe "megam_dns::route53"                     #Default
 
 execute "Clean cache 2" do
   user "root"

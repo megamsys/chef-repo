@@ -20,7 +20,7 @@ execute "apt-key adv --keyserver keyserver.ubuntu.com --recv B3E0C1B7"
 execute "apt-get -y update"
 execute "apt-get -y install megamgulpd"
 end
-
+end
 =begin
 #To update megamgulpd package
 if  File.file?('/usr/share/megam/megamgulpd/bin/gulpd')
@@ -32,6 +32,7 @@ execute "apt-get -y install megamgulpd"
 end
 =end
 
+=begin
 template "/usr/share/megam/megamgulpd/conf/gulpd.conf" do
   source "gulpd.conf.erb"
 end
