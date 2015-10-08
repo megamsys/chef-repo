@@ -5,12 +5,13 @@
 #
 
 #rsyslog template
-
+=begin
 template node['heka']['conf'] do
   source "hekad.toml.erb"
   owner node['megam']['default']['user']
   group node['megam']['default']['user']
 end
+=end
 
 case node[:platform]
 when "ubuntu"
@@ -26,6 +27,7 @@ execute "apt-get -y update"
 execute "apt-get -y install heka"
 =end
 
+=begin
 heka_start = "hekad"
 
 template node['heka']['start'] do
@@ -65,7 +67,7 @@ end
 execute "systemctl enable heka.service"
 
 execute "systemctl start heka.service"
-
+=end
 end
 
 

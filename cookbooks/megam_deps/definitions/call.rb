@@ -1,8 +1,7 @@
 define :call do
 
-
 #============================================Component Recipe ====================================================
-ckbk = "#{node['megam']['deps']['component']['tosca_type']}".split('.').last
+ckbk = "#{node['tosca_type']}"
 
 case ckbk                                                       #Case cookbook start
 when "java"
@@ -11,12 +10,18 @@ when "java"
         include_recipe "megam_nginx"                           #assumption
 when "docker"
         include_recipe "megam_docker"
-when "hadoop"
-        include_recipe "megam_analytics"
 when "akka"
         include_recipe "megam_akka"
 when "play"
         include_recipe "megam_play"
+when "spark"
+        include_recipe "megam_spark"
+when "hadoop"
+        include_recipe "megam_hadoop"
+when "virtualoffice"
+        include_recipe "megam_virtual_office::openerp"
+when "sparknotebook"
+        include_recipe "megam_spark_notebook"
 when "rails"
         include_recipe "megam_rails"
 when "nodejs"
@@ -41,25 +46,5 @@ else
 end                                                             #case cookbook end
 
 
-#============================================Component Additional Recipe (Tomcat, Nginx etc)=====================================
-
-add_ckbk = node['megam']['deps']['component']['requirements']['additional']
-
-unless add_ckbk.nil? || add_ckbk.empty?
-
-add_ckbk.each do |ad_ckbk|                      #For each additional cookbook start
-case ad_ckbk                                                       #Case additional cookbook start
-when "tomcat"
-        include_recipe "megam_tomcat"
-#when "jetty"
-        #include_recipe "megam_jetty"
-#when "jboss"
-#        include_recipe "megam_jboss"
-when "nginx"
-        include_recipe "megam_nginx"
-end                                                             #Case additional cookbook end
-end                                                             #For each additional cookbook end
-
-end                                                             #end unless
 
 end
