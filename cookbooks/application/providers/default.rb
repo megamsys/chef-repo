@@ -87,15 +87,8 @@ def before_deploy
   end
 
   if new_resource.deploy_key
-    
-    if ::File.exists?(new_resource.deploy_key)
-      deploy_key = open(new_resource.deploy_key, &:read)
-    else
-      deploy_key = new_resource.deploy_key
-    end
-    
     file "#{new_resource.path}/id_deploy" do
-      content deploy_key
+      content new_resource.deploy_key
       owner new_resource.owner
       group new_resource.group
       mode '0600'
@@ -107,7 +100,7 @@ def before_deploy
       owner new_resource.owner
       group new_resource.group
       mode "0755"
-      variables :id => new_resource.name, :deploy_to => new_resource.path, :strict_ssh => new_resource.strict_ssh
+      variables :id => new_resource.name, :deploy_to => new_resource.path
     end
   end
 
@@ -124,10 +117,8 @@ end
 def run_deploy(force = false)
   # Alias to a variable so I can use in sub-resources
   new_resource = @new_resource
-  # Also alias to variable so it can be used in sub-resources
   app_provider = self
 
-puts "NEW RESOURCE USER ============================> #{@new_resource.owner}"
   @deploy_resource = send(new_resource.strategy.to_sym, new_resource.name) do
     action force ? :force_deploy : :deploy
     scm_provider new_resource.scm_provider
@@ -136,7 +127,6 @@ puts "NEW RESOURCE USER ============================> #{@new_resource.owner}"
     enable_submodules new_resource.enable_submodules
     user new_resource.owner
     group new_resource.group
-    keep_releases new_resource.keep_releases
     deploy_to new_resource.path
     ssh_wrapper "#{new_resource.path}/deploy-ssh-wrapper" if new_resource.deploy_key
     shallow_clone new_resource.shallow_clone
@@ -150,7 +140,14 @@ puts "NEW RESOURCE USER ============================> #{@new_resource.owner}"
       ([new_resource]+new_resource.sub_resources).each do |res|
         cmd = res.restart_command
         if cmd.is_a? Proc
-          app_provider.deploy_provider.instance_eval(&cmd) # @see libraries/default.rb
+          version = Chef::Version.new(Chef::VERSION)
+          provider = if version.major > 10 || version.minor >= 14
+            Chef::Platform.provider_for_resource(res, :nothing)
+          else
+            Chef::Platform.provider_for_resource(res)
+          end
+          provider.load_current_resource
+          provider.instance_eval(&cmd)
         elsif cmd && !cmd.empty?
           execute cmd do
             user new_resource.owner
