@@ -5,6 +5,7 @@ class Chef
   class Provider
     class MysqlClient < Chef::Provider::LWRPBase
       include MysqlCookbook::Helpers
+      provides :mysql_client if defined?(provides)
 
       use_inline_resources if defined?(use_inline_resources)
 
@@ -16,7 +17,7 @@ class Chef
         # From helpers.rb
         configure_package_repositories
 
-        new_resource.client_package_name.each do |p|
+        client_package_name.each do |p|
           package "#{new_resource.name} :create #{p}" do
             package_name p
             version new_resource.version if node['platform'] == 'smartos'
@@ -27,7 +28,7 @@ class Chef
       end
 
       action :delete do
-        new_resource.parsed_packaga_name.each do |p|
+        parsed_package_name.each do |p|
           package "#{new_resource.name} :delete #{p}" do
             action :remove
           end
