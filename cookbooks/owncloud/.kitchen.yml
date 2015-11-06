@@ -1,0 +1,60 @@
+---
+driver:
+  name: vagrant
+  vm_hostname: owncloud.local
+  network:
+  - ["forwarded_port", {guest:  80, host: 8080, auto_correct: true}]
+  - ["forwarded_port", {guest: 443, host: 8443, auto_correct: true}]
+  customize:
+    memory: 512
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: true
+  attributes:
+    owncloud:
+      server_aliases:
+      - localhost
+      config:
+        trusted_domains:
+        - localhost:8080
+        - localhost:8443
+
+platforms:
+- name: centos-5.11
+  run_list: recipe[selinux::disabled]
+# (98)Address already in use: make_sock: could not bind to address 0.0.0.0:80
+# https://github.com/svanzoest-cookbooks/apache2/issues/259
+# - name: centos-6.7
+#   run_list: recipe[selinux::disabled]
+- name: centos-7.1
+  run_list: recipe[selinux::disabled]
+- name: debian-6.0.10
+- name: debian-7.8
+- name: debian-8.1
+- name: ubuntu-12.04
+- name: ubuntu-14.04
+- name: ubuntu-15.04
+
+suites:
+- name: mysql
+  run_list: recipe[owncloud_test::mysql]
+- name: postgresql
+  run_list: recipe[owncloud_test::postgresql]
+  excludes:
+  # PostgreSQL >= 9 required
+  - debian-6.0.10
+  - centos-5.11
+  # Package: No candidate version available for postgresql-client-9.x
+  - ubuntu-15.04
+- name: sqlite
+  run_list: recipe[owncloud_test::sqlite]
+  excludes:
+  # execute[run owncloud setup]: No database drivers installed.
+  - centos-5.11
+- name: nginx
+  run_list: recipe[owncloud_test::nginx]
+  excludes:
+  # yum -d0 -e0 -y install php-fpm-5.4.45-2.el5.remi returned 1:
+  # Transaction Check Error:
+  - centos-5.11
