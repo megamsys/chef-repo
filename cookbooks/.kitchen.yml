@@ -1,0 +1,20 @@
+---
+driver:
+  name: opennebula
+  opennebula_endpoint: 'http://192.168.0.105:2633/RPC2'
+  oneauth_file: ./.oneauth
+  template_name: balaji
+  vm_hostname: balaji
+  username: balaji
+  
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-14.04
+  - name: centos-7.1
+
+suites:
+  - name: default
+    run_list:
+    attributes:

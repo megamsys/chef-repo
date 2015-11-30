@@ -1,0 +1,60 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+  privileged: true
+
+# If you add new platforms below, include them in the .travis.yml file matrix
+platforms:
+- name: centos-6
+  run_list: recipe[selinux::disabled]
+# error: unpacking of archive failed on file /usr/sbin/suexec:
+# cpio: cap_set_file failed - Operation not supportederror: unpacking of
+# archive failed on file /usr/sbin/suexec: cpio: cap_set_file failed -
+# Operation not supported:
+# - name: centos-7
+#   run_list: recipe[selinux::disabled]
+- name: debian-7
+- name: debian-8
+- name: ubuntu-12.04
+- name: ubuntu-14.04
+- name: ubuntu-15.04
+
+# Non-official images
+- name: scientific-6.6
+  driver_config:
+    image: ringo/scientific:6.6
+    platform: rhel
+
+suites:
+- name: mysql
+  run_list: recipe[owncloud_test::mysql]
+  excludes:
+  # Can't connect to MySQL server on '127.0.0.1' (111):
+  - ubuntu-12.04
+  - ubuntu-14.04
+  # bash[default :create initial records] timeout:
+  - ubuntu-15.04
+- name: postgresql
+  run_list: recipe[owncloud_test::postgresql]
+  excludes:
+  # PostgreSQL >= 9 required
+  - centos-6
+  # Package: No candidate version available for postgresql-client-9.3
+  - ubuntu-15.04
+  # /etc/sysconfig/network: No such file or directory
+  - scientific-6.6
+- name: sqlite
+  run_list: recipe[owncloud_test::sqlite]
+- name: nginx
+  run_list: recipe[owncloud_test::nginx]
+  excludes:
+  # nginx: The page you are looking for is not found.
+  - centos-6
+  # Can't connect to MySQL server on '127.0.0.1' (111):
+  - ubuntu-12.04
+  - ubuntu-14.04
+  # Errno::ENOENT: No such file or directory - /sbin/insserv:
+  - ubuntu-15.04
+  # /etc/sysconfig/network: No such file or directory:
+  - scientific-6.6
