@@ -20,6 +20,27 @@
 # limitations under the License.
 #
 
+
+if File.exist?('/var/www/owncloud')
+
+require 'socket'
+
+def my_first_private_ipv4
+  Socket.ip_address_list.detect{|intf| intf.ipv4_private?}
+end
+
+def my_first_public_ipv4
+  Socket.ip_address_list.detect{|intf| intf.ipv4? and !intf.ipv4_loopback? and !intf.ipv4_multicast? and !intf.ipv4_private?}
+end
+
+ip = my_first_public_ipv4.ip_address unless my_first_public_ipv4.nil?
+
+`sed -i "s/trusted_domains.*/trusted_domains' => array('#{ip}'),/" /var/www/owncloud/config/config.php`
+
+execute "service apache2 restart"
+
+else	#owncloud install start
+
 dbtype = node['owncloud']['config']['dbtype']
 download_url =
   node['owncloud']['download_url'] % { version: node['owncloud']['version'] }
@@ -442,3 +463,4 @@ cron 'owncloud cron' do
   action node['owncloud']['cron']['enabled'] ? :create : :delete
   command cron_command
 end
+end	#owncloud install end

@@ -58,7 +58,7 @@ default['owncloud']['skip_permissions'] = false
 default['owncloud']['ssl'] = true
 
 default['owncloud']['admin']['user'] = 'admin'
-default['owncloud']['admin']['pass'] = nil
+default['owncloud']['admin']['pass'] = 'admin'
 
 default['owncloud']['config']['dbtype'] = 'sqlite'
 default['owncloud']['config']['dbname'] = 'owncloud'
