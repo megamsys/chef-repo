@@ -18,21 +18,7 @@
 # limitations under the License.
 #
 
-#include_recipe 'megam_nodejs::nodejs'
-
-
-#node.set['megam']['nginx']['port'] = "2368"
-
-include_recipe "git"
-
-scm_ext = File.extname(node['megam_scm'])
-file_name = File.basename(node['megam_scm'])
-dir = File.basename(file_name, '.*')
-if scm_ext.empty?
-  scm_ext = ".git"
-end
-
-
+#include_recipe "git"
 
 =begin
 execute "Clone Nodejs builder" do
@@ -43,43 +29,20 @@ cwd "#{node['megam']['user']['home']}/bin"
 end
 =end
 
-case scm_ext
-when ".git"
-
-execute "Clone git " do
-  cwd node['megam']['user']['home']
-  command "git clone #{node['megam_scm']}"
-end
-
-execute "Change mod cloned git" do
-  cwd node['megam']['user']['home']
-  command "chown -R #{node['megam']['default']['user']}:#{node['megam']['default']['user']} #{dir}"
-end
 
 
-else
-	puts "TEST CASE ELSE"
-end #CASE
-
-
-execute "chmod 755 #{node['megam']['user']['home']}/#{dir}/start"
-
-execute "sudo -s"
+execute "chmod 755 #{node['megam']['app']['home']}/start"
 
 execute "npm Install dependencies" do
-  cwd "#{node['megam']['user']['home']}/#{dir}"
+  cwd "#{node['megam']['app']['home']}"
   command "npm install --production"
-  user "root"
-  group "root"
   retries 1
   ignore_failure true
 end
 
 execute "npm Install dependencies" do
-  cwd "#{node['megam']['user']['home']}/#{dir}"
+  cwd "#{node['megam']['app']['home']}"
   command "npm install"
-  user "root"
-  group "root"
   retries 1
   ignore_failure true
 end
@@ -105,7 +68,7 @@ include_recipe "megam_environment"
 
 node.set['megam']['start']['name'] = "nodejs"
 node.set['megam']['component']['name'] = "nodejs"
-node.set['megam']['start']['pwd'] = "#{node['megam']['user']['home']}/#{dir}"
+node.set['megam']['start']['pwd'] = "#{node['megam']['app']['home']}"
 node.set['megam']['start']['cmd'] = "./start"
 
 include_recipe "megam_start"
