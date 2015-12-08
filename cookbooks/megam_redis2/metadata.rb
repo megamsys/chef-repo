@@ -18,7 +18,6 @@ depends          "ark"
 depends "apt"
 depends "git"
 depends "megam_deps"
-depends "megam_logging"
 
 attribute 'redis2/source_url',
   :display_name => "Redis source URL",

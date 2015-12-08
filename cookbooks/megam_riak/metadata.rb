@@ -29,8 +29,6 @@ version           "2.0.0"
 end
 
 
-depends "megam_logging"
-
 
 %w{ubuntu debian centos redhat fedora}.each do |os|
   supports os

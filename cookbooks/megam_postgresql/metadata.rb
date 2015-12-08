@@ -24,5 +24,4 @@ depends "build-essential"
 
 depends "git"
 depends "megam_deps"
-depends "megam_logging"
 

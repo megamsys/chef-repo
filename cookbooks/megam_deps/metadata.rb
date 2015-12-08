@@ -7,7 +7,7 @@ description      'Gets assembly data from riak and loads it in attributes'
 
 
 
-depends "megam_gulp"
+#depends "megam_gulp"
 
 depends "megam_nginx"
 depends "megam_tomcat"
@@ -34,5 +34,5 @@ recommends "megam_zarafa"
 recommends "megam_wordpress"
 
 
-recommends "megam_backup"
-recommends "megam_drbd"
+#recommends "megam_backup"
+#recommends "megam_drbd"

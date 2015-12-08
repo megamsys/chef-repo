@@ -14,7 +14,6 @@ end
 depends "megam_nginx"
 depends "git"
 depends "megam_deps"
-depends "megam_logging"
 depends "megam_environment"
 depends "megam_preinstall"
 depends "megam_start"

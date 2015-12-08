@@ -15,8 +15,3 @@ end
   depends dep
 end
 
-
-
-#depends "megam_deps"
-#depends "megam_logging"
-
