@@ -19,30 +19,7 @@
 include_recipe "apt"
 include_recipe "php"
 
-
-
-rsyslog_inputs=[]
-rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/megam/megamgulpd/megamgulpd.log")
-node.override['rsyslog']['logs']= rsyslog_inputs
-
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/apache2/access.log", "/var/log/apache2/error.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
-
-
-scm_ext = File.extname(node['megam_scm'])
-file_name = File.basename(node['megam_scm'])
-dir = File.basename(file_name, '.*')
-if scm_ext.empty?
-  scm_ext = ".git"
-end
-node.set["gulp"]["project_name"] = "#{dir}"
-node.set["gulp"]["email"] = "#{node['megam']['deps']['account']['email']}"
-node.set["gulp"]["api_key"] = "#{node['megam']['deps']['account']['api_key']}"
-
-node.set['megam']['env']['home'] = "#{node['megam']['user']['home']}/#{dir}"
 include_recipe "megam_environment"
-
-
 
 # On Windows PHP comes with the MySQL Module and we use IIS on Windows
 unless platform? "windows"

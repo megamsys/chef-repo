@@ -13,7 +13,6 @@ depends           "erlang", ">= 0.9"
 depends "apt"
 depends "git"
 depends "megam_deps"
-depends "megam_logging"
 
 %w{ubuntu debian redhat centos scientific amazon fedora oracle smartos}.each do |os|
   supports os

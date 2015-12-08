@@ -17,7 +17,6 @@ depends "build-essential"
 depends "iis"
 depends "apt"
 
-depends "megam_logging"
 depends "megam_deps"
 
 

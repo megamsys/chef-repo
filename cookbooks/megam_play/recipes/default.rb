@@ -13,39 +13,7 @@ package "openjdk-7-jdk" do
 end
 =end
 
-package "zip unzip" do
-        action :install
-end
-
-package "tar" do
-        action :install
-end
-
-include_recipe "git"
-
-scm_ext = File.extname(node['megam_scm'])
-file_name = File.basename(node['megam_scm'])
-dir = File.basename(file_name, '.*')
-if scm_ext.empty?
-  scm_ext = ".git"
-end
-
-
-execute "Clone play builder" do
-cwd "#{node['megam']['user']['home']}/bin"
-  user "root"
-  group "root"
-  command "git clone https://github.com/megamsys/buildpacks.git"
-end
-
-
-directory "/usr/share/#{dir}" do
-  owner "root"
-  group "root"
-  mode "0755"
-  action :create
-end
-
+#include_recipe "git"
 
 execute "Clone builder script " do
   cwd node["megam"]["user"]["home"]
@@ -76,7 +44,7 @@ when "debian"
 end
 
 node.set['megam']['start']['name'] = "play"
-node.set['megam']['start']['cmd'] = "/usr/share/#{dir}/bin/#{dir}"
-node.set['megam']['start']['file'] = "/usr/share/#{dir}/bin/#{dir}"
+node.set['megam']['start']['cmd'] = "/usr/share/#{node['megam_dir']}/bin/#{node['megam_dir']}"
+node.set['megam']['start']['file'] = "/usr/share/#{node['megam_dir']}/bin/#{node['megam_dir']}"
 
 include_recipe "megam_start"

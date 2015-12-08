@@ -7,17 +7,11 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "apt"
+#include_recipe "apt"
 
-include_recipe "git"
+#include_recipe "git"
 include_recipe "runit"
 
-scm_ext = File.extname(node['megam_scm'])
-file_name = File.basename(node['megam_scm'])
-dir = File.basename(file_name, '.*')
-if scm_ext.empty?
-  scm_ext = ".git"
-end
 
 include_recipe "megam_environment"
 

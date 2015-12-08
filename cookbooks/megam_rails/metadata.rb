@@ -20,6 +20,5 @@ depends "megam_deps"
 # to use the rails_application::database_credentials recipe
 recommends "database"
 
-depends "megam_logging"
 depends "megam_environment"
 depends "megam_preinstall"
