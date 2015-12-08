@@ -33,8 +33,8 @@ node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/v
 #Temporary assignment
 #node.set["megam_deps"]["predefs"]["scm"] = "#{node['zarafa']['url']}"
 
-scm_ext = File.extname(node['megam']['deps']['scm'])
-file_name = File.basename(node['megam']['deps']['scm'])
+scm_ext = File.extname(node['megam_scm'])
+file_name = File.basename(node['megam_scm'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"

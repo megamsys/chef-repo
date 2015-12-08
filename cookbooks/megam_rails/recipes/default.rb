@@ -12,23 +12,13 @@ include_recipe "apt"
 include_recipe "git"
 include_recipe "runit"
 
-
-rsyslog_inputs=[]
-rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "/var/log/megam/megamgulpd/megamgulpd.log")
-node.override['rsyslog']['logs']= rsyslog_inputs
-
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/nginx/access.log", "/var/log/nginx/error.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
-
-
-scm_ext = File.extname(node['megam']['deps']['scm'])
-file_name = File.basename(node['megam']['deps']['scm'])
+scm_ext = File.extname(node['megam_scm'])
+file_name = File.basename(node['megam_scm'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
 
-node.set['megam']['env']['home'] = "#{node['megam']['lib']['home']}/#{node['megam']['deps']['component']['name']}"
 include_recipe "megam_environment"
 
 
@@ -88,7 +78,7 @@ application node[:rails][:app][:name] do
   end
   #repository        node[:rails][:deploy][:repository]
 #Repository value is getting from s3 json
-  repository        "#{node['megam']['deps']['scm']}"
+  repository        "#{node['megam_scm']}"
   revision          node[:rails][:deploy][:revision]
   enable_submodules node[:rails][:deploy][:enable_submodules]
   shallow_clone     node[:rails][:deploy][:shallow_clone]
@@ -198,40 +188,37 @@ gem_package "rake" do
 end
 
   execute "Gem install Rake" do
-  cwd "#{node[:rails][:app][:path]}/current"  
+  cwd "#{node[:rails][:app][:path]}/current"
   user "root"
   group "root"
   command "gem install rake"
   end
-  
+
 
   execute "Execute assets precompile" do
-  cwd "#{node[:rails][:app][:path]}/current"  
+  cwd "#{node[:rails][:app][:path]}/current"
   user "root"
   group "root"
   command "sudo bundle exec rake assets:precompile"
   end
 
   execute "Execute change owner" do
-  cwd "#{node[:rails][:app][:path]}/current/"  
+  cwd "#{node[:rails][:app][:path]}/current/"
   user "root"
   group "root"
   command "sudo chown -R #{node[:rails][:owner]}:#{node[:rails][:group]} tmp"
   end
 
   execute "Execute unicorn stop" do
-  cwd "/sbin"  
+  cwd "/sbin"
   user "root"
   group "root"
   command "sudo ./stop unicorn_#{node[:rails][:app][:name]}"
   end
 
   execute "Execute unicorn start" do
-  cwd "/sbin"  
+  cwd "/sbin"
   user "root"
   group "root"
   command "sudo ./start unicorn_#{node[:rails][:app][:name]}"
   end
-
-
-

@@ -1,21 +1,13 @@
 
-rsyslog_inputs=[]
-rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/redis/*.log", "/var/log/megam/megamgulpd/megamgulpd.log")
-node.override['rsyslog']['logs']= rsyslog_inputs
-
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/redis/*.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
-
-
 =begin
-scm_ext = File.extname(node['megam']['deps']['scm'])
-file_name = File.basename(node['megam']['deps']['scm'])
+scm_ext = File.extname(node['megam_scm'])
+file_name = File.basename(node['megam_scm'])
 dir = File.basename(file_name, '.*')
 if scm_ext.empty?
   scm_ext = ".git"
 end
 =end
-#Static assign. Change this based on node['megam']['deps']['scm']
+#Static assign. Change this based on node['megam_scm']
 dir = "redis"
 
 redis_instance "master" do
@@ -32,4 +24,3 @@ template "/etc/init/redis.conf" do
 end
 
 execute "start redis"
-
