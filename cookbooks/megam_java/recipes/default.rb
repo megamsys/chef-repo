@@ -17,105 +17,14 @@ package "openjdk-7-jdk" do
 end
 =end
 
-include_recipe "git"
-
-
-rsyslog_inputs=[]
-rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/megam/megamgulpd/megamgulpd.log")
-node.override['rsyslog']['logs']= rsyslog_inputs
-
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/nginx/access.log", "/var/log/nginx/error.log", "#{node["megam"]["tomcat"]["home"]}/logs/catalina.out", "/var/log/megam/megamgulpd/megamgulpd.log"]
-
-#beaver sends logs to rabbitmq server. Rabbitmq-url.  Megam Change
-#node.set['logstash']['beaver']['inputs'] = node['logstash']['beaver']['inputs']
-#include_recipe "megam_logstash::beaver"
+#include_recipe "git"
 
 #From Where can we set this, here or megam_tomcat?
 node.set['megam']['nginx']['port'] = "8080"
 
 
-#rsyslog sends logs to elasticsearch server. kibana-url.  Megam Change
 
-#megam metering(ganglia) sends metrics to gmetad server. monitor-url.  Megam Change
-
-#include_recipe "megam_logstash::rsyslog"
-
-
-scm_ext = File.extname(node['megam']['deps']['scm'])
-file_name = File.basename(node['megam']['deps']['scm'])
-dir = File.basename(file_name, '.*')
-if scm_ext.empty?
-  scm_ext = ".git"
-end
-
-node.set['megam']['env']['home'] = "#{node['megam']['lib']['home']}/#{node['megam']['deps']['component']['name']}"
 include_recipe "megam_environment"
-
-
-case scm_ext
-
-when ".git"
-execute "Clone git " do
-  cwd node['megam']['user']['home']
-  command "git clone #{node['megam']['deps']['scm']}"
-end
-
-execute "Change mod cloned git" do
-  cwd node['megam']['user']['home']
-  command "chown -R #{node['megam']['default']['user']}:#{node['megam']['default']['user']} #{dir}"
-end
-
-
-when ".zip"
-
-remote_file "#{node['megam']['user']['home']}/#{file_name}" do
-  source node['megam']['deps']['scm']
-  mode "0755"
-  owner node['megam']['default']['user']
-  group node['megam']['default']['user']
-end
-
-execute "Unzip scm " do
-  cwd node['megam']['user']['home'] 
-  user node['megam']['default']['user']
-  group node['megam']['default']['user']
-  command "unzip #{file_name}"
-end
-
-when ".gz" || ".tar"
-
-remote_file "#{node['megam']['user']['home']}/#{file_name}" do
-  source node['megam']['deps']['scm']
-  mode "0755"
-  owner node['megam']['default']['user']
-  group node['megam']['default']['user']
-end
-
-execute "Untar tar file " do
-  cwd node['megam']['user']['home']
-  user node['megam']['default']['user']
-  group node['megam']['default']['user']
-  command "tar -xvzf #{file_name}"
-end
-
-when ".war"
-
-
-
-remote_file "#{node['megam']['user']['home']}/#{file_name}" do
-  source node['megam']['deps']['scm']
-  mode "0755"
-  owner node['megam']['default']['user']
-  group node['megam']['default']['user']
-end
-
-else
-	puts "Not a git, war, tar or zip file"
-end #case
-
-unless scm_ext == ".war"
-dir = File.basename(file_name, '.*')
 
 unless File.file?('/usr/bin/mvn')
 bash "Install Maven" do
@@ -123,26 +32,22 @@ bash "Install Maven" do
    code <<-EOH
 wget http://apache.mirrors.hoobly.com/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz
 tar -zxf apache-maven-3.1.1-bin.tar.gz
-cp -R apache-maven-3.1.1 /usr/local 
+cp -R apache-maven-3.1.1 /usr/local
 ln -s /usr/local/apache-maven-3.1.1/bin/mvn /usr/bin/mvn
   EOH
 end
 end
 
 bash "Clean Maven" do
-cwd "#{node['megam']['user']['home']}/#{dir}" 
+cwd "#{node['megam']['app']['home']}"
   user "root"
    code <<-EOH
 mvn clean
 mvn package
   EOH
 end
-end
+
 
 #Megam_tomcat copy ['megam']['app']['location'] to tomcat/webapps folder
-if scm_ext == ".war"
-        node.set['megam']['app']['location'] = "#{node['megam']['user']['home']}/#{file_name}"
-else
-        node.set['megam']['app']['location'] = "#{node['megam']['user']['home']}/#{dir}/target/*.war"
-end
+node.set['megam']['app']['location'] = "#{node['megam']['app']['home']}/target/*.war"
 

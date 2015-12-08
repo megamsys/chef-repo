@@ -10,8 +10,6 @@ when "java"
         include_recipe "megam_nginx"                           #assumption
 when "docker"
         include_recipe "megam_docker"
-when "akka"
-        include_recipe "megam_akka"
 when "play"
         include_recipe "megam_play"
 when "spark"

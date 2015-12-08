@@ -17,7 +17,6 @@ depends "megam_hadoop"
 depends "megam_spark_notebook"
 
 depends "megam_java"
-depends "megam_akka"
 depends "megam_play"
 depends "megam_rails"
 depends "megam_nodejs"

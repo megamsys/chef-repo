@@ -16,19 +16,13 @@
 #
 
 
-rsyslog_inputs=[]
-rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/postgresql/*.log", "/var/log/megam/megamgulpd/megamgulpd.log")
-node.override['rsyslog']['logs']= rsyslog_inputs
-
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/postgresql/*.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
-
+=begin
 node.set[:postgresql][:dbname] = node['megam']['deps']['component']["inputs"].select { |x| x["key"] == "dbname" }[0]['value']
 #node.set[:postgresql][:password][:postgres] = "postgres1PASSWD"
 node.set[:postgresql][:password][:postgres] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "dbpassword" }[0]['value']
 node.set[:postgresql][:db_main_user] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "username" }[0]['value']
 node.set[:postgresql][:db_main_user_pass] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "password" }[0]['value']
-
+=end
 
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
@@ -112,6 +106,7 @@ echo "ALTER ROLE postgres WITH PASSWORD '#{node[:postgresql][:password][:postgre
   action :run
 end
 
+=begin
 bash "Create user and database" do
   user 'postgres'
   code <<-EOH
@@ -123,6 +118,7 @@ EOT
   EOH
   action :run
 end
+=end
 
 execute "Stop postgresql" do
   command "kill -9 $(lsof -i:5432 -t)"
@@ -147,6 +143,3 @@ execute "Start postgresql" do
   command "start postgresql"
   action :run
 end
-
-
-

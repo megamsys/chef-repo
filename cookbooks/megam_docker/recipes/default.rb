@@ -7,14 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-rsyslog_inputs=[]
-rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/upstart/docker.log", "/var/log/megam/megamgulpd/megamgulpd.log")
-node.override['rsyslog']['logs']= rsyslog_inputs
-
-
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/upstart/docker.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
-
 yum_package "docker" do
   action :install
 end
@@ -43,6 +35,3 @@ template "#{node['megam']['user']['home']}/bin/logshipper.sh" do
   source "logheka.sh"
   mode "0755"
 end
-
-
-
