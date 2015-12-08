@@ -17,7 +17,7 @@ node.set['fqdn'] = "#{node['hostname']}"
 
 
 node.set['megam_file_name'] = File.basename(node['megam_scm'])
-node.set['megam_dir'] = File.basename(file_name, '.*')
+node.set['megam_dir'] = File.basename(node['megam_file_name'], '.*')
 
 node.set['megam']['app']['home'] = "#{node['megam']['lib']['home']}/gulp/meta/#{node['megam_dir']}"
 
@@ -58,5 +58,3 @@ include_recipe 'megam_run::context'
 execute "Clean cache last" do
   command "echo 3 > /proc/sys/vm/drop_caches"
 end
-
-
