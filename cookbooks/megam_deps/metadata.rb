@@ -6,6 +6,7 @@ version          '0.5.0'
 description      'Gets assembly data from riak and loads it in attributes'
 
 
+depends "ulimit2"
 
 #depends "megam_gulp"
 
