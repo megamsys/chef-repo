@@ -1,96 +1,58 @@
 #
 # Cookbook Name:: spark
-
-#
 # Recipe:: default
 #
-# Copyright 2015, YOUR_COMPANY_NAMEfs -mkdir /user/spark/applicationHistory"
-#include_recipe "apt"
-
-
+# Copyright 2015, YOUR_COMPANY_NAME
+#
 # All rights reserved - Do Not Redistribute
 #
 case node[:platform]
 when "Debian", "ubuntu"
 
-if File.exist?('/etc/spark/conf/spark-env.sh')
+if File.exist?('/var/lib/megam/spark-hadoop/sbin/start-master.sh')
 
 template "/etc/hosts" do
 source "hosts.erb"
 end
-
-template "/etc/spark/conf/spark-default.conf" do
-source "default.conf.erb"
+ 
+template "/etc/init/spark.conf" do
+source "spark.conf.erb"
+end
+ 
+execute "stop spark" do
+ignore_failure true
+command "stop spark"
 end
 
-template "/etc/spark/conf/spark-env.sh" do
-source "spark-env.sh.erb"
-end
-
-execute "sudo service spark-worker start" 
-
-
-execute "sudo service spark-master start"
-
-execute "sudo service spark-history-server start" 
-
+execute "start spark"
 
 else
+
+execute "install spark" do
+cwd "/var/lib/megam"
+command "wget http://www.eu.apache.org/dist/spark/spark-1.5.1/spark-1.5.1-bin-hadoop2.6.tgz "
+end
+
+bash "spark" do
+cwd "/var/lib/megam"
+code <<-EOH
+ tar -xvf spark-1.5.1-bin-hadoop2.6.tgz
+ mv spark-1.5.1-bin-hadoop2.6.tgz spark-hadoop
+EOH
+end
+
 template "/etc/hosts" do
 source "hosts.erb"
 end
-remote_file node["spark"]["remote-location"]["spark-deb"] do
-  source node["spark"]["source"]
+
+template "/etc/init/spark.conf" do
+source "spark.conf.erb"
 end
  
-execute "sudo dpkg -i cdh5-repository_1.0_all.deb" do
-command "sudo dpkg -i cdh5-repository_1.0_all.deb"
+execute "start spark" do
+command "start spark"
 end
-execute "sudo apt-get -y update "
- 
-execute "wget http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/archive.key -O archive.key" do
- command "wget http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/archive.key -O archive.key"
 end
-execute "sudo apt-key add archive.key" do
- command "sudo apt-key add archive.key" 
-end
-
-execute "sudo apt-get update" do
-command "sudo apt-get -y update"
-end
-
-execute "sudo apt-get -y install spark-core spark-master "
-
-execute "sudo apt-get -y install libgfortran3"
-
-execute "sudo apt-get -y install spark-worker spark-history-server "
-
-execute "sudo apt-get -y install spark-python"
-
-
-execute "sudo service spark-master stop" do
-command "sudo service spark-master stop"
-end
-
-execute "sudo service spark-history-server stop" do
-command "sudo service spark-history-server stop"
 end
 
 
-template "/etc/spark/conf/spark-default.conf" do
-source "default.conf.erb"
-end
-
-template "/etc/spark/conf/spark-env.sh" do
-source "spark-env.sh.erb"
-end
-
-execute "sudo service spark-worker start" 
-
-
-execute "sudo service spark-master start"
-
-execute "sudo service spark-history-server start" 
-
-end  #IF Else end
-end
