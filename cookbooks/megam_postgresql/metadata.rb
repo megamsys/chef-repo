@@ -20,7 +20,7 @@ end
 
 depends "apt"
 depends "build-essential"
-#depends "openssl"
+depends "openssl"
 
 depends "git"
 depends "megam_deps"
