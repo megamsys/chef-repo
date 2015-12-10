@@ -24,6 +24,7 @@ node.set[:postgresql][:db_main_user] = node['megam']['deps']['component']['input
 node.set[:postgresql][:db_main_user_pass] = node['megam']['deps']['component']['inputs'].select { |x| x["key"] == "password" }[0]['value']
 =end
 
+node.set[:postgresql][:password][:postgres] = "megam"
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
