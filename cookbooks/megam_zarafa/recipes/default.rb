@@ -19,7 +19,7 @@
 
 case node['platform_family']
   when "debian"
-   include_recipe "apt"
+   #include_recipe "apt"
 end
 
 if node['zarafa']['backend_type'].nil?
@@ -152,8 +152,8 @@ end
 
 node.set['mysql']['bind_address'] = "127.0.0.1"
 
-include_recipe "mysql::server"
-include_recipe "database::mysql"
+#include_recipe "mysql::server"
+#include_recipe "database::mysql"
 
 mysql_connection_info = {:host => "localhost", :username => 'root', :password => node['mysql']['server_root_password']}
 
@@ -189,7 +189,7 @@ arch = "x86_64"
 url = "#{host}/#{major}/#{minor}/zcp-#{minor}-#{os}-#{os_version}-#{arch}-#{type}.tar.gz"
 =end
 
-url = "http://download.zarafa.com/community/final/7.1/7.1.9-44333/zcp-7.1.9-44333-debian-7.0-x86_64-opensource.tar.gz"
+url = "http://download.zarafa.com/community/final/7.2/7.2.1-51838/zcp-7.2.1-51838-debian-7.0-x86_64-opensource.tar.gz"
 
 ark "zarafa" do
   url url
