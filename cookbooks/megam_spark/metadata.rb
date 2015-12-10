@@ -1,4 +1,4 @@
-name             "megam_spark"
+name             "spark"
 maintainer       "Megam Systems"
 maintainer_email "ranjithar@megam.io"
 license          "All rights reserved"
