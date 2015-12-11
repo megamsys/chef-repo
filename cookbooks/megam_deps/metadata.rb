@@ -5,9 +5,6 @@ license          "Apache 2.0"
 version          '0.5.0'
 description      'Gets assembly data from riak and loads it in attributes'
 
-
-#depends "megam_gulp"
-
 depends "megam_nginx"
 depends "megam_tomcat"
 
@@ -26,8 +23,6 @@ depends "megam_riak"
 depends "megam_redis2"
 depends "megam_postgresql"
 depends "megam_rabbitmq"
-
-depends "megam_analytics"
 
 recommends "megam_op5"
 recommends "owncloud"

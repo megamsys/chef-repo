@@ -8,5 +8,5 @@
 #
 
 if File.file?('/etc/init.d/vmcontext')
-execute "rm /etc/init.d/vmcontext"
+execute "chmod 600 /etc/init.d/vmcontext"
 end
