@@ -13,16 +13,21 @@ when "Debian", "ubuntu"
 
 if File.exist?('/usr/share/spark-notebook/bin/spark-notebook')
 
+template "/etc/init/spark-notebook.conf" do
+source "upstart.conf.erb"
+end
+
+
 template "/etc/hosts" do
 source "hosts.erb"
 end
 
 execute "stop spark-notebook " do
-command "sudo stop spark-notebook"
+command "stop spark-notebook"
 ignore_failure true
 end
 
-execute "sudo start spark-notebook"
+execute "start spark-notebook"
 
 end
 end
