@@ -3,7 +3,7 @@ remote_file "#{Chef::Config[:file_cache_path]}/ghost.zip" do
     not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/ghost.zip") }
 end
 
-execute" mkdir -p #{node['ghost-blog']['install_dir']}"
+execute" mkdir -p /var/www/html"
 
 execute 'unzip' do
     user 'root'
