@@ -1,0 +1,31 @@
+{
+  "name": "ghost-blog",
+  "version": "1.0.5",
+  "description": "Installs & configures Ghost: open source blogging platform",
+  "long_description": "ghostblog Cookbook\r\n==================\r\n[![Chef cookbook](https://img.shields.io/cookbook/v/ghost-blog.svg)](https://supermarket.chef.io/cookbooks/ghost-blog)\r\n[![Join the chat at https://gitter.im/arukaen/chef-ghost](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/arukaen/chef-ghost?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)\r\n\r\nA [Chef](http://getchef.com/) cookbook for building and managing a [Ghost blog](http://docs.ghost.org/).\r\n\r\nRequirements\r\n------------\r\n\r\n## nodejs and Chef:\r\n\r\n* nodejs\r\n* Chef 11+\r\n\r\n## Platforms\r\n\r\n* Ubuntu 12.04, 14.04\r\n\r\n## Cookbooks:\r\n\r\nThis cookbook depends on the following community cookbooks:\r\n\r\n* [nodejs](https://supermarket.chef.io/cookbooks/nodejs) '~> 2.4.0'\r\n\r\nAs of version 1.0 this cookbook is only tested on Ubuntu 12.04 & 14.04. As development is continued on CentOS,Debian and future Ubuntu versions will be supported. This cookbook is heavily configured via the attributes\r\n\r\nAttributes\r\n==========\r\n\r\nThis cookbook's attributes are broken up into different categories.\r\n\r\nGeneral settings\r\n----------------\r\n\r\n* `node['ghost-blog']['install_dir']` - Installation directory for Ghost. Default is `/var/www/html/ghost`\r\n* `node['ghost-blog']['version']` - Ghost blog version. Default is `latest`. Will also take old versions `0.5.9, 0.5.8, etc`\r\n\r\nNginx settings\r\n----------------\r\n\r\n* `node['ghost-blog']['nginx']['dir']` - Nginx directory. Default is `/etc/nginx`\r\n* `node['ghost-blog']['nginx']['script_dir']` - bin directory for scripts. Default is `/usr/bin`\r\n* `node['ghost-blog']['nginx']['server_name']` - Nginx server name. Default is `ghostblog.com`\r\n\r\nGhost app settings\r\n----------------\r\n\r\n* `node['ghost-blog']['app']['server_url']` - Ghost app server url. Default is `localhost`\r\n* `node['ghost-blog']['app']['port']` - Ghost app port. Default is `2368`\r\n* `node['ghost-blog']['app']['mail_transport_method']` - Ghost app mailing method. Default is `SMTP`.\r\n* `node['ghost-blog']['app']['mail_service']` - Name of Mail service to use with nodemailer. Default is `nil`. Supports `Gmail`,`SES`, & `mailgun`.\r\n* `node['ghost-blog']['app']['mail_user']` - Username for select mail service. Default is `nil`\r\n* `node['ghost-blog']['app']['mail_passwd']` - Password for selected mail user. Default is `nil`\r\n* `node['ghost-blog']['app']['db_type']` - Type of database to use with Ghost. Default is `sqlite3`. Supports `sqlite3`, and `mysql`.\r\n\r\nGhost AWS SES settings\r\n----------------\r\n\r\n* `node['ghost-blog']['ses']['aws_secret_key']` - AWS Secret key. Default is `nil`\r\n* `node['ghost-blog']['ses']['aws_access_key']` - AWS Access key. Default is `nil`\r\n\r\nGhost MySQL settings\r\n----------------\r\n\r\n## Note about MySQL option\r\n\r\nCreating a local MySQL server/database is outside the scope of this cookbook. I am assuming if you are using the `mysql` option for `node['ghost-blog']['app']['db_type']` that\r\nyou already have a MySQL elsewhere such as AWS RDS or on another server. You could always wrap this cookbook and create your own MySQL instance. \r\n\r\n* `node['ghost-blog']['mysql']['host']` - MySQL host. Default is `127.0.0.1`\r\n* `node['ghost-blog']['mysql']['user']` - MySQL user. Default is `ghost_blog`\r\n* `node['ghost-blog']['mysql']['passwd']` - MySQL password. Default is `ChangePasswordQuick!`\r\n* `node['ghost-blog']['mysql']['database']` - MySQL database name. Default is `ghost_db`\r\n* `node['ghost-blog']['mysql']['charset']` - MySQL charset. Default is `utf8`\r\n\r\nRecipes\r\n=======\r\n\r\ndefault\r\n-------\r\n\r\nThe main recipe. This will call all the additional recipes to configure and setup Ghost.\r\n\r\nUsage\r\n=====\r\n\r\nUsing this cookbook is relatively straightforward. Add the default\r\nrecipe to the run list of a node, or create a role.\r\n\r\nAuthors\r\n=====\r\n\r\n* Author:: Cris Gallardo (c@cristhekid.com)\r\n",
+  "maintainer": "Cris Gallardo",
+  "maintainer_email": "c@cristhekid.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+    "nodejs": "~> 2.4.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  }
+}

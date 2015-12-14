@@ -8,6 +8,8 @@ description      'Gets assembly data from riak and loads it in attributes'
 depends "megam_nginx"
 depends "megam_tomcat"
 
+depends "ghost-blog"
+
 depends "megam_spark"
 depends "megam_hadoop"
 depends "megam_spark_notebook"
