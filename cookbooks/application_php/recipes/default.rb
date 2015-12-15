@@ -4,6 +4,7 @@ application "my-app" do
   group "root"
   repository "#{node['scm']}"
   deploy_key "megam"
+  #revision "#{node['scm_branch']}"
   packages ["php-soap"]
 
   php do
