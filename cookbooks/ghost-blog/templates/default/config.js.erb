@@ -1,0 +1,62 @@
+var path = require('path'),
+    config;
+
+config = {
+    production: {
+    url: 'http://<%= @url %>:<%= @port %>',
+        <% if @service == 'mailgun' || @service == 'Gmail' %>
+    mail: {
+        transport: '<%= @transport %>',
+        options: {
+            service: '<%= @service %>',
+             auth: {
+                 user: '<%= @user %>',
+                 pass: '<%= @passwd %>'
+        }
+    }
+},
+    <% elsif @service == 'SES' %>
+    mail: {
+        transport: 'SES',
+        options: {
+            AWSAccessKeyID: "<%= @aws_access %>",
+            AWSSecretKey: "<%= @aws_secret %>"
+    }
+},
+    <% else %>
+    mail: {},
+    <% end %>
+<% if @db_type == 'sqlite3' %>
+database: {
+  client: '<%= @db_type %>',
+  connection: {
+    filename: path.join(__dirname, '/content/data/ghost.db')
+  },
+    debug: false
+},
+<% elsif @db_type == 'mysql' %> 
+database: {
+  client: '<%= @db_type %>',
+  connection: {
+    host     : '<%= @db_host %>',
+    user     : '<%= @db_user %>',
+    password : '<%= @db_passwd %>',
+    database : '<%= @db_name %>',
+    charset  : '<%= @charset %>'
+  },
+    debug: false
+},
+<% else %>
+database: {
+    debug: false
+},
+<% end %>
+        server: {
+            host: '127.0.0.1',
+            port: '<%= @port %>'
+        }
+    }
+
+};
+
+module.exports = config;
