@@ -28,10 +28,10 @@ define('DB_PASSWORD', '<%= @db_password %>');
 define('DB_HOST', '<%= @db_host %>');
 
 /** Database Charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8');
+define('DB_CHARSET', '<%= @db_charset %>');
 
 /** The Database Collate type. Don't change this if in doubt. */
-define('DB_COLLATE', '');
+define('DB_COLLATE', '<%= @db_collate %>');
 
 /**#@+
  * Authentication Unique Keys and Salts.
@@ -59,7 +59,7 @@ define('NONCE_SALT',       '<%= @nonce_salt %>');
  * You can have multiple installations in one database if you give each a unique
  * prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_';
+$table_prefix  = '<%= @db_prefix %>';
 
 /**
  * WordPress Localized Language, defaults to English.
@@ -79,6 +79,15 @@ define('WPLANG', '<%= @lang %>');
  * in their development environments.
  */
 define('WP_DEBUG', false);
+
+<% if @allow_multisite %>
+/* Multisite */
+define( 'WP_ALLOW_MULTISITE', true );
+<% end %>
+
+<% @wp_config_options.each do |key,value| %>
+define( '<%= key %>', <%= value %> );
+<% end %>
 
 /* That's all, stop editing! Happy blogging. */
 

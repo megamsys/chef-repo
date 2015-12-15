@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe "megam_wordpress"
+include_recipe "wordpress"
 
 directory "#{node['wordpress']['dir']}/wp-content/languages" do
   owner "root"
