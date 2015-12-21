@@ -1,16 +1,10 @@
-puts "===================="
-puts "php testing"
-puts "+++++++++++++++++++++"
-
-  application "my-app" do
+application "my-app" do
   path "/var/www/html"
   owner "root"
   group "root"
-  #owner node[:apache][:user]
-  #group node[:apache][:user]  
-  repository "https://github.com/awslabs/opsworks-demo-php-simple-app.git"
-  deploy_key "xyz"
-  revision "version1"
+  repository "#{node['scm']}"
+  deploy_key "megam"
+  #revision "#{node['scm_branch']}"
   packages ["php-soap"]
 
   php do

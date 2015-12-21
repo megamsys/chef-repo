@@ -15,3 +15,4 @@ mysql_service 'default' do
   action [:create, :start]
 end
 
+`echo "mysql -h 127.0.0.1 --password=megam to access mysql"`

@@ -8,7 +8,6 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 
 
 depends "megam_preinstall"
-depends "megam_dns"
 depends "megam_deps"
 
 
