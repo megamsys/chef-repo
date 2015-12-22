@@ -10,7 +10,7 @@ case node[:platform]
 when "Debian", "ubuntu"
 
 execute "add repository" do
-command "sudo add-apt-repository ppa:ubuntu-toolchain-r/test"
+command "add-apt-repository ppa:ubuntu-toolchain-r/test"
 end
 
 execute "apt-get -y update"
@@ -18,6 +18,4 @@ execute "apt-get -y update"
 execute "install c" do
 command "apt-get -y install gcc-4.9"
 end
-
-
 end

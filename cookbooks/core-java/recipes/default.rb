@@ -11,14 +11,14 @@ case node[:platform]
 when "Debian", "ubuntu"
 
 execute "openjdk-repo" do
-command "sudo apt-add-repository -y ppa:openjdk-r/ppa"
+command "apt-add-repository -y ppa:openjdk-r/ppa"
 end
 
-execute "sudo apt-get -y  update"
+execute "apt-get -y  update"
 
 execute "install java" do
 
-command "sudo apt-get -y install openjdk-8-jdk"
+command "apt-get -y install openjdk-8-jdk"
 end
 
 end

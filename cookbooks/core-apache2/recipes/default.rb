@@ -10,9 +10,9 @@
 case node[:platform]
 when "Debian", "ubuntu"
 
-execute "sudo apt-get -y update"
+execute "apt-get -y update"
 
 execute "install apache2" do
-command "sudo apt-get -y install apache2"
+command "apt-get -y install apache2"
 end
 end

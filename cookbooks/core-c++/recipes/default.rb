@@ -10,7 +10,7 @@ case node[:platform]
 when "Debian", "ubuntu"
 
 execute "add repository" do
-command "sudo add-apt-repository ppa:ubuntu-toolchain-r/test"
+command "add-apt-repository ppa:ubuntu-toolchain-r/test"
 end
 
 execute "apt-get -y update"
