@@ -6,6 +6,8 @@
 data_bags/
 .chef/syntaxcache/
 
+.project
+
 # emacs
 *~
 
