@@ -33,7 +33,6 @@ execute "unzip tomcat-nginx" do
 end
 
 execute "cp #{node['megam']['app']['location']} #{node['megam']['tomcat']['home']}/webapps/"
-node.set["gulp"]["local_repo"] = "#{node['megam']['tomcat']['home']}/webapps"
 
 template node['megam']['tomcat']['remote-location']['tomcat-init'] do
   source node['megam']['tomcat']['template']['tomcat_init']

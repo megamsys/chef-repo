@@ -26,7 +26,7 @@
     "iis": ">= 1.6.2",
     "tar": ">= 0.3.1",
     "nginx": "~> 2.7.4",
-    "php-fpm": "~> 0.6.10",
+    "php-fpm": ">= 0.6.10",
     "selinux": "~> 0.7"
   },
   "recommendations": {

@@ -29,7 +29,6 @@ depends "megam_rabbitmq"
 
 recommends "megam_op5"
 recommends "owncloud"
-recommends "megam_zarafa"
 recommends "wordpress"
 
 
