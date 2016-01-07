@@ -34,7 +34,7 @@ execute "MongoDB repository" do
 command "echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list"
 end
 
-execute "apt-get update -y"
+execute "apt-get -y update"
 
 execute "install mongodb" do
 command "apt-get install -y  mongodb-org"

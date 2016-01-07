@@ -40,7 +40,7 @@ end
 execute "Restart Postgres database" do
 command "sudo /etc/init.d/postgresql reload"
 end
-execute "exit"
+
 
 bash "mattermost install" do
 cwd "/var/lib/megam"
