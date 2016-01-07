@@ -1,4 +1,4 @@
-name             'mongodb'
+name             'megam_mongodb'
 maintainer       'Megam Systems'
 maintainer_email 'ranjithar@megam.io'
 license          'All rights reserved'

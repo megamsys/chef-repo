@@ -14,10 +14,6 @@ if File.exist?('/usr/share/elasticsearch')
 
 execute "update-rc.d elasticsearch defaults"
 
-template "/etc/hosts" do
-source "hosts.erb"
-end
-
 template "/etc/elasticsearch/elasticsearch.yml" do
 source "elasticsearch.yml.erb"
 end
@@ -39,10 +35,6 @@ command "dpkg -i elasticsearch-1.7.2.deb"
 end
 
 execute "update-rc.d elasticsearch defaults"
-
-template "/etc/hosts" do
-source "hosts.erb"
-end
 
 template "/etc/elasticsearch/elasticsearch.yml" do
 source "elasticsearch.yml.erb"

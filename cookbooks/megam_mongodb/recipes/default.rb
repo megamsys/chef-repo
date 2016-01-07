@@ -12,10 +12,6 @@ when "Debian", "ubuntu"
 
 if File.exist?('/usr/bin/mongod')
 
-template "/etc/hosts" do
-source "hosts.erb"
-end
-
 template "/etc/mongod.conf" do
 source "mongod.conf.erb"
 end
@@ -38,14 +34,10 @@ execute "MongoDB repository" do
 command "echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list"
 end
 
-execute "apt-get update"
+execute "apt-get update -y"
 
 execute "install mongodb" do
 command "apt-get install -y  mongodb-org"
-end
-
-template "/etc/hosts" do
-source "hosts.erb"
 end
 
 template "/etc/mongod.conf" do
