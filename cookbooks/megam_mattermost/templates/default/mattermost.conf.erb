@@ -1,0 +1,7 @@
+start on runlevel [2345]
+stop on runlevel [016]
+respawn
+chdir /var/lib/megam/mattermost
+
+exec bin/platform  >> /var/log/upstart/spark.log
+
