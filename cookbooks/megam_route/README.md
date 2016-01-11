@@ -1,4 +1,4 @@
-megam_deps Cookbook
+megam_route Cookbook
 ===================
 This cookbook is used to get the json file from s3.
 
@@ -11,14 +11,14 @@ TODO: List your cookbook requirements. Be sure to include any requirements this 
 
 e.g.
 #### packages
-- `toaster` - megam_deps needs toaster to brown your bagel.
+- `toaster` - megam_route needs toaster to brown your bagel.
 
 Attributes
 ----------
 TODO: List you cookbook attributes here.
 
 e.g.
-#### megam_deps::default
+#### megam_route::default
 <table>
   <tr>
     <th>Key</th>
@@ -27,7 +27,7 @@ e.g.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['megam_deps']['bacon']</tt></td>
+    <td><tt>['megam_route']['bacon']</tt></td>
     <td>Boolean</td>
     <td>whether to include bacon</td>
     <td><tt>true</tt></td>
@@ -36,17 +36,17 @@ e.g.
 
 Usage
 -----
-#### megam_deps::default
+#### megam_route::default
 TODO: Write usage instructions for each cookbook.
 
 e.g.
-Just include `megam_deps` in your node's `run_list`:
+Just include `megam_route` in your node's `run_list`:
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[megam_deps]"
+    "recipe[megam_route]"
   ]
 }
 ```

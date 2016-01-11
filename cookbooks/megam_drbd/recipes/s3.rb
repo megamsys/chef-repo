@@ -9,7 +9,7 @@ ruby_block "Get Security credentials" do
 
 require 'aws-sdk' 
 
-key_location = node["megam_deps"]["request"]["command"]["compute"]["access"]["vault_location"]
+key_location = node["megam_route"]["request"]["command"]["compute"]["access"]["vault_location"]
 
 keys = data_bag_item('ec2', 'keys')
 
@@ -23,7 +23,7 @@ s3 = AWS::S3.new
 bucket =  key_location.split('/')[-3]
 path =  key_location.partition(bucket+'/').last
 
-keys = "#{node["megam_deps"]["request"]["command"]["compute"]["cctype"]}_keys"
+keys = "#{node["megam_route"]["request"]["command"]["compute"]["cctype"]}_keys"
 
 t1 = s3.buckets["#{bucket}"].objects["#{path}/#{keys}"].read
 

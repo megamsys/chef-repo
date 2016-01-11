@@ -1,4 +1,4 @@
-define :call do
+define :route do
 
 #============================================Component Recipe ====================================================
 ckbk = "#{node['tosca_type']}"

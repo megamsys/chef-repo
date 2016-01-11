@@ -6,5 +6,5 @@ version          '0.5.0'
 description      'Installs/Configures op5'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 
-depends "megam_deps"
+depends "megam_route"
 depends "megam_preinstall"

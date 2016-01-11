@@ -1,4 +1,4 @@
-name             'megam_deps'
+name             'megam_route'
 maintainer       'Megam Systems'
 maintainer_email 'thomasalrin@megam.io'
 license          "Apache 2.0"
