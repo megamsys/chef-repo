@@ -12,18 +12,9 @@
   bash "SET IP in /etc/hosts" do
   user "root"
    code <<-EOH
-	while read Iface Destination Gateway Flags RefCnt Use Metric Mask MTU Window IRTT; do
-		[ "$Mask" = "00000000" ] && \
-		interface="$Iface" && \
-		ipaddr=$(LC_ALL=C /sbin/ip -4 addr list dev "$interface" scope global) && \
-		ipaddr=${ipaddr#* inet } && \
-		ipaddr=${ipaddr%%/*} && \
-		break
-	done < /proc/net/route
-
-echo "$ipaddr `hostname` localhost" > /etc/hosts
-echo "127.0.0.1 `hostname` localhost" >> /etc/hosts
-echo "127.0.1.1 `hostname`" >> /etc/hosts
+echo "#{node['ipaddress']} #{node['hostname']} localhost" > /etc/hosts
+echo "127.0.0.1 #{node['hostname']} localhost" >> /etc/hosts
+echo "127.0.1.1 #{node['hostname']}" >> /etc/hosts
   EOH
 end
 

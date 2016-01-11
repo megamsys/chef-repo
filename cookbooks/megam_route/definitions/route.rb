@@ -1,4 +1,4 @@
-define :call do
+define :route do
 
 #============================================Component Recipe ====================================================
 ckbk = "#{node['tosca_type']}"
@@ -47,6 +47,21 @@ when "rabbitmq"
         include_recipe "megam_rabbitmq"
 when "zarafa"
         include_recipe "megam_zarafa"
+when "mattermost"
+        include_recipe "megam_mattermost"
+when "mongodb"
+        include_recipe "megam_mongodb"
+when "couchdb"
+        include_recipe "megam_couchdb"
+when "apache"
+        include_recipe "apache2"
+when "elasticsearch"
+        include_recipe "megam_elasticsearch"
+when "javasdk"
+        include_recipe "core-java"
+when "ccplus"
+        include_recipe "core-ccpp"
+
 else
         puts "Not a valid Tosca type"
 end                                                             #case cookbook end

@@ -23,5 +23,5 @@ depends "build-essential"
 depends "openssl"
 
 depends "git"
-depends "megam_deps"
+depends "megam_route"
 

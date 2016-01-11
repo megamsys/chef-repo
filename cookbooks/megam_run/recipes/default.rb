@@ -36,7 +36,7 @@ execute "Clean cache 2" do
 end
 
 #Get asembly json and include recipes ased on the component json
-include_recipe "megam_deps"
+include_recipe "megam_route"
 
 
 # OPENNEBULA VM contextualization

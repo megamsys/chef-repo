@@ -24,7 +24,7 @@ ruby_block "Add volume" do
   block do
    require 'fog'
    
-       case node["megam_deps"]["request"]["command"]["compute"]["access"]["zone"]
+       case node["megam_route"]["request"]["command"]["compute"]["access"]["zone"]
         when 'az3'
           hp_avl_zone = "az-3.region-a.geo-1"
         when 'az2'
@@ -35,7 +35,7 @@ ruby_block "Add volume" do
         
    	    hp_access_key = "#{node["megam_node"]["access_key"]}".strip
             hp_secret_key = "#{node["megam_node"]["secret_key"]}".strip
-            hp_tenant_id = "#{node["megam_deps"]["request"]["command"]["compute"]["cc"]["tenant_id"]}".strip
+            hp_tenant_id = "#{node["megam_route"]["request"]["command"]["compute"]["cc"]["tenant_id"]}".strip
             hp_auth_uri = "https://region-a.geo-1.identity.hpcloudsvc.com:35357/v2.0/".strip
             #hp_avl_zone = "az-2.region-a.geo-1"
 
