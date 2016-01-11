@@ -1,0 +1,27 @@
+#!/bin/bash
+#Java builder WAR
+
+#megam_java_builder/build tomcat project=orion local_repo=/home/megam/tomcat/webaps remote_repo=https://github.com/thomasalrin/orion.git
+
+megam_home="/var/lib/megam/gulp/meta"
+local_repo=<%= node[:build][:localrepo] %>
+remote_repo=<%=  node[:build][:remote] %>
+
+filename=$(basename "$remote_repo")
+extension="${filename##*.}"
+filename="${filename%.*}"
+
+      cd $megam_home
+      rm -r $filename
+      git clone $remote_repo
+      cd $filename
+      mvn clean
+      mvn package
+      warfile=( $(ls ./target/*.war) )
+      pkgname=$(basename "$warfile")
+      pkgname="${pkgname%.*}"
+      cp ./target/*.war $local_repo
+      chown -R megam:megam $local_repo/$pkgname.war
+
+stop java
+start java

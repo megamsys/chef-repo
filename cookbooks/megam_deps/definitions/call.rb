@@ -47,6 +47,8 @@ when "rabbitmq"
         include_recipe "megam_rabbitmq"
 when "zarafa"
         include_recipe "megam_zarafa"
+when "orion"
+        include_recipe "megam_orion"
 else
         puts "Not a valid Tosca type"
 end                                                             #case cookbook end
