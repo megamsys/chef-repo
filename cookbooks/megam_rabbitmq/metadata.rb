@@ -12,7 +12,7 @@ depends           "yum", ">= 0.5.0"
 depends           "erlang", ">= 0.9"
 depends "apt"
 depends "git"
-depends "megam_deps"
+depends "megam_route"
 
 %w{ubuntu debian redhat centos scientific amazon fedora oracle smartos}.each do |os|
   supports os

@@ -1,9 +1,9 @@
-core-apache2 Cookbook
-=====================
-TODO: Enter the cookbook description here.
+megam_route Cookbook
+===================
+This cookbook is used to get the json file from s3.
 
 e.g.
-This cookbook makes your favorite breakfast sandwich.
+This cookbook makes your favorite breakfast sandwhich.
 
 Requirements
 ------------
@@ -11,14 +11,14 @@ TODO: List your cookbook requirements. Be sure to include any requirements this 
 
 e.g.
 #### packages
-- `toaster` - core-apache2 needs toaster to brown your bagel.
+- `toaster` - megam_route needs toaster to brown your bagel.
 
 Attributes
 ----------
-TODO: List your cookbook attributes here.
+TODO: List you cookbook attributes here.
 
 e.g.
-#### core-apache2::default
+#### megam_route::default
 <table>
   <tr>
     <th>Key</th>
@@ -27,7 +27,7 @@ e.g.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['core-apache2']['bacon']</tt></td>
+    <td><tt>['megam_route']['bacon']</tt></td>
     <td>Boolean</td>
     <td>whether to include bacon</td>
     <td><tt>true</tt></td>
@@ -36,17 +36,17 @@ e.g.
 
 Usage
 -----
-#### core-apache2::default
+#### megam_route::default
 TODO: Write usage instructions for each cookbook.
 
 e.g.
-Just include `core-apache2` in your node's `run_list`:
+Just include `megam_route` in your node's `run_list`:
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[core-apache2]"
+    "recipe[megam_route]"
   ]
 }
 ```
@@ -58,7 +58,7 @@ TODO: (optional) If this is a public cookbook, detail the process for contributi
 e.g.
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
-3. Write your change
+3. Write you change
 4. Write tests for your change (if applicable)
 5. Run the tests, ensuring they all pass
 6. Submit a Pull Request using Github
