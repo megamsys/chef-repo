@@ -31,6 +31,16 @@ recommends "megam_op5"
 recommends "owncloud"
 recommends "wordpress"
 
+depends "megam_zarafa"
+depends "megam_elasticsearch"
+depends "megam_mattermost"
+depends "megam_mongodb"
+depends "megam_couchdb"
+
+depends "apache2"
+depends "core-ccpp"
+depends "core-java"
+
 
 #recommends "megam_backup"
 #recommends "megam_drbd"
