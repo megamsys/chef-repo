@@ -3,7 +3,7 @@
 
 #megam_php_builder/build php project=fengoffice local_repo=/var/www/html/current remote_repo=https://github.com/vijaykanthm28/fengoffice.git
 
-local_repo='/var/www/html/current'
+local_repo=<%= node[:build][:localrepo] %>
 remote_repo=<%= node['scm'] %>
 megam_home=<%= node['megam']['lib']['home'] %>/gulp
 

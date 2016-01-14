@@ -48,7 +48,6 @@ mvn package
 end
 
 node.set[:build][:localrepo]= "#{node['megam']['tomcat']['home']}/webapps/"
-node.set[:build][:remote] = "#{node['scm']}"
 
 template "/var/lib/megam/gulp/build" do
   source "build.erb"

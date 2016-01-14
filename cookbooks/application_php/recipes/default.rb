@@ -14,6 +14,8 @@ application "my-app" do
  mod_php_apache2
 end
 
+node.set[:build][:localrepo]='/var/www/html/current'
+
 template "/var/lib/megam/gulp/build" do
   source "build.erb"
   mode "755"

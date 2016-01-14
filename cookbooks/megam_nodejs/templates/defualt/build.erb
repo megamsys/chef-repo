@@ -3,7 +3,7 @@
 
 #megam_nodejs_builder/build nodejs project=ghost local_repo=/home/sandbox/ghost remote_repo=https://github.com/thomasalrin/ghost.git
 
-remote_repo=<%= node[:build][:remote] %>
+remote_repo=<%= {node['scm'] %>
 megam_home=<%= node['megam']['lib']['home'] %>/gulp
 
 project=$(basename "$remote_repo")
@@ -21,4 +21,3 @@ stop nodejs
       ./start
       #npm install forever-monitor
 start nodejs
-

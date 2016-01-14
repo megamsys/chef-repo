@@ -5,7 +5,7 @@
 
 megam_home="/var/lib/megam/gulp"
 local_repo=<%= node[:build][:localrepo] %>
-remote_repo=<%=  node[:build][:remote] %>
+remote_repo=<%= node['scm'] %>
 
 filename=$(basename "$remote_repo")
 extension="${filename##*.}"
