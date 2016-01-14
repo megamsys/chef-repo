@@ -73,3 +73,8 @@ node.set['megam']['start']['cmd'] = "./start"
 
 include_recipe "megam_start"
 include_recipe "megam_nginx"
+
+template "/var/lib/megam/gulp/build" do
+  source "build.erb"
+  mode "755"
+end

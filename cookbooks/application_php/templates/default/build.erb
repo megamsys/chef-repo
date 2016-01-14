@@ -1,0 +1,20 @@
+#!/bin/bash
+#Php builder Git
+
+#megam_php_builder/build php project=fengoffice local_repo=/var/www/html/current remote_repo=https://github.com/vijaykanthm28/fengoffice.git
+
+local_repo=<%= node[:build][:localrepo] %>
+remote_repo=<%= node['scm'] %>
+megam_home=<%= node['megam']['lib']['home'] %>/gulp
+
+project=$(basename "$remote_repo")
+project="${project%.*}"
+
+
+cd $megam_home
+rm -r $project
+git clone $remote_repo
+rm -r $local_repo/*
+cp -r ./$project/* $local_repo
+./$project/start
+service apache2 restart

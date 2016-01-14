@@ -4,3 +4,4 @@ default['megam']['lib']['home']="/var/lib/megam"
 default['megam']['user']['conf']="/home/megam/bin/conf"
 
 default['megam']['app']['location'] = "/var/lib/megam/app"
+default[:build][:localrepo] = ""
