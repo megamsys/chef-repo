@@ -16,5 +16,5 @@ rm -r $project
 git clone $remote_repo
 rm -r $local_repo/*
 cp -r ./$project/* $local_repo
-cd /var/www/html/current/;chmod 777 tmp upload cache config
+./$project/start
 service apache2 restart
