@@ -1,4 +1,4 @@
-name             'core-c'
+name             'core-ccpp'
 maintainer       'Megam Systems'
 maintainer_email 'ranjithar@megam.io'
 license          'All rights reserved'
