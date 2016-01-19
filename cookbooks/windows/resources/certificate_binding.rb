@@ -1,9 +1,9 @@
 #
-# Author:: Doug MacEachern <dougm@vmware.com>
+# Author:: Richard Lavey (richard.lavey@calastone.com)
 # Cookbook Name:: windows
-# Resource:: shortcut
+# Resource:: certificate_binding
 #
-# Copyright:: 2010, VMware, Inc.
+# Copyright:: 2015, Calastone Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,19 +18,14 @@
 # limitations under the License.
 #
 
-actions :create
-
+actions :create, :delete
 default_action :create
 
-attribute :name, kind_of: String
-attribute :target, kind_of: String
-attribute :arguments, kind_of: String
-attribute :description, kind_of: String
-attribute :cwd, kind_of: String
-attribute :iconlocation, kind_of: String
+attribute :cert_name, kind_of: String, name_attribute: true, required: true
+attribute :name_kind, kind_of: Symbol, equal_to: [:hash, :subject], default: :subject
+attribute :address, kind_of: String, default: '0.0.0.0'
+attribute :port, kind_of: Integer, default: 443
+attribute :app_id, kind_of: String, default: '{4dc3e181-e14b-4a21-b022-59fc669b0914}'
+attribute :store_name, kind_of: String, default: 'MY', regex: /^(?:MY|CA|ROOT)$/
 
-# Covers 0.10.8 and earlier
-def initialize(*args)
-  super
-  @action = :create
-end
+attr_accessor :exists

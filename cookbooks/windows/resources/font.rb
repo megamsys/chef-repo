@@ -1,9 +1,9 @@
 #
-# Author:: Seth Chisamore (<schisamo@chef.io>)
+# Author:: Sander Botman <sbotman@schubergphilis.com>
 # Cookbook Name:: windows
-# Attribute:: default
+# Resource:: font
 #
-# Copyright 2011-2015, Chef Software, Inc
+# Copyright:: 2014, Schuberg Philis BV.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@
 # limitations under the License.
 #
 
-default['windows']['allow_pending_reboots'] = true
-default['windows']['allow_reboot_on_failure'] = false
-default['windows']['rubyzipversion'] = nil
-default['windows']['reboot_timeout'] = 60
+actions :install
+
+default_action :install
+
+attribute :file, kind_of: String, name_attribute: true

@@ -36,7 +36,7 @@ module Opscode
 
       include Chef::Mixin::ShellOut
       include REXML
-      include Windows::Helper
+      #include Windows::Helper
 
       def self.older_than_windows2008r2?
         if RUBY_PLATFORM =~ /mswin|mingw32|windows/

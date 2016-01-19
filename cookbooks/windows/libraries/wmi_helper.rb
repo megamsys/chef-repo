@@ -1,9 +1,7 @@
 #
-# Author:: Seth Chisamore (<schisamo@chef.io>)
-# Cookbook Name:: windows
-# Attribute:: default
+# Author:: Adam Edwards (<adamed@chef.io>)
 #
-# Copyright 2011-2015, Chef Software, Inc
+# Copyright:: 2014-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +16,17 @@
 # limitations under the License.
 #
 
-default['windows']['allow_pending_reboots'] = true
-default['windows']['allow_reboot_on_failure'] = false
-default['windows']['rubyzipversion'] = nil
-default['windows']['reboot_timeout'] = 60
+if RUBY_PLATFORM =~ /mswin|mingw32|windows/
+  require 'win32ole'
+
+  def execute_wmi_query(wmi_query)
+    wmi = ::WIN32OLE.connect('winmgmts://')
+    result = wmi.ExecQuery(wmi_query)
+    return nil unless result.each.count > 0
+    result
+  end
+
+  def wmi_object_property(wmi_object, wmi_property)
+    wmi_object.send(wmi_property)
+  end
+end

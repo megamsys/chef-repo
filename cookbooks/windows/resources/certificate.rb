@@ -1,9 +1,9 @@
 #
-# Author:: Seth Chisamore (<schisamo@chef.io>)
+# Author:: Richard Lavey (richard.lavey@calastone.com)
 # Cookbook Name:: windows
-# Attribute:: default
+# Resource:: certificate
 #
-# Copyright 2011-2015, Chef Software, Inc
+# Copyright:: 2015, Calastone Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,11 @@
 # limitations under the License.
 #
 
-default['windows']['allow_pending_reboots'] = true
-default['windows']['allow_reboot_on_failure'] = false
-default['windows']['rubyzipversion'] = nil
-default['windows']['reboot_timeout'] = 60
+actions :create, :delete, :acl_add
+default_action :create
+
+attribute :source, kind_of: String, name_attribute: true, required: true
+attribute :pfx_password, kind_of: String
+attribute :private_key_acl, kind_of: Array
+attribute :store_name, kind_of: String, default: 'MY', regex: /^(?:MY|CA|ROOT)$/
+attribute :user_store, kind_of: [TrueClass, FalseClass], default: false
