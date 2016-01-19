@@ -19,7 +19,7 @@ node.set['fqdn'] = "#{node['hostname']}"
 node.set['megam_file_name'] = File.basename(node['megam_scm'])
 node.set['megam_dir'] = File.basename(node['megam_file_name'], '.*')
 
-node.set['megam']['app']['home'] = "#{node['megam']['lib']['home']}/gulp/meta/#{node['megam_dir']}"
+node.set['megam']['app']['home'] = "#{node['megam']['lib']['home']}/gulp/#{node['megam_dir']}"
 
 
 execute "Clean cache first" do

@@ -47,7 +47,14 @@ mvn package
   EOH
 end
 
+node.set[:build][:localrepo]= "#{node['megam']['tomcat']['home']}/webapps/"
+
+template "/var/lib/megam/gulp/build" do
+  source "build.erb"
+  mode "755"
+end
+
+
 
 #Megam_tomcat copy ['megam']['app']['location'] to tomcat/webapps folder
 node.set['megam']['app']['location'] = "#{node['megam']['app']['home']}/target/*.war"
-

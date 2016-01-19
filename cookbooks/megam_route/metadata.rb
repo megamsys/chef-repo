@@ -40,6 +40,7 @@ depends "megam_couchdb"
 depends "apache2"
 depends "core-ccpp"
 depends "core-java"
+depends "megam_orion"
 
 
 #recommends "megam_backup"

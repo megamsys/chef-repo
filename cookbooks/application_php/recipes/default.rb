@@ -11,8 +11,19 @@ application "my-app" do
    database_master_role "database_master"
    local_settings_file "php.conf"
   end
-
  mod_php_apache2
+end
+
+node.set[:build][:localrepo]='/var/www/html/current'
+
+template "/var/lib/megam/gulp/build" do
+  source "build.erb"
+  mode "755"
+end
+
+execute "install dependencies" do
+ cwd "#{node['megam']['app']['home']}"
+ command "./start"
 end
 
 
@@ -29,4 +40,3 @@ end
    # end
  # end
 #end
-
