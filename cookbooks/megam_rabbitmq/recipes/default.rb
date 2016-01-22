@@ -19,14 +19,6 @@
 # limitations under the License.
 #
 
-rsyslog_inputs=[]
-rsyslog_inputs = node.default['rsyslog']['logs']
-rsyslog_inputs.push("/var/log/rabbitmq/rabbit@#{`hostname`}.log", "/var/log/megam/megamgulpd/megamgulpd.log")
-node.override['rsyslog']['logs']= rsyslog_inputs
-
-node.set['heka']['logs']["#{node['megam']['deps']['component']['name']}"] = ["/var/log/rabbitmq/rabbit@#{`hostname`}.log", "/var/log/megam/megamgulpd/megamgulpd.log"]
-
-dir = "rabbitmq"
 
 include_recipe "erlang"
 
@@ -143,7 +135,6 @@ end
     owner "rabbitmq"
     group "rabbitmq"
     mode 00400
-    notifies :start, "service[#{node['rabbitmq']['service_name']}]", :immediately
   end
 
 if node['rabbitmq']['cluster']
@@ -167,11 +158,6 @@ end #end for if condition
 ## when called from chef. The setsid command forces the subprocess into a state
 ## where it can daemonize properly. -Kevin (thanks to Daniel DeLeo for the help)
 
-    # We start with stock init.d, remove it if we're not using init.d, otherwise leave it alone
-    service node['rabbitmq']['service_name'] do
-      action [:stop]
-      only_if { File.exist?('/etc/init.d/rabbitmq-server') }
-    end
 
     execute 'remove rabbitmq init.d command' do
       command 'update-rc.d -f rabbitmq-server remove'
@@ -193,6 +179,7 @@ end #end for if condition
       provider Chef::Provider::Service::Upstart
       action [:enable, :start]
       restart_command "stop #{node['rabbitmq']['service_name']} && start #{node['rabbitmq']['service_name']}"
+      only_if { File.exist?('/etc/init.d/rabbitmq-server') }
     end
   
 
