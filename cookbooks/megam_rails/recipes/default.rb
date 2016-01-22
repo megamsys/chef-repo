@@ -65,7 +65,7 @@ db_adapter  = node[:rails][:database][:adapter]
 
 application node[:rails][:app][:name] do
   action    node[:rails][:deploy][:action]
-  path      node[:rails][:app][:path]
+  path      "#{node[:rails][:app][:path]}"
 
   if node[:rails][:deploy][:ssh_key]
     deploy_key node[:rails][:deploy][:ssh_key]
