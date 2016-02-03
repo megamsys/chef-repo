@@ -14,11 +14,17 @@ directory "#{node['megam']['env']['home']}" do
   group "root"
   action :create
 end
+if File.exist?("#{node['megam']['env']['home']}/env.sh")
 
+execute "chmod 755 #{node['megam']['env']['home']}/env.sh"
+
+else
 template "#{node['megam']['env']['home']}/env.sh" do
   source "env.sh.erb"
   mode "0755"
   user "root"
   group "root"
   variables( :platf_family => "#{platf_family}" )
+end
+
 end
