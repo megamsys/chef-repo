@@ -15,10 +15,6 @@ directory "#{node['megam']['env']['home']}" do
   action :create
 end
 
-template "#{node['megam']['env']['home']}/env.sh" do
-  source "env.sh.erb"
-  mode "0755"
-  user "root"
-  group "root"
-  variables( :platf_family => "#{platf_family}" )
-end
+execute "echo \"initctl set-env MEGAM_HOME='#{node['megam']['env']['home']}'\" >>#{node['megam']['env']['home']}env.sh"
+
+execute "chmod 755 #{node['megam']['env']['home']}env.sh"
