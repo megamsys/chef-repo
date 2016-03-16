@@ -28,7 +28,7 @@ depends "megam_postgresql"
 depends "megam_rabbitmq"
 
 recommends "megam_op5"
-recommends "owncloud"
+depends "owncloud"
 recommends "wordpress"
 
 depends "megam_zarafa"
