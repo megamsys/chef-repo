@@ -16,7 +16,7 @@ source "default.ini.erb"
 end
 
 execute "service couchdb restart"
-else 
+else
 
 execute "apt-get update"
 
@@ -40,10 +40,11 @@ bash 'make' do
       ./configure && make
      make install
   EOH
+  ignore_failure true
 end
 
 execute "add user" do
-command "useradd -d /var/lib/couchdb couchdb"
+  command "useradd -d /var/lib/couchdb couchdb"
 end
 
 bash 'permission' do
@@ -62,7 +63,7 @@ bash 'make' do
   EOH
 end
 
-execute "start " do 
+execute "start " do
 command "/etc/init.d/couchdb start"
 end
 
@@ -75,4 +76,3 @@ end
 execute "service couchdb restart"
 end
 end
-
