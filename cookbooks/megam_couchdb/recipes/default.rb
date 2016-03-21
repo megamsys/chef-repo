@@ -43,16 +43,6 @@ bash 'make' do
   ignore_failure true
 end
 
-if !(File.exist?('/usr/local/bin/couchdb'))
-  bash 'make' do
-    code <<-EOH
-      cd apache-couchdb-*
-        ./configure && make
-       make install
-    EOH
-  end
-end
-
 execute "add user" do
   command "useradd -d /var/lib/couchdb couchdb"
 end
