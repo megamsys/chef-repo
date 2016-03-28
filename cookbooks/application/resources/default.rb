@@ -20,7 +20,7 @@
 
 require 'weakref'
 
-include Chef::Mixin::RecipeDefinitionDSLCore
+include Chef::DSL::Recipe
 
 def initialize(*args)
   super
@@ -35,6 +35,7 @@ attribute :environment_name, :kind_of => String, :default => (node.chef_environm
 attribute :path, :kind_of => String
 attribute :owner, :kind_of => String
 attribute :group, :kind_of => String
+attribute :keep_releases, :kind_of => Integer, :default => 5
 attribute :strategy, :kind_of => [String, Symbol], :default => :deploy_revision
 attribute :scm_provider, :kind_of => [Class, String, Symbol]
 attribute :revision, :kind_of => String
@@ -42,7 +43,8 @@ attribute :repository, :kind_of => String
 attribute :enable_submodules, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :environment, :kind_of => Hash, :default => {}
 attribute :deploy_key, :kind_of => [String, NilClass], :default => nil
-attribute :shallow_clone, :kind_of => [TrueClass, FalseClass], :default => true
+attribute :strict_ssh, :kind_of => [TrueClass, FalseClass], :default => false
+attribute :shallow_clone, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :force, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :rollback_on_error, :kind_of => [TrueClass, FalseClass], :default => true
 attribute :purge_before_symlink, :kind_of => Array, :default => []
@@ -174,3 +176,4 @@ def to_ary
   nil
 end
 alias :to_a :to_ary
+
