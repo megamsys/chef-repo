@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: megam_rails_application
+# Cookbook Name:: rails_application
 # Recipe:: database_credentials
 #
 # Copyright 2013, Devops Israel

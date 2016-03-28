@@ -1,4 +1,4 @@
-megam_rails_application Cookbook
+rails_application Cookbook
 ============================
 
 This cookbooks installs the server-side Rails application.
@@ -29,26 +29,13 @@ actually do the majority of the work.
 - application_ruby
 - application_nginx
 
-#####  for the megam_rails_application::database_credentials cookbook, you also need -
+#####  for the rails_application::database_credentials cookbook, you also need -
 
 - database
 
 Several of the above required minor modifications, all of these have pull
 requests and tickets with OpsCode, but until these get accepted, forks that
 include the modifications are available here -
-
-##### application cookbook
-
-- Ticket: http://tickets.opscode.com/browse/COOK-2597
-- Pull Request: https://github.com/opscode-cookbooks/application/pull/25
-- Modified Cookbook: https://github.com/devops-israel/opscode-cookbooks-application.git
-
-
-##### application_nginx cookbook
-
-- Ticket: http://tickets.opscode.com/browse/COOK-2579
-- Pull Request: https://github.com/opscode-cookbooks/application_nginx/pull/5
-- Modified Cookbook: https://github.com/devops-israel/opscode-cookbooks-application_nginx.git
 
 
 ##### application_ruby cookbook (no pull requests at this time)
@@ -71,7 +58,7 @@ include the modifications are available here -
 Attributes
 ----------
 
-#### megam_rails_application::default
+#### rails_application::default
 
 <table>
   <tr>
@@ -135,15 +122,15 @@ Attributes
 Usage
 -----
 
-#### megam_rails_application::default
+#### rails_application::default
 
-Just include `megam_rails_application` in your node's `run_list`:
+Just include `rails_application` in your node's `run_list`:
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[megam_rails_application]"
+    "recipe[rails_application]"
   ]
 }
 ```
@@ -173,3 +160,8 @@ See [LICENSE](LICENSE) for full details.
 
  - Evgeny Zislis <evgeny@devops.co.il>
  - Elad Dolev <elad@devops.co.il>
+
+##### Contributors:
+
+ - Daniel github.com/emirikol
+
