@@ -38,6 +38,39 @@ ln -s /usr/local/apache-maven-3.1.1/bin/mvn /usr/bin/mvn
 end
 end
 
+
+if  !(File.file?("#{node['megam']['app']['home']}/build"))
+  node.set["megam"]["github"]["ci"] = "false"
+  execute "Clone builder script " do
+    cwd "#{node['megam']['env']['home']}/gulp"
+    command "git clone https://github.com/megamsys/buildpacks.git"
+  end
+
+  execute "chmod to execute build " do
+    cwd "#{node['megam']['env']['home']}/gulp/buildpacks/java/"
+    command "chmod 755 build"
+  end
+
+  execute "Start build script #{`pwd`}" do
+    cwd "#{node['megam']['env']['home']}/gulp/buildpacks/java/"
+    command "./build remote_repo=#{node['megam_scm']} build_ci=#{node['megam']['github']['ci']} megam_home=#{node['megam']['env']['home']}/gulp local_repo=#{node['megam']['tomcat']['home']}/webapps/"
+  end
+else
+  execute "chmod to execute local build " do
+    cwd "#{node['megam']['app']['home']}"
+    command "chmod 755 build"
+  end
+
+  execute "Own builder script " do
+    cwd node['megam']['app']['home']
+    command "./build"
+  end
+end
+
+
+
+#old code without buildpacks
+=begin
 bash "Clean Maven" do
 cwd "#{node['megam']['app']['home']}"
   user "root"
@@ -53,8 +86,4 @@ template "/var/lib/megam/gulp/build" do
   source "build.erb"
   mode "755"
 end
-
-
-
-#Megam_tomcat copy ['megam']['app']['location'] to tomcat/webapps folder
-node.set['megam']['app']['location'] = "#{node['megam']['app']['home']}/target/*.war"
+=end

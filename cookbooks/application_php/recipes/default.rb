@@ -16,14 +16,21 @@ end
 
 node.set[:build][:localrepo]='/var/www/html/current'
 
-template "/var/lib/megam/gulp/build" do
-  source "build.erb"
-  mode "755"
+node.set["megam"]["github"]["ci"] = "false"
+
+execute "Clone builder script " do
+  cwd "#{node['megam']['env']['home']}/gulp"
+  command "git clone https://github.com/megamsys/buildpacks.git"
 end
 
-execute "install dependencies" do
- cwd "#{node['megam']['app']['home']}"
- command "./start"
+execute "chmod to execute build " do
+  cwd "#{node['megam']['env']['home']}/gulp/buildpacks/php/"
+  command "chmod 755 build"
+end
+
+execute "Start build script #{`pwd`}" do
+  cwd "#{node['megam']['env']['home']}/gulp/buildpacks/php/"
+  command "./build remote_repo=#{node['megam_scm']} build_ci=#{node['megam']['github']['ci']} megam_home=#{node['megam']['env']['home']}/gulp local_repo=#{node.set[:build][:localrepo]}"
 end
 
 
