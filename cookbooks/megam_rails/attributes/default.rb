@@ -1,11 +1,9 @@
 require "securerandom"
 
-#default[:rails][:ruby][:version] = "1.9.1"  # include ruby/recipes/{ver}.rb
-#default[:languages][:ruby][:default_version] = node[:rails][:ruby][:version]
+default[:rails][:ruby][:version] = "1.9.1"  # include ruby/recipes/{ver}.rb
+default[:languages][:ruby][:default_version] = node[:rails][:ruby][:version]
 
-default[:rails][:app][:service] = "rails" # must be one word
-
-default[:rails][:app][:name] = "aryabhata" # must be one word
+default[:rails][:app][:name] = "rails_app" # must be one word
 default[:rails][:app][:path] = "/var/www/projects/#{node[:rails][:app][:name]}"
 default[:rails][:app][:environment] = "production"
 
@@ -17,12 +15,13 @@ default[:rails][:gems] = []
 default[:rails][:deploy][:type] = "git" # only git is supported at the moment
 default[:rails][:deploy][:ssh_key] = nil
 default[:rails][:deploy][:shallow_clone] = true
-default[:rails][:deploy][:repository] = "https://github.com/thomasalrin/aryabhata.git" #nil
+default[:rails][:deploy][:repository] = nil
 default[:rails][:deploy][:revision] = "master"
 default[:rails][:deploy][:enable_submodules] = true
 default[:rails][:deploy][:action] = :deploy # can be :deploy or :force_deploy
+default[:rails][:deploy][:rollback_on_error] = true
 
-default[:rails][:deploy][:precompile_assets] = false
+default[:rails][:deploy][:precompile_assets] = nil # true or false
 default[:rails][:deploy][:database_master_role] = nil # used when rendering the `database.yml` file for the host
 default[:rails][:deploy][:database_template] = nil # nil means database.yml.erb will be used
 default[:rails][:deploy][:bundler] = true
@@ -49,7 +48,8 @@ default[:rails][:database][:username] = node[:rails][:app][:name]
 default[:rails][:database][:password] = node[:rails][:database][:password]  || ::SecureRandom.base64(12)
 default[:rails][:database][:root_password] = nil # set by mysql/postgresql cookbooks to securerandom
 
-default[:rails][:nginx][:application_port] = "8080".to_i
+default[:rails][:nginx][:application_port] = nil
+default[:rails][:nginx][:application_socket] = "/var/run/unicorn/#{node[:rails][:app][:name]}.sock"
 default[:rails][:nginx][:port] = 80
 default[:rails][:nginx][:template] = "load_balancer.conf.erb"
 default[:rails][:nginx][:server_name] = node['fqdn']
@@ -62,6 +62,8 @@ default[:rails][:unicorn][:worker_processes] = [node['cpu']['total'].to_i * 4, 8
 default[:rails][:unicorn][:worker_timeout] = 60
 default[:rails][:unicorn][:preload_app] = false
 default[:rails][:unicorn][:before_fork] = 'sleep 1'
-default[:rails][:unicorn][:port] = "8080" #"#{node[:rails][:nginx][:application_port]}".to_s # must be a string
+default[:rails][:unicorn][:port] = node[:rails][:nginx][:application_socket]
 default[:rails][:unicorn][:bundler] = node[:rails][:deploy][:bundler]
 default[:rails][:unicorn][:bundle_command] = node[:rails][:deploy][:bundle_command]
+default[:rails][:unicorn][:unicorn_bin] = "unicorn_rails"
+default[:rails][:unicorn][:unicorn_config] = "/etc/unicorn/#{node[:rails][:app][:name]}.rb"
