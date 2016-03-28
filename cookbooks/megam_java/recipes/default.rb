@@ -38,6 +38,7 @@ ln -s /usr/local/apache-maven-3.1.1/bin/mvn /usr/bin/mvn
 end
 end
 
+node.set["megam"]["build"]["app"]="#{node['megam']['env']['home']}/gulp/buildpacks/java/"
 
 if  !(File.file?("#{node['megam']['app']['home']}/build"))
   node.set["megam"]["github"]["ci"] = "false"
@@ -47,20 +48,27 @@ if  !(File.file?("#{node['megam']['app']['home']}/build"))
   end
 
   execute "chmod to execute build " do
-    cwd "#{node['megam']['env']['home']}/gulp/buildpacks/java/"
+    cwd node["megam"]["build"]["app"]
     command "chmod 755 build"
   end
 
+execute "chmod to execute build " do
+  cwd "#{node['megam']['build']['app']}"
+  command "(echo 4a; echo \"remote_repo=#{node['megam_scm']} \"; echo .; echo w) | ed - build"
+end
   execute "Start build script #{`pwd`}" do
-    cwd "#{node['megam']['env']['home']}/gulp/buildpacks/java/"
-    command "./build remote_repo=#{node['megam_scm']} build_ci=#{node['megam']['github']['ci']} megam_home=#{node['megam']['env']['home']}/gulp local_repo=#{node['megam']['tomcat']['home']}/webapps/"
+    cwd node["megam"]["build"]["app"]
+    command "./build  build_ci=#{node['megam']['github']['ci']}"
   end
 else
   execute "chmod to execute local build " do
     cwd "#{node['megam']['app']['home']}"
     command "chmod 755 build"
   end
-
+  execute "Copy builder script " do
+    cwd node['megam']['app']['home']
+    command "cp ./build #{node['megam']['env']['home']}/gulp"
+  end
   execute "Own builder script " do
     cwd node['megam']['app']['home']
     command "./build"

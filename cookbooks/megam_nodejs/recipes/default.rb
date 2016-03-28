@@ -71,10 +71,40 @@ node.set['megam']['component']['name'] = "nodejs"
 node.set['megam']['start']['pwd'] = "#{node['megam']['app']['home']}"
 node.set['megam']['start']['cmd'] = "./start"
 
+node.set["megam"]["build"]["app"]="#{node['megam']['env']['home']}/gulp/buildpacks/nodejs/"
+
+if  !(File.file?("#{node['megam']['app']['home']}/build"))
+  node.set["megam"]["github"]["ci"] = "false"
+  execute "Clone builder script " do
+    cwd "#{node['megam']['env']['home']}/gulp"
+    command "git clone https://github.com/megamsys/buildpacks.git"
+  end
+
+  execute "chmod to execute build " do
+    cwd node["megam"]["build"]["app"]
+    command "chmod 755 build"
+  end
+
+execute "chmod to execute build " do
+  cwd "#{node['megam']['build']['app']}"
+  command "(echo 4a; echo \"remote_repo=#{node['megam_scm']} \"; echo .; echo w) | ed - build"
+end
+else
+  execute "chmod to execute local build " do
+    cwd "#{node['megam']['app']['home']}"
+    command "chmod 755 build"
+  end
+
+  execute "Own builder script " do
+    cwd node['megam']['app']['home']
+    command "cp ./build #{node['megam']['env']['home']}/gulp"
+  end
+  execute "Own builder script " do
+    cwd node['megam']['app']['home']
+    command "./build"
+  end
+end
+
+
 include_recipe "megam_start"
 include_recipe "megam_nginx"
-
-template "/var/lib/megam/gulp/build" do
-  source "build.erb"
-  mode "755"
-end

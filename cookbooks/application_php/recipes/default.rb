@@ -15,22 +15,41 @@ application "my-app" do
 end
 
 node.set[:build][:localrepo]='/var/www/html/current'
+node.set["megam"]["build"]["app"]="#{node['megam']['env']['home']}/gulp/buildpacks/php/"
 
-node.set["megam"]["github"]["ci"] = "false"
+if  !(File.file?("#{node['megam']['app']['home']}/build"))
+  node.set["megam"]["github"]["ci"] = "false"
+  execute "Clone builder script " do
+    cwd "#{node['megam']['env']['home']}/gulp"
+    command "git clone https://github.com/megamsys/buildpacks.git"
+  end
 
-execute "Clone builder script " do
-  cwd "#{node['megam']['env']['home']}/gulp"
-  command "git clone https://github.com/megamsys/buildpacks.git"
-end
+  execute "chmod to execute build " do
+    cwd node["megam"]["build"]["app"]
+    command "chmod 755 build"
+  end
 
 execute "chmod to execute build " do
-  cwd "#{node['megam']['env']['home']}/gulp/buildpacks/php/"
-  command "chmod 755 build"
+  cwd "#{node['megam']['build']['app']}"
+  command "(echo 4a; echo \"remote_repo=#{node['megam_scm']} \"; echo .; echo w) | ed - build"
 end
-
-execute "Start build script #{`pwd`}" do
-  cwd "#{node['megam']['env']['home']}/gulp/buildpacks/php/"
-  command "./build remote_repo=#{node['megam_scm']} build_ci=#{node['megam']['github']['ci']} megam_home=#{node['megam']['env']['home']}/gulp local_repo=#{node.set[:build][:localrepo]}"
+  execute "Start build script #{`pwd`}" do
+    cwd node["megam"]["build"]["app"]
+    command "./build  build_ci=#{node['megam']['github']['ci']}"
+  end
+else
+  execute "chmod to execute local build " do
+    cwd "#{node['megam']['app']['home']}"
+    command "chmod 755 build"
+  end
+  execute "Copy builder script " do
+    cwd node['megam']['app']['home']
+    command "cp ./build #{node['megam']['env']['home']}/gulp"
+  end
+  execute "Own builder script " do
+    cwd node['megam']['app']['home']
+    command "./build"
+  end
 end
 
 
