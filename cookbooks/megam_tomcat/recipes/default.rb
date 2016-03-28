@@ -26,13 +26,26 @@ remote_file node['megam']['tomcat']['remote-location']['tar'] do
 end
 
 execute "unzip tomcat-nginx" do
-  cwd node['megam']['user']['home']  
+  cwd node['megam']['user']['home']
   command node['megam']['tomcat']['cmd'] ['unzip']
   user node['megam']['default']['user']
   group node['megam']['default']['user']
 end
 
-execute "cp #{node['megam']['app']['location']} #{node['megam']['tomcat']['home']}/webapps/"
+#Megam_tomcat copy ['megam']['app']['location'] to tomcat/webapps folder
+
+bash "Copay War" do
+  cwd "#{node['megam']['app']['home']}"
+  user "root"
+   code <<-EOH
+   arr=$(find . -path "**/target/*.war")
+
+   for i in "${arr[@]}"
+   do
+      cp $i #{node['megam']['tomcat']['home']}/webapps/
+   done
+  EOH
+end
 
 template node['megam']['tomcat']['remote-location']['tomcat-init'] do
   source node['megam']['tomcat']['template']['tomcat_init']
@@ -44,9 +57,9 @@ end
 # use upstart when supported to get nice things like automatic respawns
 use_upstart = false
 case node['platform_family']
-when "debian"  
+when "debian"
   if node['platform_version'].to_f >= 12.04
-    use_upstart = true  
+    use_upstart = true
   end
 end
 
@@ -85,4 +98,3 @@ end
    start java
   EOH
   end
-
