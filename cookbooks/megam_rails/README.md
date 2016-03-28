@@ -1,4 +1,4 @@
-rails_application Cookbook
+megam_rails_application Cookbook
 ============================
 
 This cookbooks installs the server-side Rails application.
@@ -58,7 +58,7 @@ include the modifications are available here -
 Attributes
 ----------
 
-#### rails_application::default
+#### megam_rails_application::default
 
 <table>
   <tr>
@@ -124,13 +124,13 @@ Usage
 
 #### rails_application::default
 
-Just include `rails_application` in your node's `run_list`:
+Just include `megam_rails_application` in your node's `run_list`:
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[rails_application]"
+    "recipe[megam_rails_application]"
   ]
 }
 ```

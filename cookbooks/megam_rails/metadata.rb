@@ -1,6 +1,6 @@
 name             'megam_rails'
-maintainer       'Devops Israel'
-maintainer_email 'evgeny@devops.co.il'
+maintainer       'Megam system'
+maintainer_email 'ranjithar@megam.io'
 license          'All rights reserved'
 description      'Installs/Configures megam_rails'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
