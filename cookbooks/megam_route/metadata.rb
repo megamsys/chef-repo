@@ -41,6 +41,7 @@ depends "apache2"
 depends "core-ccpp"
 depends "core-java"
 depends "megam_orion"
+depends "megam_bitnami"
 
 
 #recommends "megam_backup"
