@@ -14,9 +14,6 @@
 #node.set['megam_monitor']="#{node['monitor']}"
 node.set['megam_scm'] = "#{node['scm']}"
 node.set['fqdn'] = "#{node['hostname']}"
-node.set['bitnami_url'] = "#{node['bitnami_url']}"
-node.set['bitnami_username'] = "#{node['bitnami_username']}"
-node.set['bitnami_password'] = "#{node['bitnami_password']}"
 
 node.set['megam_file_name'] = File.basename(node['megam_scm'])
 node.set['megam_dir'] = File.basename(node['megam_file_name'], '.*')

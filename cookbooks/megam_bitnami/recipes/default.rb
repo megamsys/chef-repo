@@ -10,10 +10,14 @@
 case node[:platform]
 when "Debian", "ubuntu"
 
-execute "mkdir /var/lib/megam/bitnami"
+directory '/var/lib/megam/bitnami' do
+  owner 'root'
+  group 'root'
+  action :create
+end
 
 remote_file node["bitnami"]["remote-location"]["bitnami-run"] do
-source node["bitnami"]["source"]
+source "#{node['bitnami_url']}"
 mode '0755'
 end
 
