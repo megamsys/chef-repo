@@ -63,7 +63,8 @@ when "javasdk"
         include_recipe "core-java"
 when "ccplus"
         include_recipe "core-ccpp"
-
+when "bitnami"
+        include_recipe "megam_bitnami"        
 else
         puts "Not a valid Tosca type"
 end                                                             #case cookbook end

@@ -15,7 +15,6 @@
 node.set['megam_scm'] = "#{node['scm']}"
 node.set['fqdn'] = "#{node['hostname']}"
 
-
 node.set['megam_file_name'] = File.basename(node['megam_scm'])
 node.set['megam_dir'] = File.basename(node['megam_file_name'], '.*')
 
