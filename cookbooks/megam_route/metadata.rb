@@ -37,6 +37,7 @@ depends "megam_mattermost"
 depends "megam_mongodb"
 depends "megam_couchdb"
 
+depends "mariadb"
 depends "apache2"
 depends "core-ccpp"
 depends "core-java"
