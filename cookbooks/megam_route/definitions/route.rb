@@ -63,6 +63,9 @@ when "javasdk"
         include_recipe "core-java"
 when "ccplus"
         include_recipe "core-ccpp"
+when "mariadb"
+       include_recipe "mariadb"
+
 when "bitnami"
         include_recipe "megam_bitnami"        
 else
