@@ -128,6 +128,7 @@ end
 
 execute "rabbitmq-server stop " do
   command "service rabbitmq-server stop"
+ignore_failure true
 end
 
   template node['rabbitmq']['erlang_cookie_path'] do
@@ -219,3 +220,7 @@ end
 
 end
 =end
+execute "Start rabbitmq-server" do
+  command "service rabbitmq-server start"
+end
+
