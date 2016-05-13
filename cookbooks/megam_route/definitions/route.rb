@@ -63,6 +63,8 @@ when "javasdk"
         include_recipe "core-java"
 when "ccplus"
         include_recipe "core-ccpp"
+when "python"
+      include_recipe "megam_python"
 when "mariadb"
        include_recipe "mariadb"
 
