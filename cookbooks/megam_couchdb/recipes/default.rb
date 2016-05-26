@@ -9,47 +9,39 @@
 
 case node[:platform]
 when "Debian", "ubuntu"
-
 if File.exist?('/usr/bin/couchdb')
 
 template "/etc/couchdb/default.ini" do
 source "default.ini.erb"
 end
 
-execute "start " do
-command "start couchdb"
-end
+execute "restart couchdb"
+else
 
-execute "apt-get update"
+execute "apt-get update -y"
 
-execute "sudo apt-get install software-properties-common -y"
+execute "apt-get install software-properties-common -y"
 
 execute "apt-get install --yes python-software-properties python g++ make"
 
-execute "sudo add-apt-repository ppa:couchdb/stable -y"
+execute "add-apt-repository ppa:couchdb/stable -y"
 
-execute "sudo apt-get update"
+execute "apt-get update -y"
 
-execute "sudo apt-get remove couchdb couchdb-bin couchdb-common -yf"
+execute "apt-get remove couchdb couchdb-bin couchdb-common -yf"
 
-execute "sudo apt-get install couchdb -y"
+execute "apt-get install couchdb -y"
 
-execute "apt-get install libicu-dev"
+execute "apt-get install libicu-dev -y"
 
-execute "apt-get install erlang-nox erlang-dev"
-
-execute "add user" do
-  command "useradd -d /var/lib/couchdb couchdb"
-end
+execute "apt-get install erlang-nox erlang-dev -y"
 
 template "/etc/couchdb/default.ini" do
 source "default.ini.erb"
 end
 
-execute "start " do
-command "start couchdb"
-end
+execute "stop couchdb"
 
+execute "start couchdb"
 end
-
 end
