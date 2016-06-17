@@ -18,9 +18,21 @@
 # limitations under the License.
 #
 
+case node[:platform]
+when "Debian", "ubuntu"
 
-execute "curl -sL https://deb.nodesource.com/setup | sudo bash -"
-execute "apt-get install -y nodejs"
-execute "apt-get install -y build-essential"
+end
 
+node.set['nodejs']['versions'] = "#{node['version']}"
 
+if node['nodejs']['versions'] != nil
+  execute "curl -sL https://deb.nodesource.com/setup_#{node['nodejs']['versions']} | sudo bash -"
+  execute "apt-get install -y nodejs"
+  execute "apt-get install -y build-essential"
+else
+  execute "curl -sL https://deb.nodesource.com/setup_4.x | sudo bash -"
+  execute "apt-get install -y nodejs"
+  execute "apt-get install -y build-essential"
+end
+
+                                                       #case cookbook end

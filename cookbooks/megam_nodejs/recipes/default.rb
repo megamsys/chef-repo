@@ -19,7 +19,6 @@
 #
 
 #include_recipe "git"
-
 =begin
 execute "Clone Nodejs builder" do
 cwd "#{node['megam']['user']['home']}/bin"
@@ -29,7 +28,7 @@ cwd "#{node['megam']['user']['home']}/bin"
 end
 =end
 
-
+include_recipe "megam_nodejs::nodejs"
 
 execute "chmod 755 #{node['megam']['app']['home']}/start"
 
