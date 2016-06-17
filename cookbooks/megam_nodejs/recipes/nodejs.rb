@@ -25,7 +25,7 @@ end
 
 node.set['nodejs']['versions'] = "#{node['version']}"
 
-if node['nodejs']['versions'] != nil
+if node['nodejs']['versions'] != ""
   execute "curl -sL https://deb.nodesource.com/setup_#{node['nodejs']['versions']} | sudo bash -"
   execute "apt-get install -y nodejs"
   execute "apt-get install -y build-essential"
