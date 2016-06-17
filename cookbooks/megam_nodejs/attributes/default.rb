@@ -19,6 +19,7 @@
 
 #MY ATTRIBUTES
 default['nodejs']['init']['conf'] = "/etc/init/nodejs.conf"
+default['nodejs']['versions'] = ""
 
 #Template file
 default['nodejs']['template']['conf'] = "nodejs.conf.erb"
@@ -48,5 +49,3 @@ default['nodejs']['binary']['checksum']['linux_x86'] = '8fa2d952556c8b5aa37c077e
 default['nodejs']['binary']['checksum']['linux_arm-pi'] = '52a0f6ed9c0be1ea5f79de6527c481c1b803edbea6413a4fdc65a45ad401565d'
 
 default['nodejs']['make_threads'] = node['cpu'] ? node['cpu']['total'].to_i : 2
-
-
