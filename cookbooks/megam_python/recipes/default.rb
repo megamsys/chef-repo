@@ -14,11 +14,15 @@ if File.exist?('/usr/lib/python3')
 
 execute "echo python is already installed...!"
 
+execute "python -m SimpleHTTPServer 80"
+
 else
 
 execute "apt-get -y update "
 
 execute "apt-get -y install python3-pip"
-end
-end
 
+execute "python -m SimpleHTTPServer 80"
+
+end
+end

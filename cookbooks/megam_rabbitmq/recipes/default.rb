@@ -128,7 +128,7 @@ end
 
 execute "rabbitmq-server stop " do
   command "service rabbitmq-server stop"
-ignore_failure true
+  ignore_failure true
 end
 
   template node['rabbitmq']['erlang_cookie_path'] do
@@ -182,45 +182,9 @@ end #end for if condition
       restart_command "stop #{node['rabbitmq']['service_name']} && start #{node['rabbitmq']['service_name']}"
       only_if { File.exist?('/etc/init.d/rabbitmq-server') }
     end
-  
 
-=begin
-service node['rabbitmq']['service_name'] do
-  start_command "setsid /etc/init.d/rabbitmq-server start"
-  stop_command "setsid /etc/init.d/rabbitmq-server stop"
-  restart_command "setsid /etc/init.d/rabbitmq-server restart"
-  status_command "setsid /etc/init.d/rabbitmq-server status"
-  supports :status => true, :restart => true
-  action [ :enable, :start ]
-  not_if { platform?('smartos') }
-end
 
 execute "Start rabbitmq-server" do
   command "service rabbitmq-server start"
+    ignore_failure true
 end
-
-=end
-
-=begin
-unless node['rabbitmq']['cluster'] 		#####		IF Master			
-
-execute "create policy" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command "rabbitmqadmin declare policy name=all pattern=\'\' definition='{\"ha-mode\":\"all\"}'"
-end
-
-execute "create mirror queue" do
-  cwd "/home/ubuntu"  
-  user "ubuntu"
-  group "ubuntu"
-  command 'rabbitmqadmin declare queue name=megam-queue durable=true arguments=\'{"x-ha-policy":"all"}\''
-end
-
-end
-=end
-execute "Start rabbitmq-server" do
-  command "service rabbitmq-server start"
-end
-

@@ -7,10 +7,11 @@
 # All rights reserved - Do Not Redistribute
 #
 
+execute "sudo apt-get update -y"
 
 mysql_service 'default' do
   port '3306'
-  version '5.5'  
+  version '5.5'
   initial_root_password 'megam'
   action [:create, :start]
 end
