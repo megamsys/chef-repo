@@ -23,6 +23,6 @@ end
 
 execute "start bitnami" do
 cwd "/var/lib/megam/bitnami"
-command "./bitnami-run --mode unattended --base_user #{node['bitnami_username']} --base_password #{node['bitnami_password']}"
+command "./bitnami-run --mode unattended --base_user #{node['bitnami_username']} --base_password #{node['bitnami_password']}  --base_mail #{node['bitnami_email']}"
 end
 end
