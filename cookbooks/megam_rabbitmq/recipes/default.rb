@@ -95,7 +95,11 @@ template "#{node['rabbitmq']['config_root']}/rabbitmq-env.conf" do
   owner "root"
   group "root"
   mode 00644
-  notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
+  #notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
+end
+execute "rabbitmq-server restart action " do
+  command "service rabbitmq-server restart"
+  ignore_failure true
 end
 
 template "#{node['rabbitmq']['config_root']}/rabbitmq.config" do
@@ -103,7 +107,12 @@ template "#{node['rabbitmq']['config_root']}/rabbitmq.config" do
   owner "root"
   group "root"
   mode 00644
-  notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
+  #notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
+end
+
+execute "rabbitmq-server restart " do
+  command "service rabbitmq-server restart"
+  ignore_failure true
 end
 
 if File.exists?(node['rabbitmq']['erlang_cookie_path'])
