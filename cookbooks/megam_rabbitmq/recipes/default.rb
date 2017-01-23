@@ -126,6 +126,7 @@ end
 
 execute "Enable rabbitmq-plugin for rabbitmq_management " do
   command "rabbitmq-plugins enable rabbitmq_management"
+  ignore_failure true
 end
 
   template "/usr/local/bin/rabbitmqadmin" do
