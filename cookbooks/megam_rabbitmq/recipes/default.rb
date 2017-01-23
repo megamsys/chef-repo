@@ -195,7 +195,7 @@ end #end for if condition
 
     execute "Enable rabbitmq-plugin " do
       command "rabbitmq-plugins enable rabbitmq_management"
-      #ignore_failure true
+      ignore_failure true
    end
 
 execute "Start rabbitmq-server" do
