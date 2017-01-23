@@ -193,10 +193,10 @@ end #end for if condition
       only_if { File.exist?('/etc/init.d/rabbitmq-server') }
     end
 
-    execute "Enable rabbitmq-plugin " do
-      command "rabbitmq-plugins enable rabbitmq_management"
-      ignore_failure true
-    end
+    #execute "Enable rabbitmq-plugin " do
+    #  command "rabbitmq-plugins enable rabbitmq_management"
+    #  ignore_failure true
+  #  end
 
 execute "Start rabbitmq-server" do
   command "service rabbitmq-server restart"
