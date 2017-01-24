@@ -124,6 +124,15 @@ end
 
 #RABBITMQ Admin tools
 
+execute "Home path print" do
+  command "*******************************"
+  command "echo $HOME"
+  command "*********************************"
+  
+end
+
+
+
 execute "Enable rabbitmq-plugin for rabbitmq_management " do
   command "rabbitmq-plugins enable rabbitmq_management"
   ignore_failure true
@@ -193,10 +202,10 @@ end #end for if condition
       only_if { File.exist?('/etc/init.d/rabbitmq-server') }
     end
 
-    execute "Enable rabbitmq-plugin " do
-      command "rabbitmq-plugins enable rabbitmq_management"
-      ignore_failure true
-   end
+    #execute "Enable rabbitmq-plugin " do
+    #  command "rabbitmq-plugins enable rabbitmq_management"
+    #  ignore_failure true
+  # end
 
 execute "Start rabbitmq-server" do
   command "service rabbitmq-server restart"
