@@ -135,7 +135,7 @@ execute "Home path set" do
   command "*******************************"
   command "export HOME=/root"
   command "*********************************"
-ignore_failure true
+#ignore_failure true
 end
 
 execute "Enable rabbitmq-plugin for rabbitmq_management " do
