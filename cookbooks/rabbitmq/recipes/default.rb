@@ -243,7 +243,7 @@ end
 
 bash "spark" do
 code <<-EOH
- rabbitmqctl add_user test test
- rabbitmqctl set_user_tags test administrator
+ rabbitmqctl add_user admin admin
+ rabbitmqctl set_user_tags admin administrator
 EOH
 end
