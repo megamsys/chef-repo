@@ -128,10 +128,15 @@ execute "Home path print" do
   command "*******************************"
   command "echo $HOME"
   command "*********************************"
-
+ignore_failure true
 end
 
-
+execute "Home path set" do
+  command "*******************************"
+  command "export HOME=/root"
+  command "*********************************"
+ignore_failure true
+end
 
 execute "Enable rabbitmq-plugin for rabbitmq_management " do
   command "rabbitmq-plugins enable rabbitmq_management"
