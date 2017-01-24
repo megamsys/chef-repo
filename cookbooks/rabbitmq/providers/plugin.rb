@@ -2,7 +2,7 @@
 # Cookbook Name:: rabbitmq
 # Provider:: plugin
 #
-# Copyright 2012, Opscode, Inc.
+# Copyright 2012-2013, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,18 +17,29 @@
 # limitations under the License.
 #
 
+include Opscode::RabbitMQ
+
 def plugin_enabled?(name)
-  cmd = Mixlib::ShellOut.new("rabbitmq-plugins list -e '#{name}\\b'")
-  cmd.environment['HOME'] = ENV.fetch('HOME', '/root')
+  ENV['PATH'] = "#{ENV['PATH']}:/usr/lib/rabbitmq/bin"
+  cmdstr = "rabbitmq-plugins list -e '#{name}\\b'"
+  cmd = Mixlib::ShellOut.new(cmdstr, :env => shell_environment)
   cmd.run_command
+  Chef::Log.debug "rabbitmq_plugin_enabled?: #{cmdstr}"
+  Chef::Log.debug "rabbitmq_plugin_enabled?: #{cmd.stdout}"
   cmd.error!
   cmd.stdout =~ /\b#{name}\b/
 end
 
+use_inline_resources
+
 action :enable do
   unless plugin_enabled?(new_resource.plugin)
     execute "rabbitmq-plugins enable #{new_resource.plugin}" do
+      umask 0022
       Chef::Log.info "Enabling RabbitMQ plugin '#{new_resource.plugin}'."
+      environment shell_environment.merge(
+        'PATH' => "#{ENV['PATH']}:/usr/lib/rabbitmq/bin"
+      )
       new_resource.updated_by_last_action(true)
     end
   end
@@ -37,7 +48,11 @@ end
 action :disable do
   if plugin_enabled?(new_resource.plugin)
     execute "rabbitmq-plugins disable #{new_resource.plugin}" do
+      umask 0022
       Chef::Log.info "Disabling RabbitMQ plugin '#{new_resource.plugin}'."
+      environment shell_environment.merge(
+        'PATH' => "#{ENV['PATH']}:/usr/lib/rabbitmq/bin"
+      )
       new_resource.updated_by_last_action(true)
     end
   end

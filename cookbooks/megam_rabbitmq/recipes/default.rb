@@ -124,9 +124,23 @@ end
 
 #RABBITMQ Admin tools
 
+execute "Home path print" do
+  command "*******************************"
+  command "echo $HOME"
+  command "*********************************"
+ignore_failure true
+end
+
+execute "Home path set" do
+  command "*******************************"
+  command "export HOME=/root"
+  command "*********************************"
+#ignore_failure true
+end
+
 execute "Enable rabbitmq-plugin for rabbitmq_management " do
   command "rabbitmq-plugins enable rabbitmq_management"
-  ignore_failure true
+  #ignore_failure true
 end
 
   template "/usr/local/bin/rabbitmqadmin" do
@@ -193,10 +207,10 @@ end #end for if condition
       only_if { File.exist?('/etc/init.d/rabbitmq-server') }
     end
 
-    execute "Enable rabbitmq-plugin " do
-      command "rabbitmq-plugins enable rabbitmq_management"
-      ignore_failure true
-    end
+    #execute "Enable rabbitmq-plugin " do
+    #  command "rabbitmq-plugins enable rabbitmq_management"
+    #  ignore_failure true
+  # end
 
 execute "Start rabbitmq-server" do
   command "service rabbitmq-server restart"

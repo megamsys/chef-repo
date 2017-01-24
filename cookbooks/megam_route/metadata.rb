@@ -25,7 +25,7 @@ depends "megam_mysql"
 depends "megam_riak"
 depends "megam_redis2"
 depends "megam_postgresql"
-depends "megam_rabbitmq"
+depends "rabbitmq"
 
 recommends "megam_op5"
 depends "owncloud"
