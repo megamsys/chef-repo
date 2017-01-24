@@ -128,14 +128,14 @@ execute "Home path print" do
   command "*******************************"
   command "echo $HOME"
   command "*********************************"
-  
+
 end
 
 
 
 execute "Enable rabbitmq-plugin for rabbitmq_management " do
   command "rabbitmq-plugins enable rabbitmq_management"
-  ignore_failure true
+  #ignore_failure true
 end
 
   template "/usr/local/bin/rabbitmqadmin" do
